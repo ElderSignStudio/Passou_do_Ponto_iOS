@@ -1,3 +1,4 @@
+
 //
 //  AppDelegate.m
 //  Passou_do_Ponto_iOS
@@ -17,6 +18,9 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    
+    [GMSServices provideAPIKey:@"AIzaSyCx6nR8sDs7vcwZ1Mg-oP6V8BmsA3uFsxQ"];
+    
     return YES;
 }
 
