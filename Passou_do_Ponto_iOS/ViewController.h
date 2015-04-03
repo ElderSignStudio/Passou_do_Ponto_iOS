@@ -9,9 +9,12 @@
 #import <UIKit/UIKit.h>
 #import <GoogleMaps/GoogleMaps.h>
 
-@interface ViewController : UIViewController
+@interface ViewController : UIViewController /*<GMSMapViewDelegate>*/
 
 @property (nonatomic, strong) CLLocationManager *locationManager;
+
+@property (weak, nonatomic) IBOutlet UIView *googleMapView;
+
 
 @end
 
