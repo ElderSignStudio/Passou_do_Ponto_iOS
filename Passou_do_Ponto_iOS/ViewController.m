@@ -11,6 +11,7 @@
 
 #import "ViewController.h"
 #import <GoogleMaps/GoogleMaps.h>
+#import <MRProgress.h>
 
 static CGFloat kOverlayHeight = 100.0f;
 
@@ -179,19 +180,9 @@ static CGFloat kOverlayHeight = 100.0f;
 
 -(void)enviaCoordenadas
 {
-    self.view.alpha = 0.5;
-    
-    CGRect b = self.view.bounds;
-    activityIndicator_ = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:
-                 UIActivityIndicatorViewStyleWhiteLarge];
-    //center the indicator in the view
-    activityIndicator_.frame = CGRectMake((b.size.width - 20) / 2, (b.size.height - 20) / 2, 20, 20);
-    //activityIndicator_.frame = CGRectMake(0,0,100,100);
-    [self.view addSubview:activityIndicator_];
-    [activityIndicator_ startAnimating];
-    
 
-    
+    [MRProgressOverlayView showOverlayAddedTo:self.view title:@"Enviando..." mode:MRProgressOverlayViewModeIndeterminate animated:YES];
+    [MRProgressOverlayView dismissOverlayForView:self.view animated:YES];
 }
 
 @end
