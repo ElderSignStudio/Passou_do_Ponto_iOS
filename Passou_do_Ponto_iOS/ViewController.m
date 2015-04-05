@@ -200,7 +200,15 @@ static CGFloat kOverlayHeight = 100.0f;
         NSLog(@"Photo = %@. Photo Metadata = %@",self.photo, self.photoMetadata);
     }
     
-    [MRProgressOverlayView dismissOverlayForView:self.view animated:YES];
+    [MRProgressOverlayView dismissOverlayForView:self.view animated:NO];
+    
+    [MRProgressOverlayView showOverlayAddedTo:self.view title:@"Enviado com sucesso!" mode:MRProgressOverlayViewModeCheckmark animated:NO];
+    //[MRProgressOverlayView showOverlayAddedTo:self.view title:@"Não foi possivel enviar!" mode:MRProgressOverlayViewModeCross animated:NO]; QUANDO NAO CONSEGUE
+    
+    [self performSelector:@selector(dismissOverlay) withObject:nil afterDelay:1.0];
+    
+    [popoverView_ removeFromSuperview];
+    [viewDummy_ removeFromSuperview];
 
 }
 - (IBAction)cancelButtonPressed:(UIButton *)sender {
@@ -325,6 +333,9 @@ static CGFloat kOverlayHeight = 100.0f;
     [self.view addSubview:viewDummy_];
 }
 
-
+- (void)dismissOverlay
+{
+    [MRProgressOverlayView dismissOverlayForView:self.view animated:YES];
+}
 
 @end
