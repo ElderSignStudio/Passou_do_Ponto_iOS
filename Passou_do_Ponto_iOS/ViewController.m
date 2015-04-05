@@ -13,6 +13,7 @@
 #import <GoogleMaps/GoogleMaps.h>
 #import <MRProgress.h>
 #import <MobileCoreServices/MobileCoreServices.h>
+#import <AFNetworking.h>
 
 static CGFloat kOverlayHeight = 100.0f;
 
@@ -311,6 +312,24 @@ static CGFloat kOverlayHeight = 100.0f;
     }];
     
     return result;
+}
+
+#pragma mark - AFNetwork methods
+
+- (void)postToServer
+{
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    NSDictionary *parameters = @{@"foo": @"bar"};
+    
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    
+    [manager POST:@"http://example.com/resources.json" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"JSON: %@", responseObject);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Error: %@", error);
+    }];
+    
 }
 
 #pragma mark - Helper Methods
