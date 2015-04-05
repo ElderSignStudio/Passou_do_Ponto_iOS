@@ -8,6 +8,7 @@
 //
 
 #import "AppDelegate.h"
+#import "ViewController.h"
 
 @interface AppDelegate ()
 
@@ -20,6 +21,15 @@
     // Override point for customization after application launch.
     
     [GMSServices provideAPIKey:@"AIzaSyCx6nR8sDs7vcwZ1Mg-oP6V8BmsA3uFsxQ"];
+    
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    
+    
+    ViewController *vc = [[ViewController alloc] init];
+    
+    self.window.rootViewController = vc;
+    
+    [self.window makeKeyAndVisible];
     
     return YES;
 }

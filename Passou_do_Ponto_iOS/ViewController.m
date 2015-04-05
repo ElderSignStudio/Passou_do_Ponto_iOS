@@ -14,6 +14,7 @@
 #import <MRProgress.h>
 #import <MobileCoreServices/MobileCoreServices.h>
 #import <AFNetworking.h>
+#import "DELoginViewController.h"
 
 static CGFloat kOverlayHeight = 100.0f;
 
@@ -34,7 +35,7 @@ static CGFloat kOverlayHeight = 100.0f;
 
 -(void)loadView
 {
-    [super loadView];
+    //[super loadView];
     
     // Populate de array of Tipo de Ocorrencias
     tipoDeOcorrencias_ = [NSArray arrayWithObjects:@"Passou do ponto", @"Atropelou o pedestre", @"Cuspiu na minha cara", @"Não abriu a porta", nil];
@@ -83,6 +84,7 @@ static CGFloat kOverlayHeight = 100.0f;
     // Initialize variables
     self.photo = nil;
     self.photoMetadata = nil;
+    self.userHasLoggedIn = NO;
     
     // Create and configure overlay frame
     CGRect overlayFrame = CGRectMake(0, -kOverlayHeight, 0, kOverlayHeight);
@@ -134,13 +136,30 @@ static CGFloat kOverlayHeight = 100.0f;
                                                          attribute:NSLayoutAttributeWidth
                                                         multiplier:0.5
                                                           constant:0.0]];
+    
+}
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    if (!self.userHasLoggedIn) {
+        NSBundle *appBundle = [NSBundle mainBundle];
+        DELoginViewController *lvc = [[DELoginViewController alloc] initWithNibName:@"DELoginViewController" bundle:appBundle];
+        lvc.delegate = self;
+        [self presentViewController:lvc animated:YES completion:nil];
+    }
 }
 
 - (void)dealloc {
     [mapView_ removeObserver:self
                   forKeyPath:@"myLocation"
                      context:NULL];
+}
+
+#pragma mark - DELoginProtocol Methods
+
+- (void)loginSucces:(BOOL)result
+{
+    self.userHasLoggedIn = result;
 }
 
 #pragma mark - KVO updates

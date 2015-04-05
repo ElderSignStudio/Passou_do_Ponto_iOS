@@ -10,12 +10,13 @@
 		7415EE2A1AC795E700979899 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 7415EE291AC795E700979899 /* main.m */; };
 		7415EE2D1AC795E700979899 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7415EE2C1AC795E700979899 /* AppDelegate.m */; };
 		7415EE301AC795E700979899 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7415EE2F1AC795E700979899 /* ViewController.m */; };
-		7415EE331AC795E700979899 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7415EE311AC795E700979899 /* Main.storyboard */; };
 		7415EE351AC795E700979899 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7415EE341AC795E700979899 /* Images.xcassets */; };
 		7415EE381AC795E700979899 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7415EE361AC795E700979899 /* LaunchScreen.xib */; };
 		7415EE441AC795E700979899 /* Passou_do_Ponto_iOSTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7415EE431AC795E700979899 /* Passou_do_Ponto_iOSTests.m */; };
 		7415EE4E1AC7962D00979899 /* GoogleMaps.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7415EE4D1AC7962D00979899 /* GoogleMaps.framework */; };
 		7415EE501AC7964B00979899 /* GoogleMaps.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7415EE4F1AC7964B00979899 /* GoogleMaps.bundle */; };
+		74335D421AD1B99600E4833A /* DELoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74335D401AD1B99600E4833A /* DELoginViewController.m */; };
+		74335D431AD1B99600E4833A /* DELoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74335D411AD1B99600E4833A /* DELoginViewController.xib */; };
 		744E300E1ACE34C200D8A913 /* DETipoDaOcorrenciaView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 744E300D1ACE34C200D8A913 /* DETipoDaOcorrenciaView.xib */; };
 		74B5B8BF1ACDCFCA00A4EDF6 /* arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 74B5B8BD1ACDCFCA00A4EDF6 /* arrow.png */; };
 		74B5B8C01ACDCFCA00A4EDF6 /* arrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 74B5B8BE1ACDCFCA00A4EDF6 /* arrow@2x.png */; };
@@ -53,7 +54,6 @@
 		7415EE2C1AC795E700979899 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		7415EE2E1AC795E700979899 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		7415EE2F1AC795E700979899 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
-		7415EE321AC795E700979899 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		7415EE341AC795E700979899 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		7415EE371AC795E700979899 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		7415EE3D1AC795E700979899 /* Passou_do_Ponto_iOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Passou_do_Ponto_iOSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -61,6 +61,9 @@
 		7415EE431AC795E700979899 /* Passou_do_Ponto_iOSTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Passou_do_Ponto_iOSTests.m; sourceTree = "<group>"; };
 		7415EE4D1AC7962D00979899 /* GoogleMaps.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleMaps.framework; sourceTree = "<group>"; };
 		7415EE4F1AC7964B00979899 /* GoogleMaps.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = GoogleMaps.bundle; path = GoogleMaps.framework/Versions/A/Resources/GoogleMaps.bundle; sourceTree = "<group>"; };
+		74335D3F1AD1B99600E4833A /* DELoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DELoginViewController.h; sourceTree = "<group>"; };
+		74335D401AD1B99600E4833A /* DELoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DELoginViewController.m; sourceTree = "<group>"; };
+		74335D411AD1B99600E4833A /* DELoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DELoginViewController.xib; sourceTree = "<group>"; };
 		744E300D1ACE34C200D8A913 /* DETipoDaOcorrenciaView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DETipoDaOcorrenciaView.xib; sourceTree = "<group>"; };
 		74B5B8BD1ACDCFCA00A4EDF6 /* arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = arrow.png; path = Resources/arrow.png; sourceTree = "<group>"; };
 		74B5B8BE1ACDCFCA00A4EDF6 /* arrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "arrow@2x.png"; path = "Resources/arrow@2x.png"; sourceTree = "<group>"; };
@@ -150,7 +153,9 @@
 				7415EE2E1AC795E700979899 /* ViewController.h */,
 				7415EE2F1AC795E700979899 /* ViewController.m */,
 				744E300D1ACE34C200D8A913 /* DETipoDaOcorrenciaView.xib */,
-				7415EE311AC795E700979899 /* Main.storyboard */,
+				74335D3F1AD1B99600E4833A /* DELoginViewController.h */,
+				74335D401AD1B99600E4833A /* DELoginViewController.m */,
+				74335D411AD1B99600E4833A /* DELoginViewController.xib */,
 				7415EE341AC795E700979899 /* Images.xcassets */,
 				7415EE271AC795E600979899 /* Supporting Files */,
 			);
@@ -305,9 +310,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7415EE331AC795E700979899 /* Main.storyboard in Resources */,
 				74B5B8BF1ACDCFCA00A4EDF6 /* arrow.png in Resources */,
 				7415EE381AC795E700979899 /* LaunchScreen.xib in Resources */,
+				74335D431AD1B99600E4833A /* DELoginViewController.xib in Resources */,
 				74B5B8C01ACDCFCA00A4EDF6 /* arrow@2x.png in Resources */,
 				7415EE351AC795E700979899 /* Images.xcassets in Resources */,
 				744E300E1ACE34C200D8A913 /* DETipoDaOcorrenciaView.xib in Resources */,
@@ -365,6 +370,7 @@
 				7415EE301AC795E700979899 /* ViewController.m in Sources */,
 				7415EE2D1AC795E700979899 /* AppDelegate.m in Sources */,
 				7415EE2A1AC795E700979899 /* main.m in Sources */,
+				74335D421AD1B99600E4833A /* DELoginViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -387,14 +393,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		7415EE311AC795E700979899 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				7415EE321AC795E700979899 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		7415EE361AC795E700979899 /* LaunchScreen.xib */ = {
 			isa = PBXVariantGroup;
 			children = (

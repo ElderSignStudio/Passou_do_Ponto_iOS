@@ -8,13 +8,16 @@
 
 #import <UIKit/UIKit.h>
 #import <GoogleMaps/GoogleMaps.h>
+#import "DELoginViewController.h"
 
-@interface ViewController : UIViewController <UIPickerViewDelegate, UIPickerViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
+@interface ViewController : UIViewController <UIPickerViewDelegate, UIPickerViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate, DELoginProtocol>
 
 @property (nonatomic, strong) UIImage *photo;
 @property (nonatomic, strong) NSDictionary *photoMetadata;
+@property (nonatomic) BOOL userHasLoggedIn;
 
 @property (nonatomic, strong) CLLocationManager *locationManager;
+
 
 // IBOutlets
 
