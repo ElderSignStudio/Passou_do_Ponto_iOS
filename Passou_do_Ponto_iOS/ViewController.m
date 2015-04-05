@@ -17,14 +17,24 @@ static CGFloat kOverlayHeight = 100.0f;
 
 @implementation ViewController {
     GMSMapView *mapView_;
+    
     UIView *overlay_;
     BOOL firstLocationUpdate_;
     UIActivityIndicatorView *activityIndicator_;
+    
+    NSArray *tipoDeOcorrencias_;
+    
+    UIView *popoverView_;
+    UIView *viewDummy_;
 }
 
 -(void)loadView
 {
     [super loadView];
+    
+    // Populate de array of Tipo de Ocorrencias
+    tipoDeOcorrencias_ = [NSArray arrayWithObjects:@"Passou do ponto", @"Atropelou o pedestre", @"Cuspiu na minha cara", @"Não abriu a porta", nil];
+    
     
     // Create a GMSCameraPosition object that specifies the center and zoom level of the map.
     
@@ -80,8 +90,8 @@ static CGFloat kOverlayHeight = 100.0f;
     [passouDoPontoButton setTranslatesAutoresizingMaskIntoConstraints:NO];
     passouDoPontoButton.backgroundColor = [UIColor redColor];
     
-    // Button delegate method
-    [passouDoPontoButton addTarget:self action:@selector(passouDoPontoPressed) forControlEvents:UIControlEventTouchUpInside];
+    // Button target method
+    [passouDoPontoButton addTarget:self action:@selector(enviaCoordenadas) forControlEvents:UIControlEventTouchUpInside];
     
     // Add button to overlay and overlay to view
     [overlay_ addSubview:passouDoPontoButton];
@@ -153,36 +163,64 @@ static CGFloat kOverlayHeight = 100.0f;
 //#pragma mark - GMSMapViewDelegate
 //
 //- (void)mapView:(GMSMapView *)mapView didTapAtCoordinate:(CLLocationCoordinate2D)coordinate {
-//    
+//
 //    NSLog(@"You tapped at %f,%f", coordinate.latitude, coordinate.longitude);
 //}
-
--(void)passouDoPontoPressed
-{
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Confirma"
-                                                                   message:@"Confirma a passada de ponto?"
-                                                            preferredStyle:UIAlertControllerStyleAlert];
-    
-    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"Passou!" style:UIAlertActionStyleDefault
-                                                          handler:^(UIAlertAction * action) {
-                                                              [self enviaCoordenadas];
-                                                          }];
-    
-    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Ops" style:UIAlertActionStyleDefault
-                                                          handler:^(UIAlertAction * action) {}];
-    
-    [alert addAction:okAction];
-    [alert addAction:cancelAction];
-    
-    [self presentViewController:alert animated:YES completion:nil];
-    
-}
 
 -(void)enviaCoordenadas
 {
 
-    [MRProgressOverlayView showOverlayAddedTo:self.view title:@"Enviando..." mode:MRProgressOverlayViewModeIndeterminate animated:YES];
-    [MRProgressOverlayView dismissOverlayForView:self.view animated:YES];
+//    [MRProgressOverlayView showOverlayAddedTo:self.view title:@"Enviando..." mode:MRProgressOverlayViewModeIndeterminate animated:YES];
+//    NSLog(@"%@",mapView_.myLocation);
+//    [MRProgressOverlayView dismissOverlayForView:self.view animated:YES];
+    
+//    [self performSegueWithIdentifier:@"presentEnviaInfo" sender:self];
+    
+    viewDummy_ = [[UIView alloc] initWithFrame:self.view.bounds];
+    viewDummy_.backgroundColor = [UIColor colorWithHue:0.0 saturation:0.0 brightness:0.0 alpha:0.7];
+    
+    popoverView_ = [[[NSBundle mainBundle] loadNibNamed:@"DETipoDaOcorrenciaView"
+                                          owner:self
+                                        options:nil] objectAtIndex:0];
+    [popoverView_ setFrame:CGRectMake(0, 0, 275, 200)];
+    
+    popoverView_.center = viewDummy_.center;
+    
+    [viewDummy_ addSubview:popoverView_];
+    
+    [self.view addSubview:viewDummy_];
+}
+
+#pragma mark - UIPickerView methods
+
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
+{
+    return 1;
+}
+
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
+{
+    return [tipoDeOcorrencias_ count];
+}
+
+- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
+{
+    return tipoDeOcorrencias_[row];
+}
+
+- (IBAction)enviarButtonPressed:(UIButton *)sender {
+    
+    NSLog(@"Enviando.");
+}
+- (IBAction)cancelButtonPressed:(UIButton *)sender {
+    
+    [popoverView_ removeFromSuperview];
+    [viewDummy_ removeFromSuperview];
+}
+
+- (IBAction)fotoButtonPressed:(UIButton *)sender {
+    
+    NSLog(@"Foto.");
 }
 
 @end

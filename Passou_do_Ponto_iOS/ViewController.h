@@ -9,12 +9,15 @@
 #import <UIKit/UIKit.h>
 #import <GoogleMaps/GoogleMaps.h>
 
-@interface ViewController : UIViewController /*<GMSMapViewDelegate>*/
+@interface ViewController : UIViewController <UIPickerViewDelegate, UIPickerViewDataSource>
 
 @property (nonatomic, strong) CLLocationManager *locationManager;
 
-@property (weak, nonatomic) IBOutlet UIView *googleMapView;
+@property (weak, nonatomic) IBOutlet UIButton *enviarButton;
 
+@property (weak, nonatomic) IBOutlet UIPickerView *tipoDaOcorrenciaPicker;
+@property (weak, nonatomic) IBOutlet UIButton *cancelButton;
+@property (weak, nonatomic) IBOutlet UIButton *fotoButton;
 
 @end
 
