@@ -12,6 +12,7 @@
 #import "ViewController.h"
 #import <GoogleMaps/GoogleMaps.h>
 #import <MRProgress.h>
+#import <MobileCoreServices/MobileCoreServices.h>
 
 static CGFloat kOverlayHeight = 100.0f;
 
@@ -27,6 +28,8 @@ static CGFloat kOverlayHeight = 100.0f;
     UIView *popoverView_;
     UIView *viewDummy_;
 }
+
+#pragma mark - Initializers
 
 -(void)loadView
 {
@@ -75,6 +78,10 @@ static CGFloat kOverlayHeight = 100.0f;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    // Initialize variables
+    self.photo = nil;
+    self.photoMetadata = nil;
     
     // Create and configure overlay frame
     CGRect overlayFrame = CGRectMake(0, -kOverlayHeight, 0, kOverlayHeight);
@@ -160,37 +167,6 @@ static CGFloat kOverlayHeight = 100.0f;
     }
 }
 
-//#pragma mark - GMSMapViewDelegate
-//
-//- (void)mapView:(GMSMapView *)mapView didTapAtCoordinate:(CLLocationCoordinate2D)coordinate {
-//
-//    NSLog(@"You tapped at %f,%f", coordinate.latitude, coordinate.longitude);
-//}
-
--(void)enviaCoordenadas
-{
-
-//    [MRProgressOverlayView showOverlayAddedTo:self.view title:@"Enviando..." mode:MRProgressOverlayViewModeIndeterminate animated:YES];
-//    NSLog(@"%@",mapView_.myLocation);
-//    [MRProgressOverlayView dismissOverlayForView:self.view animated:YES];
-    
-//    [self performSegueWithIdentifier:@"presentEnviaInfo" sender:self];
-    
-    viewDummy_ = [[UIView alloc] initWithFrame:self.view.bounds];
-    viewDummy_.backgroundColor = [UIColor colorWithHue:0.0 saturation:0.0 brightness:0.0 alpha:0.7];
-    
-    popoverView_ = [[[NSBundle mainBundle] loadNibNamed:@"DETipoDaOcorrenciaView"
-                                          owner:self
-                                        options:nil] objectAtIndex:0];
-    [popoverView_ setFrame:CGRectMake(0, 0, 275, 200)];
-    
-    popoverView_.center = viewDummy_.center;
-    
-    [viewDummy_ addSubview:popoverView_];
-    
-    [self.view addSubview:viewDummy_];
-}
-
 #pragma mark - UIPickerView methods
 
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
@@ -208,19 +184,147 @@ static CGFloat kOverlayHeight = 100.0f;
     return tipoDeOcorrencias_[row];
 }
 
+#pragma mark - UIButton target methods
+
 - (IBAction)enviarButtonPressed:(UIButton *)sender {
     
     NSLog(@"Enviando.");
+    
+    [MRProgressOverlayView showOverlayAddedTo:self.view title:@"Enviando..." mode:MRProgressOverlayViewModeIndeterminate animated:YES];
+    
+    NSLog(@"%@",mapView_.myLocation);
+    
+    NSLog(@"Selected row: %ld", (long)[self.tipoDaOcorrenciaPicker selectedRowInComponent:0]);
+    
+    if (self.photo) {
+        NSLog(@"Photo = %@. Photo Metadata = %@",self.photo, self.photoMetadata);
+    }
+    
+    [MRProgressOverlayView dismissOverlayForView:self.view animated:YES];
+
 }
 - (IBAction)cancelButtonPressed:(UIButton *)sender {
     
     [popoverView_ removeFromSuperview];
     [viewDummy_ removeFromSuperview];
+    self.photo = nil;
+    self.photoMetadata = nil;
 }
 
 - (IBAction)fotoButtonPressed:(UIButton *)sender {
     
-    NSLog(@"Foto.");
+    if ([self isCameraAvailable] && [self doesCameraSupportTakingPhotos]) {
+        
+        UIImagePickerController *ipc = [[UIImagePickerController alloc] init];
+        ipc.sourceType = UIImagePickerControllerSourceTypeCamera;
+        
+        NSString *requiredMediaType = (__bridge NSString *)kUTTypeImage;
+        ipc.mediaTypes = [[NSArray alloc] initWithObjects:requiredMediaType, nil];
+        
+        ipc.allowsEditing = YES;
+        ipc.delegate = self;
+        
+        [self presentViewController:ipc animated:YES completion:nil];
+        
+    } else {
+        // Camera não disponível
+        
+        UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Ops"
+                                                                       message:@"Camera não disponível!"
+                                                                preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+                                                              handler:^(UIAlertAction * action) {}];
+        
+        [alert addAction:defaultAction];
+        [self presentViewController:alert animated:YES completion:nil];
+    }
 }
+
+#pragma mark - Camera
+
+- (void) imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
+    NSString *mediaType = info[UIImagePickerControllerMediaType];
+    
+    if ([mediaType isEqualToString:(__bridge NSString *)kUTTypeMovie]) { // se veio um VIDEO
+        NSURL *urlOfVideo = info[UIImagePickerControllerMediaURL];
+        NSLog(@"Video URL = %@",urlOfVideo);
+        
+    } else if ([mediaType isEqualToString:(__bridge NSString *)kUTTypeImage]){ // se veio uma IMAGEM
+        // get the metadata
+        
+        self.photoMetadata = info[UIImagePickerControllerMediaMetadata];
+        self.photo = info[UIImagePickerControllerOriginalImage];
+        
+        self.fotoButton.titleLabel.text = @"OK!";
+    }
+    
+    [picker dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
+{
+    [picker dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark - Camera Helper Methods
+
+// Existe uma camera no device?
+- (BOOL)isCameraAvailable
+{
+    return [UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera];
+}
+
+// Camera suporta fotos?
+- (BOOL) doesCameraSupportTakingPhotos
+{
+    return [self cameraSupportsMedia:(__bridge NSString *)kUTTypeImage sourceType:UIImagePickerControllerSourceTypeCamera];
+}
+
+// Verifica se a camera siporta o tipo de função
+- (BOOL)cameraSupportsMedia:(NSString *)paramMediaType sourceType:(UIImagePickerControllerSourceType)paramSourceType
+{
+    __block BOOL result = NO; // __block: variavel RESULT se modificada dentro de mum block vai aparecer fora tambem
+    
+    if ([paramMediaType length] == 0) {
+        NSLog(@"Media type is empty.");
+        return NO;
+    }
+    
+    NSArray *availableMediaTypes = [UIImagePickerController availableMediaTypesForSourceType:paramSourceType];
+    
+    [availableMediaTypes enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        NSString *mediaType = (NSString *)obj;
+        if ([mediaType isEqualToString:paramMediaType]) {
+            result = YES;
+            *stop = YES;
+        }
+    }];
+    
+    return result;
+}
+
+#pragma mark - Helper Methods
+
+-(void)enviaCoordenadas
+{
+    
+    viewDummy_ = [[UIView alloc] initWithFrame:self.view.bounds];
+    viewDummy_.backgroundColor = [UIColor colorWithHue:0.0 saturation:0.0 brightness:0.0 alpha:0.7];
+    
+    popoverView_ = [[[NSBundle mainBundle] loadNibNamed:@"DETipoDaOcorrenciaView"
+                                                  owner:self
+                                                options:nil] objectAtIndex:0];
+    [popoverView_ setFrame:CGRectMake(0, 0, 275, 200)];
+    
+    popoverView_.center = viewDummy_.center;
+    
+    [viewDummy_ addSubview:popoverView_];
+    
+    [self.view addSubview:viewDummy_];
+}
+
+
 
 @end

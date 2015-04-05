@@ -22,6 +22,9 @@
                     <subviews>
                         <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UJc-se-0jp">
                             <rect key="frame" x="0.0" y="0.0" width="600" height="162"/>
+                            <accessibility key="accessibilityConfiguration">
+                                <accessibilityTraits key="traits" none="YES" selected="YES"/>
+                            </accessibility>
                             <constraints>
                                 <constraint firstAttribute="height" constant="162" id="9Vf-SE-cvl"/>
                             </constraints>
