@@ -17,6 +17,7 @@
 @property (nonatomic) BOOL userHasLoggedIn;
 
 @property (nonatomic, strong) CLLocationManager *locationManager;
+@property (nonatomic, strong) NSString *userName;
 
 
 // IBOutlets

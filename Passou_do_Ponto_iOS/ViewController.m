@@ -45,7 +45,7 @@ static CGFloat kOverlayHeight = 100.0f;
     
     GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:-33.868
                                                             longitude:151.2086
-                                                                 zoom:12];
+                                                                 zoom:15];
     
     mapView_ = [GMSMapView mapWithFrame:CGRectZero camera:camera];
 
@@ -55,8 +55,8 @@ static CGFloat kOverlayHeight = 100.0f;
     mapView_.settings.myLocationButton = YES;
     
     // Disable gestures
-    mapView_.settings.scrollGestures = NO;
-    mapView_.settings.zoomGestures = NO;
+    mapView_.settings.scrollGestures = YES;
+    mapView_.settings.zoomGestures = YES;
     mapView_.settings.tiltGestures = NO;
     mapView_.settings.rotateGestures = NO;
     
@@ -85,6 +85,7 @@ static CGFloat kOverlayHeight = 100.0f;
     self.photo = nil;
     self.photoMetadata = nil;
     self.userHasLoggedIn = NO;
+    self.userName = @"no_username";
     
     // Create and configure overlay frame
     CGRect overlayFrame = CGRectMake(0, -kOverlayHeight, 0, kOverlayHeight);
@@ -97,11 +98,11 @@ static CGFloat kOverlayHeight = 100.0f;
     passouDoPontoButton.frame = CGRectMake(0.0, 0.0, 150.0, 50.0);
     [passouDoPontoButton setTitle:@"Passou do Ponto!" forState:UIControlStateNormal];
     passouDoPontoButton.titleLabel.textColor = [UIColor whiteColor];
-    [passouDoPontoButton setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [passouDoPontoButton setTranslatesAutoresizingMaskIntoConstraints:NO]; // Permite usar Constraints
     passouDoPontoButton.backgroundColor = [UIColor redColor];
     
     // Button target method
-    [passouDoPontoButton addTarget:self action:@selector(enviaCoordenadas) forControlEvents:UIControlEventTouchUpInside];
+    [passouDoPontoButton addTarget:self action:@selector(passouDoPontoButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     
     // Add button to overlay and overlay to view
     [overlay_ addSubview:passouDoPontoButton];
@@ -169,22 +170,28 @@ static CGFloat kOverlayHeight = 100.0f;
                         change:(NSDictionary *)change
                        context:(void *)context {
     
+    CLLocation *location = [change objectForKey:NSKeyValueChangeNewKey];
+    
     if (!firstLocationUpdate_) {
         // If the first location update has not yet been recieved, then jump to that
         // location.
         firstLocationUpdate_ = YES;
-        CLLocation *location = [change objectForKey:NSKeyValueChangeNewKey];
         mapView_.camera = [GMSCameraPosition cameraWithTarget:location.coordinate
                                                          zoom:16];
         
-        // Add a custom 'glow' marker around the current location.
-        GMSMarker *currentLocationMarker = [[GMSMarker alloc] init];
-        currentLocationMarker.title = @"Eu!";
-        currentLocationMarker.icon = [UIImage imageNamed:@"arrow"];
-        currentLocationMarker.position = location.coordinate;
-        currentLocationMarker.map = mapView_;
-        
     }
+    
+    // Add a custom 'glow' marker around the current location.
+    [mapView_ clear];
+    GMSMarker *currentLocationMarker = [[GMSMarker alloc] init];
+    currentLocationMarker.title = self.userName;
+    currentLocationMarker.icon = [UIImage imageNamed:@"arrow"];
+    currentLocationMarker.position = location.coordinate;
+    currentLocationMarker.map = mapView_;
+    
+    // ABre a info windows do marker
+    [mapView_ setSelectedMarker:currentLocationMarker];
+    
 }
 
 #pragma mark - UIPickerView methods
@@ -351,9 +358,9 @@ static CGFloat kOverlayHeight = 100.0f;
     
 }
 
-#pragma mark - Helper Methods
+#pragma mark - "Passou do Ponto!" button Target
 
--(void)enviaCoordenadas
+-(void)passouDoPontoButtonPressed
 {
     
     viewDummy_ = [[UIView alloc] initWithFrame:self.view.bounds];
@@ -362,14 +369,27 @@ static CGFloat kOverlayHeight = 100.0f;
     popoverView_ = [[[NSBundle mainBundle] loadNibNamed:@"DETipoDaOcorrenciaView"
                                                   owner:self
                                                 options:nil] objectAtIndex:0];
-    [popoverView_ setFrame:CGRectMake(0, 0, 275, 200)];
+    [popoverView_ setFrame:CGRectMake(-200, -200, 275, 200)];
     
-    popoverView_.center = viewDummy_.center;
     
     [viewDummy_ addSubview:popoverView_];
     
     [self.view addSubview:viewDummy_];
+    
+    // Animating a entrada da view
+    [UIView animateWithDuration:1.0
+                          delay:0.0
+         usingSpringWithDamping:0.25
+          initialSpringVelocity:0.0
+                        options:0
+                     animations:^{
+                         
+        popoverView_.center = viewDummy_.center;
+    }
+                     completion:NULL];
+    
 }
+
 
 - (void)dismissOverlay
 {
