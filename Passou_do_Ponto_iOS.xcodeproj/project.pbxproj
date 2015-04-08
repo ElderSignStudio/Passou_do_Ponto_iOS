@@ -18,7 +18,6 @@
 		74335D421AD1B99600E4833A /* DELoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74335D401AD1B99600E4833A /* DELoginViewController.m */; };
 		74335D431AD1B99600E4833A /* DELoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74335D411AD1B99600E4833A /* DELoginViewController.xib */; };
 		744E300E1ACE34C200D8A913 /* DETipoDaOcorrenciaView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 744E300D1ACE34C200D8A913 /* DETipoDaOcorrenciaView.xib */; };
-		7468D2A41AD4A1C3006BEDFE /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7468D2A31AD4A1C3006BEDFE /* FBSDKCoreKit.framework */; };
 		74B5B8BF1ACDCFCA00A4EDF6 /* arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 74B5B8BD1ACDCFCA00A4EDF6 /* arrow.png */; };
 		74B5B8C01ACDCFCA00A4EDF6 /* arrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 74B5B8BE1ACDCFCA00A4EDF6 /* arrow@2x.png */; };
 		74FDEF081AC79A7800CE47D7 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74FDEF071AC79A7800CE47D7 /* AVFoundation.framework */; };
@@ -66,7 +65,6 @@
 		74335D401AD1B99600E4833A /* DELoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DELoginViewController.m; sourceTree = "<group>"; };
 		74335D411AD1B99600E4833A /* DELoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DELoginViewController.xib; sourceTree = "<group>"; };
 		744E300D1ACE34C200D8A913 /* DETipoDaOcorrenciaView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DETipoDaOcorrenciaView.xib; sourceTree = "<group>"; };
-		7468D2A31AD4A1C3006BEDFE /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = ../../../../Documents/FacebookSDK/FBSDKCoreKit.framework; sourceTree = "<group>"; };
 		74B5B8BD1ACDCFCA00A4EDF6 /* arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = arrow.png; path = Resources/arrow.png; sourceTree = "<group>"; };
 		74B5B8BE1ACDCFCA00A4EDF6 /* arrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "arrow@2x.png"; path = "Resources/arrow@2x.png"; sourceTree = "<group>"; };
 		74FDEF071AC79A7800CE47D7 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -100,7 +98,6 @@
 				74FDEF101AC79A9C00CE47D7 /* GLKit.framework in Frameworks */,
 				74FDEF0E1AC79A9600CE47D7 /* CoreText.framework in Frameworks */,
 				74FDEF0C1AC79A8500CE47D7 /* CoreLocation.framework in Frameworks */,
-				7468D2A41AD4A1C3006BEDFE /* FBSDKCoreKit.framework in Frameworks */,
 				74FDEF0A1AC79A7E00CE47D7 /* CoreData.framework in Frameworks */,
 				74FDEF081AC79A7800CE47D7 /* AVFoundation.framework in Frameworks */,
 				7415EE4E1AC7962D00979899 /* GoogleMaps.framework in Frameworks */,
@@ -135,7 +132,6 @@
 				74FDEF071AC79A7800CE47D7 /* AVFoundation.framework */,
 				7415EE4D1AC7962D00979899 /* GoogleMaps.framework */,
 				7415EE4F1AC7964B00979899 /* GoogleMaps.bundle */,
-				7468D2A31AD4A1C3006BEDFE /* FBSDKCoreKit.framework */,
 				C1277921BA1DB7ABB810EAB6 /* libPods.a */,
 			);
 			name = Frameworks;
