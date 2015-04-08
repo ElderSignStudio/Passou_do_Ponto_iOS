@@ -7,12 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <FBSDKLoginKit.h>
 
 @protocol DELoginProtocol;
 
 @interface DELoginViewController : UIViewController
 @property (weak, nonatomic) IBOutlet UITextField *usuarioTextField;
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
+@property (weak, nonatomic) IBOutlet FBSDKLoginButton *facebookButton;
 
 @property (nonatomic, weak) id<DELoginProtocol> delegate;
 

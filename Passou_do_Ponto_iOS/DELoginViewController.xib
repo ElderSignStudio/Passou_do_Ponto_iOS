@@ -7,6 +7,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DELoginViewController">
             <connections>
+                <outlet property="facebookButton" destination="qtV-TA-wH7" id="rPR-7k-m2n"/>
                 <outlet property="passwordTextField" destination="i54-d1-6sx" id="CkW-od-0Ey"/>
                 <outlet property="usuarioTextField" destination="1F8-vL-hNs" id="oCx-Fa-fgl"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -20,28 +21,20 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mhB-uc-Qmv" userLabel="Roxa">
                     <rect key="frame" x="0.0" y="300" width="600" height="300"/>
                     <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Sgh-aF-3Av">
-                            <rect key="frame" x="244" y="136" width="113" height="30"/>
-                            <state key="normal" title="F A C E B O O K">
-                                <color key="titleColor" red="0.0" green="0.0" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                            </state>
-                            <connections>
-                                <action selector="facebookButtonPressed:" destination="-1" eventType="touchUpInside" id="krS-dR-Yo5"/>
-                            </connections>
-                        </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="OU" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="947-Cj-gae">
                             <rect key="frame" x="287" y="0.0" width="26" height="21"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                             <nil key="highlightedColor"/>
                         </label>
+                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qtV-TA-wH7" customClass="FBSDKLoginButton">
+                            <rect key="frame" x="150" y="75" width="300" height="150"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        </view>
                     </subviews>
                     <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
-                        <constraint firstAttribute="centerX" secondItem="Sgh-aF-3Av" secondAttribute="centerX" constant="-0.5" id="GUt-h8-cL2"/>
                         <constraint firstItem="947-Cj-gae" firstAttribute="top" secondItem="mhB-uc-Qmv" secondAttribute="top" id="a7Y-pJ-CNe"/>
-                        <constraint firstAttribute="centerY" secondItem="Sgh-aF-3Av" secondAttribute="centerY" constant="-0.5" id="lmw-ya-Ipm"/>
                         <constraint firstAttribute="centerX" secondItem="947-Cj-gae" secondAttribute="centerX" id="qGa-Rd-DKf"/>
                     </constraints>
                 </view>
