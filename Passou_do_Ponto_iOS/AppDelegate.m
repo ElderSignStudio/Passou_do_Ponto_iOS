@@ -10,7 +10,10 @@
 #import "AppDelegate.h"
 #import "ViewController.h"
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
+<<<<<<< HEAD
 #import <FBSDKLoginKit.h>
+=======
+>>>>>>> origin/master
 
 @interface AppDelegate ()
 
@@ -33,8 +36,11 @@
     
     [self.window makeKeyAndVisible];
     
+<<<<<<< HEAD
     [FBSDKLoginButton class];
     
+=======
+>>>>>>> origin/master
     return [[FBSDKApplicationDelegate sharedInstance] application:application
                                     didFinishLaunchingWithOptions:launchOptions];
     
@@ -65,8 +71,13 @@
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
+<<<<<<< HEAD
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
     
+=======
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+{
+>>>>>>> origin/master
     return [[FBSDKApplicationDelegate sharedInstance] application:application
                                                           openURL:url
                                                 sourceApplication:sourceApplication

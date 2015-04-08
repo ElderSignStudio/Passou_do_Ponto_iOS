@@ -18,6 +18,7 @@
 		74335D421AD1B99600E4833A /* DELoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74335D401AD1B99600E4833A /* DELoginViewController.m */; };
 		74335D431AD1B99600E4833A /* DELoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74335D411AD1B99600E4833A /* DELoginViewController.xib */; };
 		744E300E1ACE34C200D8A913 /* DETipoDaOcorrenciaView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 744E300D1ACE34C200D8A913 /* DETipoDaOcorrenciaView.xib */; };
+		7468D2A41AD4A1C3006BEDFE /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7468D2A31AD4A1C3006BEDFE /* FBSDKCoreKit.framework */; };
 		74B5B8BF1ACDCFCA00A4EDF6 /* arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 74B5B8BD1ACDCFCA00A4EDF6 /* arrow.png */; };
 		74B5B8C01ACDCFCA00A4EDF6 /* arrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 74B5B8BE1ACDCFCA00A4EDF6 /* arrow@2x.png */; };
 		74FDEF081AC79A7800CE47D7 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74FDEF071AC79A7800CE47D7 /* AVFoundation.framework */; };
@@ -59,12 +60,13 @@
 		7415EE3D1AC795E700979899 /* Passou_do_Ponto_iOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Passou_do_Ponto_iOSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		7415EE421AC795E700979899 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7415EE431AC795E700979899 /* Passou_do_Ponto_iOSTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Passou_do_Ponto_iOSTests.m; sourceTree = "<group>"; };
-		7415EE4D1AC7962D00979899 /* GoogleMaps.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleMaps.framework; sourceTree = "<group>"; };
-		7415EE4F1AC7964B00979899 /* GoogleMaps.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = GoogleMaps.bundle; path = GoogleMaps.framework/Versions/A/Resources/GoogleMaps.bundle; sourceTree = "<group>"; };
+		7415EE4D1AC7962D00979899 /* GoogleMaps.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleMaps.framework; path = Passou_do_Ponto_iOS/GoogleMaps.framework; sourceTree = "<group>"; };
+		7415EE4F1AC7964B00979899 /* GoogleMaps.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = GoogleMaps.bundle; path = Passou_do_Ponto_iOS/GoogleMaps.framework/Versions/A/Resources/GoogleMaps.bundle; sourceTree = "<group>"; };
 		74335D3F1AD1B99600E4833A /* DELoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DELoginViewController.h; sourceTree = "<group>"; };
 		74335D401AD1B99600E4833A /* DELoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DELoginViewController.m; sourceTree = "<group>"; };
 		74335D411AD1B99600E4833A /* DELoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DELoginViewController.xib; sourceTree = "<group>"; };
 		744E300D1ACE34C200D8A913 /* DETipoDaOcorrenciaView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DETipoDaOcorrenciaView.xib; sourceTree = "<group>"; };
+		7468D2A31AD4A1C3006BEDFE /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = ../../../../Documents/FacebookSDK/FBSDKCoreKit.framework; sourceTree = "<group>"; };
 		74B5B8BD1ACDCFCA00A4EDF6 /* arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = arrow.png; path = Resources/arrow.png; sourceTree = "<group>"; };
 		74B5B8BE1ACDCFCA00A4EDF6 /* arrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "arrow@2x.png"; path = "Resources/arrow@2x.png"; sourceTree = "<group>"; };
 		74FDEF071AC79A7800CE47D7 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -98,6 +100,7 @@
 				74FDEF101AC79A9C00CE47D7 /* GLKit.framework in Frameworks */,
 				74FDEF0E1AC79A9600CE47D7 /* CoreText.framework in Frameworks */,
 				74FDEF0C1AC79A8500CE47D7 /* CoreLocation.framework in Frameworks */,
+				7468D2A41AD4A1C3006BEDFE /* FBSDKCoreKit.framework in Frameworks */,
 				74FDEF0A1AC79A7E00CE47D7 /* CoreData.framework in Frameworks */,
 				74FDEF081AC79A7800CE47D7 /* AVFoundation.framework in Frameworks */,
 				7415EE4E1AC7962D00979899 /* GoogleMaps.framework in Frameworks */,
@@ -118,6 +121,21 @@
 		6E6A4B557CE157B18077D742 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				74FDEF1D1AC79AF200CE47D7 /* SystemConfiguration.framework */,
+				74FDEF1B1AC79AE900CE47D7 /* QuartzCore.framework */,
+				74FDEF191AC79AE000CE47D7 /* OpenGLES.framework */,
+				74FDEF171AC79AD700CE47D7 /* libz.dylib */,
+				74FDEF151AC79ACD00CE47D7 /* libicucore.dylib */,
+				74FDEF131AC79ABD00CE47D7 /* libc++.dylib */,
+				74FDEF111AC79AA400CE47D7 /* ImageIO.framework */,
+				74FDEF0F1AC79A9C00CE47D7 /* GLKit.framework */,
+				74FDEF0D1AC79A9600CE47D7 /* CoreText.framework */,
+				74FDEF0B1AC79A8500CE47D7 /* CoreLocation.framework */,
+				74FDEF091AC79A7E00CE47D7 /* CoreData.framework */,
+				74FDEF071AC79A7800CE47D7 /* AVFoundation.framework */,
+				7415EE4D1AC7962D00979899 /* GoogleMaps.framework */,
+				7415EE4F1AC7964B00979899 /* GoogleMaps.bundle */,
+				7468D2A31AD4A1C3006BEDFE /* FBSDKCoreKit.framework */,
 				C1277921BA1DB7ABB810EAB6 /* libPods.a */,
 			);
 			name = Frameworks;
@@ -147,7 +165,6 @@
 			isa = PBXGroup;
 			children = (
 				74B5B8C11ACDCFD300A4EDF6 /* Resources */,
-				74B7B4CF1AC79A4A00E16438 /* Frameworks */,
 				7415EE2B1AC795E700979899 /* AppDelegate.h */,
 				7415EE2C1AC795E700979899 /* AppDelegate.m */,
 				7415EE2E1AC795E700979899 /* ViewController.h */,
@@ -196,27 +213,6 @@
 				74B5B8BE1ACDCFCA00A4EDF6 /* arrow@2x.png */,
 			);
 			name = Resources;
-			sourceTree = "<group>";
-		};
-		74B7B4CF1AC79A4A00E16438 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				74FDEF1D1AC79AF200CE47D7 /* SystemConfiguration.framework */,
-				74FDEF1B1AC79AE900CE47D7 /* QuartzCore.framework */,
-				74FDEF191AC79AE000CE47D7 /* OpenGLES.framework */,
-				74FDEF171AC79AD700CE47D7 /* libz.dylib */,
-				74FDEF151AC79ACD00CE47D7 /* libicucore.dylib */,
-				74FDEF131AC79ABD00CE47D7 /* libc++.dylib */,
-				74FDEF111AC79AA400CE47D7 /* ImageIO.framework */,
-				74FDEF0F1AC79A9C00CE47D7 /* GLKit.framework */,
-				74FDEF0D1AC79A9600CE47D7 /* CoreText.framework */,
-				74FDEF0B1AC79A8500CE47D7 /* CoreLocation.framework */,
-				74FDEF091AC79A7E00CE47D7 /* CoreData.framework */,
-				74FDEF071AC79A7800CE47D7 /* AVFoundation.framework */,
-				7415EE4D1AC7962D00979899 /* GoogleMaps.framework */,
-				7415EE4F1AC7964B00979899 /* GoogleMaps.bundle */,
-			);
-			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		A2ED9C692BD7FEA168912A6B /* Pods */ = {
@@ -408,6 +404,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -451,6 +448,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -489,9 +487,11 @@
 			baseConfigurationReference = 5930B45A31FACE3089653A7B /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Passou_do_Ponto_iOS",
+					/Users/Flict/Documents/FacebookSDK,
 				);
 				INFOPLIST_FILE = Passou_do_Ponto_iOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -504,9 +504,11 @@
 			baseConfigurationReference = C782081985F60D429FD7933D /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Passou_do_Ponto_iOS",
+					/Users/Flict/Documents/FacebookSDK,
 				);
 				INFOPLIST_FILE = Passou_do_Ponto_iOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
