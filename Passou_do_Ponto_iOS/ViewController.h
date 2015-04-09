@@ -18,6 +18,7 @@
 
 @property (nonatomic, strong) CLLocationManager *locationManager;
 @property (nonatomic, strong) NSString *userName;
+@property (nonatomic) CLLocationCoordinate2D userCoordinates;
 
 
 // IBOutlets

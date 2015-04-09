@@ -162,6 +162,9 @@ static CGFloat kOverlayHeight = 100.0f;
 {
     self.userHasLoggedIn = YES;
     self.userName = username;
+    
+    [self drawUserFirstName];
+    
 }
 
 #pragma mark - KVO updates
@@ -172,26 +175,17 @@ static CGFloat kOverlayHeight = 100.0f;
                        context:(void *)context {
     
     CLLocation *location = [change objectForKey:NSKeyValueChangeNewKey];
+    self.userCoordinates = location.coordinate;
     
     if (!firstLocationUpdate_) {
+        
         // If the first location update has not yet been recieved, then jump to that
         // location.
         firstLocationUpdate_ = YES;
         mapView_.camera = [GMSCameraPosition cameraWithTarget:location.coordinate
                                                          zoom:16];
         
-    }
-    
-    // Add a custom 'glow' marker around the current location.
-    [mapView_ clear];
-    GMSMarker *currentLocationMarker = [[GMSMarker alloc] init];
-    currentLocationMarker.title = self.userName;
-    currentLocationMarker.icon = [UIImage imageNamed:@"arrow"];
-    currentLocationMarker.position = location.coordinate;
-    currentLocationMarker.map = mapView_;
-    
-    // ABre a info windows do marker
-    [mapView_ setSelectedMarker:currentLocationMarker];
+    } else [self drawUserFirstName];
     
 }
 
@@ -395,6 +389,22 @@ static CGFloat kOverlayHeight = 100.0f;
 - (void)dismissOverlay
 {
     [MRProgressOverlayView dismissOverlayForView:self.view animated:YES];
+}
+
+#pragma mark - Helper Methods
+
+- (void)drawUserFirstName
+{
+    // Add a custom 'glow' marker around the current location.
+    [mapView_ clear];
+    GMSMarker *currentLocationMarker = [[GMSMarker alloc] init];
+    currentLocationMarker.title = self.userName;
+    currentLocationMarker.icon = [UIImage imageNamed:@"arrow"];
+    currentLocationMarker.position = self.userCoordinates;
+    currentLocationMarker.map = mapView_;
+    
+    // ABre a info windows do marker
+    [mapView_ setSelectedMarker:currentLocationMarker];
 }
 
 @end

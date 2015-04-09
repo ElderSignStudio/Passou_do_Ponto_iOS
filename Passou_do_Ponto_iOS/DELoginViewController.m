@@ -41,12 +41,29 @@
             id<DELoginProtocol> strongDelegate = self.delegate;
             
             if ([strongDelegate respondsToSelector:@selector(loginSuccessful:)]) {
-                    
+                
+                // Pega o first name!
                 [[[FBSDKGraphRequest alloc] initWithGraphPath:@"me" parameters:nil] startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error)
                 {
                      if (!error) {
+                         
                          [strongDelegate loginSuccessful:result[@"first_name"]];
                          [self dismissViewControllerAnimated:YES completion:nil];
+                         
+                     } else {
+                         FBSDKLoginManager *manager = [[FBSDKLoginManager alloc] init];
+                         [manager logOut];
+                         
+                         UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Ops"
+                                                                       message:@"Não foi possível obter o seu nome através do Facebook!"
+                                                                preferredStyle:UIAlertControllerStyleAlert];
+        
+                         UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+                                                              handler:^(UIAlertAction * action) {}];
+        
+                         [alert addAction:defaultAction];
+                         [self presentViewController:alert animated:YES completion:nil];
+                         
                      }
                  }];
             }
@@ -56,19 +73,11 @@
 
 
 - (IBAction)conectaButtonPressed:(UIButton *)sender {
-    [self loginWith:self.usuarioTextField.text password:self.passwordTextField.text];
-}
-
-
--(void)loginWith:(NSString *)username password:(NSString *)pass
-{
-    NSLog(@"login with username and password...");
     
     id<DELoginProtocol> strongDelegate = self.delegate;
     
     if ([strongDelegate respondsToSelector:@selector(loginSuccessful:)]) {
-        FBSDKProfile *profile = [[FBSDKProfile alloc] init];
-        [strongDelegate loginSuccessful:profile.firstName];
+        [strongDelegate loginSuccessful:self.usuarioTextField.text];
     }
     
     [self dismissViewControllerAnimated:YES completion:nil];
@@ -103,17 +112,40 @@
         id<DELoginProtocol> strongDelegate = self.delegate;
         
         if ([strongDelegate respondsToSelector:@selector(loginSuccessful:)]) {
-            FBSDKProfile *profile = [[FBSDKProfile alloc] init];
-            [strongDelegate loginSuccessful:profile.firstName];
+            
+            // Pega o first name!
+            
+            [[[FBSDKGraphRequest alloc] initWithGraphPath:@"me" parameters:nil] startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
+                if (!error) {
+                    
+                    [strongDelegate loginSuccessful:result[@"first_name"]];
+                    [self dismissViewControllerAnimated:YES completion:nil];
+                    
+                } else {
+                    FBSDKLoginManager *manager = [[FBSDKLoginManager alloc] init];
+                    [manager logOut];
+                    
+                    UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Ops"
+                                                                                   message:@"Não foi possível obter o seu nome através do Facebook!"
+                                                                            preferredStyle:UIAlertControllerStyleAlert];
+                    
+                    UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+                                                                          handler:^(UIAlertAction * action) {}];
+                    
+                    [alert addAction:defaultAction];
+                    [self presentViewController:alert animated:YES completion:nil];
+                }
+
+            }]; // Fim do bloco
+        
         }
         
-        [self dismissViewControllerAnimated:YES completion:nil];
     }
 }
 
 - (void)loginButtonDidLogOut:(FBSDKLoginButton *)loginButton
 {
-    // Impossivel de acontecer por enquanto
+    // Impossivel de acontecer por enquanto, não da tempo.
 }
 
 
