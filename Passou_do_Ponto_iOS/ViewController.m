@@ -210,7 +210,6 @@ static CGFloat kOverlayHeight = 100.0f;
 
 - (IBAction)enviarButtonPressed:(UIButton *)sender {
     
-    NSLog(@"Enviando.");
     
     [MRProgressOverlayView showOverlayAddedTo:self.view title:@"Enviando..." mode:MRProgressOverlayViewModeIndeterminate animated:YES];
     
@@ -235,10 +234,23 @@ static CGFloat kOverlayHeight = 100.0f;
 }
 - (IBAction)cancelButtonPressed:(UIButton *)sender {
     
-    [popoverView_ removeFromSuperview];
-    [viewDummy_ removeFromSuperview];
-    self.photo = nil;
-    self.photoMetadata = nil;
+    [UIView animateWithDuration:0.5
+                          delay:0.0
+                        options:0
+                     animations:^{
+        
+        [popoverView_ setFrame:CGRectMake(50, -200, 275, 200)];
+        viewDummy_.backgroundColor = [UIColor colorWithHue:0.0 saturation:0.0 brightness:0.0 alpha:0.0];
+
+    }
+                     completion:^(BOOL finished) {
+        
+        [popoverView_ removeFromSuperview];
+        [viewDummy_ removeFromSuperview];
+        self.photo = nil;
+        self.photoMetadata = nil;
+        
+    }];
 }
 
 - (IBAction)fotoButtonPressed:(UIButton *)sender {
@@ -359,12 +371,12 @@ static CGFloat kOverlayHeight = 100.0f;
 {
     
     viewDummy_ = [[UIView alloc] initWithFrame:self.view.bounds];
-    viewDummy_.backgroundColor = [UIColor colorWithHue:0.0 saturation:0.0 brightness:0.0 alpha:0.7];
+    viewDummy_.backgroundColor = [UIColor colorWithHue:0.0 saturation:0.0 brightness:0.0 alpha:0.0];
     
     popoverView_ = [[[NSBundle mainBundle] loadNibNamed:@"DETipoDaOcorrenciaView"
                                                   owner:self
                                                 options:nil] objectAtIndex:0];
-    [popoverView_ setFrame:CGRectMake(-200, -200, 275, 200)];
+    [popoverView_ setFrame:CGRectMake(50, -200, 275, 200)];
     
     
     [viewDummy_ addSubview:popoverView_];
@@ -372,16 +384,11 @@ static CGFloat kOverlayHeight = 100.0f;
     [self.view addSubview:viewDummy_];
     
     // Animating a entrada da view
-    [UIView animateWithDuration:1.0
-                          delay:0.0
-         usingSpringWithDamping:0.25
-          initialSpringVelocity:0.0
-                        options:0
-                     animations:^{
-                         
+    [UIView animateWithDuration:0.5 delay:0.0 options:0 animations:^{
         popoverView_.center = viewDummy_.center;
-    }
-                     completion:NULL];
+        viewDummy_.backgroundColor = [UIColor colorWithHue:0.0 saturation:0.0 brightness:0.0 alpha:0.7];
+    } completion:NULL];
+    
     
 }
 
