@@ -33,6 +33,7 @@
     
     [self.window makeKeyAndVisible];
     
+    // Facebook return
     return [[FBSDKApplicationDelegate sharedInstance] application:application
                                     didFinishLaunchingWithOptions:launchOptions];
     

@@ -158,9 +158,10 @@ static CGFloat kOverlayHeight = 100.0f;
 
 #pragma mark - DELoginProtocol Methods
 
-- (void)loginSucces:(BOOL)result
+- (void)loginSuccessful:(NSString *)username
 {
-    self.userHasLoggedIn = result;
+    self.userHasLoggedIn = YES;
+    self.userName = username;
 }
 
 #pragma mark - KVO updates

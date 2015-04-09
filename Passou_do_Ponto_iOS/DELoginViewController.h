@@ -7,12 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <FBSDKCoreKit/FBSDKCoreKit.h>
+#import <FBSDKLoginKit/FBSDKLoginKit.h>
 
 @protocol DELoginProtocol;
 
-@interface DELoginViewController : UIViewController
+@interface DELoginViewController : UIViewController <FBSDKLoginButtonDelegate>
+
 @property (weak, nonatomic) IBOutlet UITextField *usuarioTextField;
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
+@property (weak, nonatomic) IBOutlet FBSDKLoginButton *loginButton;
 
 @property (nonatomic, weak) id<DELoginProtocol> delegate;
 
@@ -20,6 +24,6 @@
 
 @protocol DELoginProtocol <NSObject>
 
-- (void)loginSucces:(BOOL)result;
+- (void)loginSuccessful:(NSString *)username;
 
 @end

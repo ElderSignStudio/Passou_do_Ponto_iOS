@@ -7,6 +7,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DELoginViewController">
             <connections>
+                <outlet property="loginButton" destination="qnC-Lw-y5L" id="DMy-rl-dMi"/>
                 <outlet property="passwordTextField" destination="i54-d1-6sx" id="CkW-od-0Ey"/>
                 <outlet property="usuarioTextField" destination="1F8-vL-hNs" id="oCx-Fa-fgl"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -94,13 +95,19 @@
                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qnC-Lw-y5L" customClass="FBSDKLoginButton">
-                            <rect key="frame" x="150" y="75" width="300" height="150"/>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qnC-Lw-y5L" customClass="FBSDKLoginButton">
+                            <rect key="frame" x="188" y="111" width="224" height="77"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="77" id="2e9-Zt-FEv"/>
+                                <constraint firstAttribute="width" constant="224" id="duh-Jg-of0"/>
+                            </constraints>
                         </view>
                     </subviews>
                     <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
+                        <constraint firstAttribute="centerY" secondItem="qnC-Lw-y5L" secondAttribute="centerY" id="G3b-2c-DdE"/>
+                        <constraint firstAttribute="centerX" secondItem="qnC-Lw-y5L" secondAttribute="centerX" constant="-0.5" id="N6p-Rk-TWl"/>
                         <constraint firstItem="947-Cj-gae" firstAttribute="top" secondItem="mhB-uc-Qmv" secondAttribute="top" id="a7Y-pJ-CNe"/>
                         <constraint firstAttribute="centerX" secondItem="947-Cj-gae" secondAttribute="centerX" id="qGa-Rd-DKf"/>
                     </constraints>
