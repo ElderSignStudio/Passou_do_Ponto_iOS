@@ -210,22 +210,47 @@ static CGFloat kOverlayHeight = 100.0f;
 
 - (IBAction)enviarButtonPressed:(UIButton *)sender {
     
-    
+    // progress bar
     [MRProgressOverlayView showOverlayAddedTo:self.view title:@"Enviando..." mode:MRProgressOverlayViewModeIndeterminate animated:YES];
     
-    NSLog(@"%@",mapView_.myLocation);
+    // monta JSON
     
+    NSDictionary *dictionary = @{
+                                 @"lat" : @"NN,NNNNNNNN",
+                                 @"lng" : @"NN,NNNNNNNN",
+                                 @"tipo_ocorrencia_id" : @"3",
+                                 @"usuario_id" : @"1"
+                                 };
+    
+    NSError *error = nil;
+    NSData *jsondata = [NSJSONSerialization dataWithJSONObject:dictionary options:0 error:&error];
+    
+    if ([jsondata length] > 0 || error == nil) {
+        
+        NSLog(@"%@",[[NSString alloc] initWithData:jsondata encoding:NSUTF8StringEncoding]);
+        
+    } else if ([jsondata length] == 0 && error == nil){
+        
+        NSLog(@"No data was return after serialization.");
+        
+    } else if (error != nil) NSLog(@"Error creating json");
+    
+    
+    NSLog(@"%@",mapView_.myLocation);
     NSLog(@"Selected row: %ld", (long)[self.tipoDaOcorrenciaPicker selectedRowInComponent:0]);
     
     if (self.photo) {
         NSLog(@"Photo = %@. Photo Metadata = %@",self.photo, self.photoMetadata);
     }
     
-    [MRProgressOverlayView dismissOverlayForView:self.view animated:NO];
+    // envia
     
+    // resultado
+    [MRProgressOverlayView dismissOverlayForView:self.view animated:NO];
     [MRProgressOverlayView showOverlayAddedTo:self.view title:@"Enviado com sucesso!" mode:MRProgressOverlayViewModeCheckmark animated:NO];
     //[MRProgressOverlayView showOverlayAddedTo:self.view title:@"Não foi possivel enviar!" mode:MRProgressOverlayViewModeCross animated:NO]; QUANDO NAO CONSEGUE
     
+    // fecha janela
     [self performSelector:@selector(dismissOverlay) withObject:nil afterDelay:1.0];
     
     [popoverView_ removeFromSuperview];
