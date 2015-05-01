@@ -213,37 +213,40 @@ static CGFloat kOverlayHeight = 100.0f;
     // progress bar
     [MRProgressOverlayView showOverlayAddedTo:self.view title:@"Enviando..." mode:MRProgressOverlayViewModeIndeterminate animated:YES];
     
-    // monta JSON
+    // monta NSDictionary
+
+    CLLocationCoordinate2D coordinate = mapView_.myLocation.coordinate;
+    long selectedRow = [self.tipoDaOcorrenciaPicker selectedRowInComponent:0];
     
     NSDictionary *dictionary = @{
-                                 @"lat" : @"NN,NNNNNNNN",
-                                 @"lng" : @"NN,NNNNNNNN",
-                                 @"tipo_ocorrencia_id" : @"3",
+                                 @"lat" : [[NSNumber numberWithDouble:coordinate.latitude] stringValue],
+                                 @"lng" : [[NSNumber numberWithDouble:coordinate.longitude] stringValue],
+                                 @"tipo_ocorrencia_id" : [[NSNumber numberWithLong:selectedRow] stringValue],
                                  @"usuario_id" : @"1"
                                  };
     
-    NSError *error = nil;
-    NSData *jsondata = [NSJSONSerialization dataWithJSONObject:dictionary options:0 error:&error];
-    
-    if ([jsondata length] > 0 || error == nil) {
-        
-        NSLog(@"%@",[[NSString alloc] initWithData:jsondata encoding:NSUTF8StringEncoding]);
-        
-    } else if ([jsondata length] == 0 && error == nil){
-        
-        NSLog(@"No data was return after serialization.");
-        
-    } else if (error != nil) NSLog(@"Error creating json");
-    
-    
-    NSLog(@"%@",mapView_.myLocation);
-    NSLog(@"Selected row: %ld", (long)[self.tipoDaOcorrenciaPicker selectedRowInComponent:0]);
-    
-    if (self.photo) {
-        NSLog(@"Photo = %@. Photo Metadata = %@",self.photo, self.photoMetadata);
-    }
+//    
+//    if (self.photo) {
+//        NSLog(@"Photo = %@. Photo Metadata = %@",self.photo, self.photoMetadata);
+//    }
     
     // envia
+    
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    
+    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+    manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    //manager.responseSerializer = [AFJSONResponseSerializer serializerWithReadingOptions:NSJSONReadingAllowFragments];
+    
+    // inclui o tipo "text/html" na lista de respostas aceitaveis
+    //manager.responseSerializer.acceptableContentTypes = [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"text/html"];
+    
+    [manager POST:@"http://passoudoponto.org/ocorrencia/insert" parameters:dictionary success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"JSON: %@", responseObject);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Error: %@", error);
+    }];
+
     
     // resultado
     [MRProgressOverlayView dismissOverlayForView:self.view animated:NO];
@@ -374,10 +377,9 @@ static CGFloat kOverlayHeight = 100.0f;
 
 #pragma mark - AFNetwork methods
 
-- (void)postToServer
+- (void)postToServer:(NSDictionary *)parameters
 {
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    NSDictionary *parameters = @{@"foo": @"bar"};
     
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
     manager.responseSerializer = [AFJSONResponseSerializer serializer];
