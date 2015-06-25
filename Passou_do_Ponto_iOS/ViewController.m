@@ -17,6 +17,7 @@
 #import "DELoginViewController.h"
 
 static CGFloat kOverlayHeight = 100.0f;
+static NSString *postUrl = @"http://passoudoponto.org/ocorrencia/insert";
 
 @implementation ViewController {
     GMSMapView *mapView_;
@@ -210,6 +211,12 @@ static CGFloat kOverlayHeight = 100.0f;
 
 - (IBAction)enviarButtonPressed:(UIButton *)sender {
     
+    // fecha janela
+    [self performSelector:@selector(dismissOverlay) withObject:nil afterDelay:1.0];
+    
+    [popoverView_ removeFromSuperview];
+    [viewDummy_ removeFromSuperview];
+    
     // progress bar
     [MRProgressOverlayView showOverlayAddedTo:self.view title:@"Enviando..." mode:MRProgressOverlayViewModeIndeterminate animated:YES];
     
@@ -221,8 +228,10 @@ static CGFloat kOverlayHeight = 100.0f;
     NSDictionary *dictionary = @{
                                  @"lat" : [[NSNumber numberWithDouble:coordinate.latitude] stringValue],
                                  @"lng" : [[NSNumber numberWithDouble:coordinate.longitude] stringValue],
-                                 @"tipo_ocorrencia_id" : [[NSNumber numberWithLong:selectedRow] stringValue],
-                                 @"usuario_id" : @"1"
+                                 @"tipo" : @"2",//[[NSNumber numberWithLong:selectedRow] stringValue],
+                                 @"usuario_id" : @"1",
+                                 @"nr_onibus" : @"547",
+                                 @"nr_ordem" : @""
                                  };
     
 //    
@@ -230,34 +239,17 @@ static CGFloat kOverlayHeight = 100.0f;
 //        NSLog(@"Photo = %@. Photo Metadata = %@",self.photo, self.photoMetadata);
 //    }
     
-    // envia
+    //envia
+    [self postToServer:dictionary];
     
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    
-    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
-    manager.responseSerializer = [AFJSONResponseSerializer serializer];
-    //manager.responseSerializer = [AFJSONResponseSerializer serializerWithReadingOptions:NSJSONReadingAllowFragments];
-    
-    // inclui o tipo "text/html" na lista de respostas aceitaveis
-    //manager.responseSerializer.acceptableContentTypes = [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"text/html"];
-    
-    [manager POST:@"http://passoudoponto.org/ocorrencia/insert" parameters:dictionary success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"JSON: %@", responseObject);
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"Error: %@", error);
-    }];
-
     
     // resultado
-    [MRProgressOverlayView dismissOverlayForView:self.view animated:NO];
-    [MRProgressOverlayView showOverlayAddedTo:self.view title:@"Enviado com sucesso!" mode:MRProgressOverlayViewModeCheckmark animated:NO];
-    //[MRProgressOverlayView showOverlayAddedTo:self.view title:@"Não foi possivel enviar!" mode:MRProgressOverlayViewModeCross animated:NO]; QUANDO NAO CONSEGUE
+    //[MRProgressOverlayView dismissOverlayForView:self.view animated:YES];
+    //[MRProgressOverlayView showOverlayAddedTo:self.view title:@"Enviado com sucesso!" mode:MRProgressOverlayViewModeCheckmark animated:NO];
+    //[MRProgressOverlayView showOverlayAddedTo:self.view title:@"Ops" mode:MRProgressOverlayViewModeCross animated:NO];
+
     
-    // fecha janela
-    [self performSelector:@selector(dismissOverlay) withObject:nil afterDelay:1.0];
-    
-    [popoverView_ removeFromSuperview];
-    [viewDummy_ removeFromSuperview];
+
 
 }
 - (IBAction)cancelButtonPressed:(UIButton *)sender {
@@ -381,14 +373,49 @@ static CGFloat kOverlayHeight = 100.0f;
 {
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     
-    manager.requestSerializer = [AFJSONRequestSerializer serializer];
-    manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
     
-    [manager POST:@"http://example.com/resources.json" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"JSON: %@", responseObject);
+    [manager POST:postUrl parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        //NSLog(@"%@",responseObject);
+        
+//        NSData *jsonData = responseObject;
+//        const unsigned char *ptr = [jsonData bytes];
+//        
+//        NSMutableString *texto = [[NSMutableString alloc] initWithString:@""];
+//        
+//        for (int i=0; i<[jsonData length]; i++) {
+//            unsigned char c = *ptr++;
+//            [texto appendString:[NSString stringWithFormat:@"%c",c]];
+//        }
+//        NSLog(@"%@",texto);
+        
+        NSError *json_error = nil;
+        id object = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:&json_error];
+        
+        if (json_error != nil) {
+            NSLog(@"JSON Parser Error: %@",json_error);
+            
+        } else if ([object isKindOfClass:[NSDictionary class]]) {
+            
+            NSString *status = [object objectForKey:@"status"];
+                                
+            if ([status isEqual: @"OK"]) {
+                NSLog(@"OK Msg: %@",[object objectForKey:@"msg"]);
+            } else if ([status isEqual: @"ERROR"]){
+                NSLog(@"Server Error: %@",[object objectForKey:@"msg"]);
+                
+            }
+        }
+        
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"Error: %@", error);
+        NSLog(@"Post Request Error: %@", error);
+        
+        [MRProgressOverlayView dismissOverlayForView:self.view animated:YES];
+        [MRProgressOverlayView showOverlayAddedTo:self.view title:@"Enviado com sucesso!" mode:MRProgressOverlayViewModeCheckmark animated:NO];
     }];
+
     
 }
 
