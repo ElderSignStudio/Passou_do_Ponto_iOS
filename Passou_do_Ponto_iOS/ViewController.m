@@ -217,9 +217,6 @@ static NSString *postUrl = @"http://passoudoponto.org/ocorrencia/insert";
     [popoverView_ removeFromSuperview];
     [viewDummy_ removeFromSuperview];
     
-    // progress bar
-    [MRProgressOverlayView showOverlayAddedTo:self.view title:@"Enviando..." mode:MRProgressOverlayViewModeIndeterminate animated:YES];
-    
     // monta NSDictionary
 
     CLLocationCoordinate2D coordinate = mapView_.myLocation.coordinate;
@@ -241,15 +238,6 @@ static NSString *postUrl = @"http://passoudoponto.org/ocorrencia/insert";
     
     //envia
     [self postToServer:dictionary];
-    
-    
-    // resultado
-    //[MRProgressOverlayView dismissOverlayForView:self.view animated:YES];
-    //[MRProgressOverlayView showOverlayAddedTo:self.view title:@"Enviado com sucesso!" mode:MRProgressOverlayViewModeCheckmark animated:NO];
-    //[MRProgressOverlayView showOverlayAddedTo:self.view title:@"Ops" mode:MRProgressOverlayViewModeCross animated:NO];
-
-    
-
 
 }
 - (IBAction)cancelButtonPressed:(UIButton *)sender {
@@ -376,26 +364,33 @@ static NSString *postUrl = @"http://passoudoponto.org/ocorrencia/insert";
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
     
+    // Pede pro manager fazer o Post
     [manager POST:postUrl parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
-        //NSLog(@"%@",responseObject);
+        // progress bar
+        [MRProgressOverlayView showOverlayAddedTo:self.view title:@"Enviando..." mode:MRProgressOverlayViewModeIndeterminate animated:YES];
         
-//        NSData *jsonData = responseObject;
-//        const unsigned char *ptr = [jsonData bytes];
-//        
-//        NSMutableString *texto = [[NSMutableString alloc] initWithString:@""];
-//        
-//        for (int i=0; i<[jsonData length]; i++) {
-//            unsigned char c = *ptr++;
-//            [texto appendString:[NSString stringWithFormat:@"%c",c]];
-//        }
-//        NSLog(@"%@",texto);
+        // Post funcionou
         
         NSError *json_error = nil;
         id object = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:&json_error];
         
-        if (json_error != nil) {
-            NSLog(@"JSON Parser Error: %@",json_error);
+        
+        if (json_error != nil) { // Erro no Parser JSON
+            
+            NSData *jsonData = responseObject;
+            const unsigned char *ptr = [jsonData bytes];
+            
+            NSMutableString *texto = [[NSMutableString alloc] initWithString:@""];
+            
+            for (int i=0; i<[jsonData length]; i++) {
+                unsigned char c = *ptr++;
+                [texto appendString:[NSString stringWithFormat:@"%c",c]];
+            }
+            
+            NSLog(@"JSON Parser Error! Texto: %@ / Erro: %@",texto, json_error);
+            
+            [self showDialog:@"Communication Error" dialogType:NO];
             
         } else if ([object isKindOfClass:[NSDictionary class]]) {
             
@@ -403,17 +398,24 @@ static NSString *postUrl = @"http://passoudoponto.org/ocorrencia/insert";
                                 
             if ([status isEqual: @"OK"]) {
                 NSLog(@"OK Msg: %@",[object objectForKey:@"msg"]);
+                
+                [self showDialog:@"Enviado com sucesso!" dialogType:YES];
+                
             } else if ([status isEqual: @"ERROR"]){
                 NSLog(@"Server Error: %@",[object objectForKey:@"msg"]);
                 
+                [self showDialog:@"Server Error" dialogType:NO];
+                
             }
-        }
+        } else NSLog(@"JSON Parser Error, Object is not a dictionary!");
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        // Erro no POST
+        
         NSLog(@"Post Request Error: %@", error);
         
-        [MRProgressOverlayView dismissOverlayForView:self.view animated:YES];
-        [MRProgressOverlayView showOverlayAddedTo:self.view title:@"Enviado com sucesso!" mode:MRProgressOverlayViewModeCheckmark animated:NO];
+        [self showDialog:@"Communication Error" dialogType:NO];
     }];
 
     
@@ -466,6 +468,17 @@ static NSString *postUrl = @"http://passoudoponto.org/ocorrencia/insert";
     
     // ABre a info windows do marker
     [mapView_ setSelectedMarker:currentLocationMarker];
+}
+
+- (void)showDialog:(NSString *)text dialogType:(BOOL)success
+{
+    [MRProgressOverlayView dismissOverlayForView:self.view animated:YES];
+    
+    if (success) {
+        [MRProgressOverlayView showOverlayAddedTo:self.view title:text mode:MRProgressOverlayViewModeCheckmark animated:NO];
+    } else [MRProgressOverlayView showOverlayAddedTo:self.view title:text mode:MRProgressOverlayViewModeCross animated:NO];
+    
+    
 }
 
 @end
