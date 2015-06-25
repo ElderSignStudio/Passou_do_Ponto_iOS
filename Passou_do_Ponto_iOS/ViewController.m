@@ -17,7 +17,8 @@
 #import "DELoginViewController.h"
 
 static CGFloat kOverlayHeight = 100.0f;
-static NSString *postUrl = @"http://passoudoponto.org/ocorrencia/insert";
+static NSString *postInsertUrl = @"http://passoudoponto.org/ocorrencia/insert";
+static NSString *postGetAllUrl = @"http://passoudoponto.org/ocorrencia/get_all";
 
 @implementation ViewController {
     GMSMapView *mapView_;
@@ -139,6 +140,8 @@ static NSString *postUrl = @"http://passoudoponto.org/ocorrencia/insert";
                                                         multiplier:0.5
                                                           constant:0.0]];
     
+    [self getFromServer];
+    
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -149,6 +152,8 @@ static NSString *postUrl = @"http://passoudoponto.org/ocorrencia/insert";
         lvc.delegate = self;
         [self presentViewController:lvc animated:YES completion:nil];
     }
+    
+    
 }
 
 - (void)dealloc {
@@ -164,7 +169,7 @@ static NSString *postUrl = @"http://passoudoponto.org/ocorrencia/insert";
     self.userHasLoggedIn = YES;
     self.userName = username;
     
-    [self drawUserFirstName];
+    [self drawMarkers];
     
 }
 
@@ -186,7 +191,9 @@ static NSString *postUrl = @"http://passoudoponto.org/ocorrencia/insert";
         mapView_.camera = [GMSCameraPosition cameraWithTarget:location.coordinate
                                                          zoom:16];
         
-    } else [self drawUserFirstName];
+    } else {
+        [self drawMarkers];
+    }
     
 }
 
@@ -365,7 +372,7 @@ static NSString *postUrl = @"http://passoudoponto.org/ocorrencia/insert";
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
     
     // Pede pro manager fazer o Post
-    [manager POST:postUrl parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [manager POST:postInsertUrl parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         // progress bar
         [MRProgressOverlayView showOverlayAddedTo:self.view title:@"Enviando..." mode:MRProgressOverlayViewModeIndeterminate animated:YES];
@@ -421,6 +428,55 @@ static NSString *postUrl = @"http://passoudoponto.org/ocorrencia/insert";
     
 }
 
+- (void)getFromServer
+{
+    
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    
+    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+    
+    // Pede pro manager fazer o Post
+    [manager POST:postGetAllUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        // progress bar
+        [MRProgressOverlayView showOverlayAddedTo:self.view title:@"Buscando ocorrencias..." mode:MRProgressOverlayViewModeIndeterminate animated:YES];
+        
+        // Post funcionou
+        
+        NSError *json_error = nil;
+        id object = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:&json_error];
+        
+        
+        if (json_error != nil) { // Erro no Parser JSON
+            
+            [self printServerCommunicationMessage:responseObject];
+            NSLog(@"JSON Parser Error: %@", json_error);
+            [self showDialog:@"Communication Error" dialogType:NO];
+            
+        } else if ([object isKindOfClass:[NSArray class]]) {
+            
+            //NSLog(@"%@",ococrrencias);
+            self.pastOccurrences = (NSArray *)object;
+            [self drawMarkers];
+            
+            [MRProgressOverlayView dismissOverlayForView:self.view animated:YES];
+                
+        } else NSLog(@"JSON Parser Error, Object is not a array!");
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        // Erro no POST
+        
+        NSLog(@"Post Request Error: %@", error);
+        
+        [self showDialog:@"Communication Error" dialogType:NO];
+    }];
+    
+    
+}
+
+
 #pragma mark - "Passou do Ponto!" button Target
 
 -(void)passouDoPontoButtonPressed
@@ -456,7 +512,7 @@ static NSString *postUrl = @"http://passoudoponto.org/ocorrencia/insert";
 
 #pragma mark - Helper Methods
 
-- (void)drawUserFirstName
+- (void)drawMarkers
 {
     // Add a custom 'glow' marker around the current location.
     [mapView_ clear];
@@ -466,9 +522,35 @@ static NSString *postUrl = @"http://passoudoponto.org/ocorrencia/insert";
     currentLocationMarker.position = self.userCoordinates;
     currentLocationMarker.map = mapView_;
     
-    // ABre a info windows do marker
+    // Abre a info windows do marker
     [mapView_ setSelectedMarker:currentLocationMarker];
+    
+    
+    // Draw static markers
+    
+    if (self.pastOccurrences != nil) {
+        
+        for (NSDictionary *occurence in self.pastOccurrences) {
+            
+            currentLocationMarker = [[GMSMarker alloc] init];
+            
+            CLLocationCoordinate2D coord = self.userCoordinates;
+            
+            coord.longitude = [[occurence objectForKey:@"lng"] doubleValue];
+            coord.latitude =  [[occurence objectForKey:@"lat"] doubleValue];
+            //coord.longitude = -122.030759;
+            //coord.latitude = 37.330859;
+            
+            currentLocationMarker.position = coord;
+            currentLocationMarker.title = [NSString stringWithFormat:@"%@",[occurence objectForKey:@"nome"]];
+            currentLocationMarker.snippet = [NSString stringWithFormat:@"%@\n%@",[occurence objectForKey:@"num_onibus"], [occurence objectForKey:@"data_hora"]];
+            currentLocationMarker.map = mapView_;
+
+        }
+    }
+    
 }
+
 
 - (void)showDialog:(NSString *)text dialogType:(BOOL)success
 {
@@ -479,6 +561,21 @@ static NSString *postUrl = @"http://passoudoponto.org/ocorrencia/insert";
     } else [MRProgressOverlayView showOverlayAddedTo:self.view title:text mode:MRProgressOverlayViewModeCross animated:NO];
     
     
+}
+
+- (void)printServerCommunicationMessage:(NSData *)data
+{
+    const unsigned char *ptr = [data bytes];
+    
+    NSMutableString *texto = [[NSMutableString alloc] initWithString:@""];
+    
+    for (int i=0; i<[data length]; i++) {
+        unsigned char c = *ptr++;
+        [texto appendString:[NSString stringWithFormat:@"%c",c]];
+    }
+    
+    NSLog(@"Texto: %@",texto);
+
 }
 
 @end

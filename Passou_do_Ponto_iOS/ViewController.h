@@ -20,6 +20,8 @@
 @property (nonatomic, strong) NSString *userName;
 @property (nonatomic) CLLocationCoordinate2D userCoordinates;
 
+@property (nonatomic) NSArray *pastOccurrences;
+
 
 // IBOutlets
 
