@@ -10,7 +10,7 @@
 #import <GoogleMaps/GoogleMaps.h>
 #import "DELoginViewController.h"
 
-@interface ViewController : UIViewController <UIPickerViewDelegate, UIPickerViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate, DELoginProtocol>
+@interface ViewController : UIViewController <UIPickerViewDelegate, UIPickerViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate, DELoginProtocol, GMSMapViewDelegate>
 
 @property (nonatomic, strong) UIImage *photo;
 @property (nonatomic, strong) NSDictionary *photoMetadata;
@@ -21,6 +21,10 @@
 @property (nonatomic) CLLocationCoordinate2D userCoordinates;
 
 @property (nonatomic) NSArray *pastOccurrences;
+
+@property (nonatomic) BOOL currentPositionWasDragged;
+@property (nonatomic) CLLocationCoordinate2D draggedCurrentMarkerCoordinates;
+@property (nonatomic) GMSMarker *currentLocationMarker;
 
 
 // IBOutlets

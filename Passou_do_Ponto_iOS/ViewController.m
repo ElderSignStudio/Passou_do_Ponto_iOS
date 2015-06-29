@@ -52,7 +52,7 @@ static NSString *postGetAllUrl = @"http://passoudoponto.org/ocorrencia/get_all";
     mapView_ = [GMSMapView mapWithFrame:CGRectZero camera:camera];
 
     
-    //mapView_.delegate = self;
+    mapView_.delegate = self;
     //mapView_.settings.compassButton = YES;
     mapView_.settings.myLocationButton = YES;
     
@@ -88,6 +88,7 @@ static NSString *postGetAllUrl = @"http://passoudoponto.org/ocorrencia/get_all";
     self.photoMetadata = nil;
     self.userHasLoggedIn = NO;
     self.userName = @"no_username";
+    self.currentPositionWasDragged = NO;
     
     // Create and configure overlay frame
     CGRect overlayFrame = CGRectMake(0, -kOverlayHeight, 0, kOverlayHeight);
@@ -167,6 +168,12 @@ static NSString *postGetAllUrl = @"http://passoudoponto.org/ocorrencia/get_all";
     self.userHasLoggedIn = YES;
     self.userName = username;
     
+    // Initialize CurrentPosition Marker
+    self.currentLocationMarker = [[GMSMarker alloc] init];
+    self.currentLocationMarker.title = self.userName;
+    self.currentLocationMarker.icon = [UIImage imageNamed:@"arrow"];
+    self.currentLocationMarker.draggable = YES;
+    
     [self getInitialInfoFromServer];
     
 }
@@ -197,29 +204,39 @@ static NSString *postGetAllUrl = @"http://passoudoponto.org/ocorrencia/get_all";
 
 #pragma mark - Map methods
 
+
 - (void)drawMarkers
 {
-    // Add a custom 'glow' marker around the current location.
     [mapView_ clear];
-    GMSMarker *currentLocationMarker = [[GMSMarker alloc] init];
-    currentLocationMarker.title = self.userName;
-    currentLocationMarker.icon = [UIImage imageNamed:@"arrow"];
-    currentLocationMarker.position = self.userCoordinates;
-    currentLocationMarker.map = mapView_;
+    
+    
+    if (self.currentPositionWasDragged) {
+        
+        // Marker is where the locator was dragged to
+        self.currentLocationMarker.position = self.draggedCurrentMarkerCoordinates;
+    }else {
+        
+        // Add a custom 'glow' marker around the current location.
+        self.currentLocationMarker.position = self.userCoordinates;
+    }
+    
+    self.currentLocationMarker.map = mapView_;
     
     //NSLog(@"My coord is Lat: %f Long: %f", self.userCoordinates.latitude, self.userCoordinates.longitude);
     
     // Abre a info windows do marker
-    [mapView_ setSelectedMarker:currentLocationMarker];
+    //[mapView_ setSelectedMarker:self.currentLocationMarker];
     
     
-    // Draw static markers
+    // Draw old ocorrencias markers
     
     if (self.pastOccurrences != nil) {
         
+        GMSMarker *occorenciaMarker;
+        
         for (NSDictionary *occurence in self.pastOccurrences) {
             
-            currentLocationMarker = [[GMSMarker alloc] init];
+            occorenciaMarker = [[GMSMarker alloc] init];
             
             CLLocationCoordinate2D coord = self.userCoordinates;
             coord.latitude =  [[occurence objectForKey:@"lat"] doubleValue];
@@ -227,14 +244,33 @@ static NSString *postGetAllUrl = @"http://passoudoponto.org/ocorrencia/get_all";
             
             //NSLog(@"Plotting id=%@ Lat: %f Long: %f", [occurence objectForKey:@"id"], coord.latitude, coord.longitude);
             
-            currentLocationMarker.position = coord;
-            currentLocationMarker.title = [NSString stringWithFormat:@"%@",[occurence objectForKey:@"nome"]];
-            currentLocationMarker.snippet = [NSString stringWithFormat:@"%@\n%@\nid%@",[occurence objectForKey:@"num_onibus"], [occurence objectForKey:@"data_hora"], [occurence objectForKey:@"id"]];
-            currentLocationMarker.map = mapView_;
+            occorenciaMarker.position = coord;
+            occorenciaMarker.title = [NSString stringWithFormat:@"%@",[occurence objectForKey:@"nome"]];
+            occorenciaMarker.snippet = [NSString stringWithFormat:@"%@\n%@\nid%@",[occurence objectForKey:@"num_onibus"], [occurence objectForKey:@"data_hora"], [occurence objectForKey:@"id"]];
+            occorenciaMarker.map = mapView_;
             
         }
     }
     
+}
+
+- (void)centerMapOn:(CLLocationCoordinate2D)coord
+{
+    [mapView_ animateToLocation:coord];
+}
+
+#pragma mark - GMSMapViewDelegate
+
+- (void)mapView:(GMSMapView *)mapView didBeginDraggingMarker:(GMSMarker *)marker
+{}
+
+- (void)mapView:(GMSMapView *)mapView didDragMarker:(GMSMarker *)marker
+{}
+
+- (void)mapView:(GMSMapView *)mapView didEndDraggingMarker:(GMSMarker *)marker
+{
+    self.currentPositionWasDragged = YES;
+    self.draggedCurrentMarkerCoordinates = marker.position;
 }
 
 #pragma mark - UIPickerView methods
@@ -526,6 +562,11 @@ static NSString *postGetAllUrl = @"http://passoudoponto.org/ocorrencia/get_all";
 
 -(void)passouDoPontoButtonPressed
 {
+    // center map on where user wants to add ocorrencia
+    if (self.currentPositionWasDragged) {
+        [mapView_ animateToLocation:self.draggedCurrentMarkerCoordinates];
+    } else [mapView_ animateToLocation:self.userCoordinates];
+    
     
     viewDummy_ = [[UIView alloc] initWithFrame:self.view.bounds];
     viewDummy_.backgroundColor = [UIColor colorWithHue:0.0 saturation:0.0 brightness:0.0 alpha:0.0];
