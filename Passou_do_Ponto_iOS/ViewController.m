@@ -140,8 +140,6 @@ static NSString *postGetAllUrl = @"http://passoudoponto.org/ocorrencia/get_all";
                                                         multiplier:0.5
                                                           constant:0.0]];
     
-    [self getFromServer];
-    
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -169,7 +167,7 @@ static NSString *postGetAllUrl = @"http://passoudoponto.org/ocorrencia/get_all";
     self.userHasLoggedIn = YES;
     self.userName = username;
     
-    [self drawMarkers];
+    [self getInitialInfoFromServer];
     
 }
 
@@ -193,6 +191,48 @@ static NSString *postGetAllUrl = @"http://passoudoponto.org/ocorrencia/get_all";
         
     } else {
         [self drawMarkers];
+    }
+    
+}
+
+#pragma mark - Map methods
+
+- (void)drawMarkers
+{
+    // Add a custom 'glow' marker around the current location.
+    [mapView_ clear];
+    GMSMarker *currentLocationMarker = [[GMSMarker alloc] init];
+    currentLocationMarker.title = self.userName;
+    currentLocationMarker.icon = [UIImage imageNamed:@"arrow"];
+    currentLocationMarker.position = self.userCoordinates;
+    currentLocationMarker.map = mapView_;
+    
+    //NSLog(@"My coord is Lat: %f Long: %f", self.userCoordinates.latitude, self.userCoordinates.longitude);
+    
+    // Abre a info windows do marker
+    [mapView_ setSelectedMarker:currentLocationMarker];
+    
+    
+    // Draw static markers
+    
+    if (self.pastOccurrences != nil) {
+        
+        for (NSDictionary *occurence in self.pastOccurrences) {
+            
+            currentLocationMarker = [[GMSMarker alloc] init];
+            
+            CLLocationCoordinate2D coord = self.userCoordinates;
+            coord.latitude =  [[occurence objectForKey:@"lat"] doubleValue];
+            coord.longitude = [[occurence objectForKey:@"lng"] doubleValue];
+            
+            //NSLog(@"Plotting id=%@ Lat: %f Long: %f", [occurence objectForKey:@"id"], coord.latitude, coord.longitude);
+            
+            currentLocationMarker.position = coord;
+            currentLocationMarker.title = [NSString stringWithFormat:@"%@",[occurence objectForKey:@"nome"]];
+            currentLocationMarker.snippet = [NSString stringWithFormat:@"%@\n%@\nid%@",[occurence objectForKey:@"num_onibus"], [occurence objectForKey:@"data_hora"], [occurence objectForKey:@"id"]];
+            currentLocationMarker.map = mapView_;
+            
+        }
     }
     
 }
@@ -428,7 +468,7 @@ static NSString *postGetAllUrl = @"http://passoudoponto.org/ocorrencia/get_all";
     
 }
 
-- (void)getFromServer
+- (void)getInitialInfoFromServer
 {
     
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
@@ -456,12 +496,17 @@ static NSString *postGetAllUrl = @"http://passoudoponto.org/ocorrencia/get_all";
             
         } else if ([object isKindOfClass:[NSArray class]]) {
             
-            //NSLog(@"%@",ococrrencias);
-            self.pastOccurrences = (NSArray *)object;
-            [self drawMarkers];
-            
-            [MRProgressOverlayView dismissOverlayForView:self.view animated:YES];
+#warning Uso da waitSecondsAndExecute é simular uma rede mais lenta. RETIRAR!
+        
+            [self waitSecondsAndExecute:^{
+                self.pastOccurrences = (NSArray *)object;
                 
+                [self drawMarkers];
+                
+                [MRProgressOverlayView dismissOverlayForView:self.view animated:YES];
+            } delayTime:0];
+            
+            
         } else NSLog(@"JSON Parser Error, Object is not a array!");
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -510,47 +555,8 @@ static NSString *postGetAllUrl = @"http://passoudoponto.org/ocorrencia/get_all";
     [MRProgressOverlayView dismissOverlayForView:self.view animated:YES];
 }
 
+
 #pragma mark - Helper Methods
-
-- (void)drawMarkers
-{
-    // Add a custom 'glow' marker around the current location.
-    [mapView_ clear];
-    GMSMarker *currentLocationMarker = [[GMSMarker alloc] init];
-    currentLocationMarker.title = self.userName;
-    currentLocationMarker.icon = [UIImage imageNamed:@"arrow"];
-    currentLocationMarker.position = self.userCoordinates;
-    currentLocationMarker.map = mapView_;
-    
-    // Abre a info windows do marker
-    [mapView_ setSelectedMarker:currentLocationMarker];
-    
-    
-    // Draw static markers
-    
-    if (self.pastOccurrences != nil) {
-        
-        for (NSDictionary *occurence in self.pastOccurrences) {
-            
-            currentLocationMarker = [[GMSMarker alloc] init];
-            
-            CLLocationCoordinate2D coord = self.userCoordinates;
-            
-            coord.longitude = [[occurence objectForKey:@"lng"] doubleValue];
-            coord.latitude =  [[occurence objectForKey:@"lat"] doubleValue];
-            //coord.longitude = -122.030759;
-            //coord.latitude = 37.330859;
-            
-            currentLocationMarker.position = coord;
-            currentLocationMarker.title = [NSString stringWithFormat:@"%@",[occurence objectForKey:@"nome"]];
-            currentLocationMarker.snippet = [NSString stringWithFormat:@"%@\n%@",[occurence objectForKey:@"num_onibus"], [occurence objectForKey:@"data_hora"]];
-            currentLocationMarker.map = mapView_;
-
-        }
-    }
-    
-}
-
 
 - (void)showDialog:(NSString *)text dialogType:(BOOL)success
 {
@@ -576,6 +582,15 @@ static NSString *postGetAllUrl = @"http://passoudoponto.org/ocorrencia/get_all";
     
     NSLog(@"Texto: %@",texto);
 
+}
+
+- (void)waitSecondsAndExecute:(void (^)(void))block delayTime:(double)seconds
+{
+    double delayInSeconds = seconds;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        block();
+    });
 }
 
 @end
