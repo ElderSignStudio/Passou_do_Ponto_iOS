@@ -305,7 +305,20 @@ static NSString *postGetAllUrl = @"http://passoudoponto.org/ocorrencia/get_all";
     CLLocationCoordinate2D coordinate = mapView_.myLocation.coordinate;
     long selectedRow = [self.tipoDaOcorrenciaPicker selectedRowInComponent:0];
     
-    NSDictionary *dictionary = @{
+    NSDictionary *dictionary;
+    
+    if (self.currentPositionWasDragged) {
+         dictionary = @{
+                                     @"lat" : [[NSNumber numberWithDouble:self.draggedCurrentMarkerCoordinates.latitude] stringValue],
+                                     @"lng" : [[NSNumber numberWithDouble:self.draggedCurrentMarkerCoordinates.longitude] stringValue],
+                                     @"tipo" : @"2",//[[NSNumber numberWithLong:selectedRow] stringValue],
+                                     @"usuario_id" : @"1",
+                                     @"nr_onibus" : @"547",
+                                     @"nr_ordem" : @""
+                                     };
+    }else {
+    
+        dictionary = @{
                                  @"lat" : [[NSNumber numberWithDouble:coordinate.latitude] stringValue],
                                  @"lng" : [[NSNumber numberWithDouble:coordinate.longitude] stringValue],
                                  @"tipo" : @"2",//[[NSNumber numberWithLong:selectedRow] stringValue],
@@ -313,6 +326,7 @@ static NSString *postGetAllUrl = @"http://passoudoponto.org/ocorrencia/get_all";
                                  @"nr_onibus" : @"547",
                                  @"nr_ordem" : @""
                                  };
+    }
     
 //    
 //    if (self.photo) {
@@ -483,6 +497,8 @@ static NSString *postGetAllUrl = @"http://passoudoponto.org/ocorrencia/get_all";
                 NSLog(@"OK Msg: %@",[object objectForKey:@"msg"]);
                 
                 [self showDialog:@"Enviado com sucesso!" dialogType:YES];
+                
+                [self getInitialInfoFromServer];
                 
             } else if ([status isEqual: @"ERROR"]){
                 NSLog(@"Server Error: %@",[object objectForKey:@"msg"]);
