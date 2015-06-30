@@ -20,12 +20,13 @@
 @property (nonatomic, strong) NSString *userName;
 @property (nonatomic) CLLocationCoordinate2D userCoordinates;
 
-@property (nonatomic) NSArray *pastOccurrences;
+@property (nonatomic, strong) NSArray *pastOccurrences;
 
 @property (nonatomic) BOOL currentPositionWasDragged;
 @property (nonatomic) CLLocationCoordinate2D draggedCurrentMarkerCoordinates;
 @property (nonatomic) GMSMarker *currentLocationMarker;
 
+@property (nonatomic, strong) NSArray *tipoDeOccorencias;
 
 // IBOutlets
 

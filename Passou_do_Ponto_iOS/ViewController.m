@@ -19,6 +19,7 @@
 static CGFloat kOverlayHeight = 100.0f;
 static NSString *postInsertUrl = @"http://passoudoponto.org/ocorrencia/insert";
 static NSString *postGetAllUrl = @"http://passoudoponto.org/ocorrencia/get_all";
+static NSString *postGetOccurenceType = @"http://passoudoponto.org/ocorrencia/ref_get_tipos";
 
 @implementation ViewController {
     GMSMapView *mapView_;
@@ -39,8 +40,11 @@ static NSString *postGetAllUrl = @"http://passoudoponto.org/ocorrencia/get_all";
 {
     //[super loadView];
     
+    //Update os tipos de ocorrencia
+    [self updateOcurrenceTypeFromServer];
+    
     // Populate de array of Tipo de Ocorrencias
-    tipoDeOcorrencias_ = [NSArray arrayWithObjects:@"Passou do ponto", @"Atropelou o pedestre", @"Cuspiu na minha cara", @"Não abriu a porta", nil];
+    //tipoDeOcorrencias_ = [NSArray arrayWithObjects:@"Passou do ponto", @"Atropelou o pedestre", @"Cuspiu na minha cara", @"Não abriu a porta", nil];
     
     
     // Create a GMSCameraPosition object that specifies the center and zoom level of the map.
@@ -174,7 +178,7 @@ static NSString *postGetAllUrl = @"http://passoudoponto.org/ocorrencia/get_all";
     self.currentLocationMarker.icon = [UIImage imageNamed:@"arrow"];
     self.currentLocationMarker.draggable = YES;
     
-    [self getInitialInfoFromServer];
+    [self updatePastOcurrencesFromServer];
     
 }
 
@@ -245,8 +249,12 @@ static NSString *postGetAllUrl = @"http://passoudoponto.org/ocorrencia/get_all";
             //NSLog(@"Plotting id=%@ Lat: %f Long: %f", [occurence objectForKey:@"id"], coord.latitude, coord.longitude);
             
             occorenciaMarker.position = coord;
-            occorenciaMarker.title = [NSString stringWithFormat:@"%@",[occurence objectForKey:@"nome"]];
-            occorenciaMarker.snippet = [NSString stringWithFormat:@"%@\n%@\nid%@",[occurence objectForKey:@"num_onibus"], [occurence objectForKey:@"data_hora"], [occurence objectForKey:@"id"]];
+            
+            NSInteger index = [[occurence objectForKey:@"tipo_id"] integerValue];
+            NSDictionary *tipo = self.tipoDeOccorencias[index-1];
+            
+            occorenciaMarker.title = [tipo objectForKey:@"nome"];
+            occorenciaMarker.snippet = [NSString stringWithFormat:@"%@\n%@\n%@",[occurence objectForKey:@"num_onibus"], [occurence objectForKey:@"data_hora"], [occurence objectForKey:@"nome"]];
             occorenciaMarker.map = mapView_;
             
         }
@@ -303,7 +311,7 @@ static NSString *postGetAllUrl = @"http://passoudoponto.org/ocorrencia/get_all";
     // monta NSDictionary
 
     CLLocationCoordinate2D coordinate = mapView_.myLocation.coordinate;
-    long selectedRow = [self.tipoDaOcorrenciaPicker selectedRowInComponent:0];
+    long selectedRow = [self.tipoDaOcorrenciaPicker selectedRowInComponent:0] + 1;
     
     NSDictionary *dictionary;
     
@@ -311,7 +319,7 @@ static NSString *postGetAllUrl = @"http://passoudoponto.org/ocorrencia/get_all";
          dictionary = @{
                                      @"lat" : [[NSNumber numberWithDouble:self.draggedCurrentMarkerCoordinates.latitude] stringValue],
                                      @"lng" : [[NSNumber numberWithDouble:self.draggedCurrentMarkerCoordinates.longitude] stringValue],
-                                     @"tipo" : @"2",//[[NSNumber numberWithLong:selectedRow] stringValue],
+                                     @"tipo" : [[NSNumber numberWithLong:selectedRow] stringValue],
                                      @"usuario_id" : @"1",
                                      @"nr_onibus" : @"547",
                                      @"nr_ordem" : @""
@@ -321,7 +329,7 @@ static NSString *postGetAllUrl = @"http://passoudoponto.org/ocorrencia/get_all";
         dictionary = @{
                                  @"lat" : [[NSNumber numberWithDouble:coordinate.latitude] stringValue],
                                  @"lng" : [[NSNumber numberWithDouble:coordinate.longitude] stringValue],
-                                 @"tipo" : @"2",//[[NSNumber numberWithLong:selectedRow] stringValue],
+                                 @"tipo" : [[NSNumber numberWithLong:selectedRow] stringValue],
                                  @"usuario_id" : @"1",
                                  @"nr_onibus" : @"547",
                                  @"nr_ordem" : @""
@@ -498,7 +506,7 @@ static NSString *postGetAllUrl = @"http://passoudoponto.org/ocorrencia/get_all";
                 
                 [self showDialog:@"Enviado com sucesso!" dialogType:YES];
                 
-                [self getInitialInfoFromServer];
+                [self updatePastOcurrencesFromServer];
                 
             } else if ([status isEqual: @"ERROR"]){
                 NSLog(@"Server Error: %@",[object objectForKey:@"msg"]);
@@ -520,7 +528,7 @@ static NSString *postGetAllUrl = @"http://passoudoponto.org/ocorrencia/get_all";
     
 }
 
-- (void)getInitialInfoFromServer
+- (void)updatePastOcurrencesFromServer
 {
     
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
@@ -547,16 +555,14 @@ static NSString *postGetAllUrl = @"http://passoudoponto.org/ocorrencia/get_all";
             [self showDialog:@"Communication Error" dialogType:NO];
             
         } else if ([object isKindOfClass:[NSArray class]]) {
-            
-#warning Uso da waitSecondsAndExecute é simular uma rede mais lenta. RETIRAR!
         
-            [self waitSecondsAndExecute:^{
+            //[self waitSecondsAndExecute:^{
                 self.pastOccurrences = (NSArray *)object;
                 
                 [self drawMarkers];
                 
                 [MRProgressOverlayView dismissOverlayForView:self.view animated:YES];
-            } delayTime:0];
+            //} delayTime:0];
             
             
         } else NSLog(@"JSON Parser Error, Object is not a array!");
@@ -569,10 +575,55 @@ static NSString *postGetAllUrl = @"http://passoudoponto.org/ocorrencia/get_all";
         
         [self showDialog:@"Communication Error" dialogType:NO];
     }];
-    
-    
 }
 
+- (void)updateOcurrenceTypeFromServer
+{
+    
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    
+    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+    
+    // Pede pro manager fazer o Post
+    [manager POST:postGetOccurenceType parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        // Post funcionou
+        
+        NSError *json_error = nil;
+        id object = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:&json_error];
+        
+        
+        if (json_error != nil) { // Erro no Parser JSON
+            
+            [self printServerCommunicationMessage:responseObject];
+            NSLog(@"JSON Parser Error: %@", json_error);
+            [self showDialog:@"Communication Error" dialogType:NO];
+            
+        } else if ([object isKindOfClass:[NSArray class]]) {
+            
+            //Update o tipoDeOcorrencia picker
+            self.tipoDeOccorencias = (NSArray *)object;
+            
+            NSMutableArray *mutableArray = [[NSMutableArray alloc] init];
+            for (NSDictionary *tipo in self.tipoDeOccorencias) {
+                [mutableArray addObject:[tipo objectForKey:@"nome"]];
+            }
+            
+            tipoDeOcorrencias_ = [NSArray arrayWithArray:mutableArray];
+            
+            
+        } else NSLog(@"JSON Parser Error, Object is not a array!");
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        // Erro no POST
+        
+        NSLog(@"Post Request Error: %@", error);
+        
+        [self showDialog:@"Communication Error" dialogType:NO];
+    }];
+}
 
 #pragma mark - "Passou do Ponto!" button Target
 
@@ -582,7 +633,6 @@ static NSString *postGetAllUrl = @"http://passoudoponto.org/ocorrencia/get_all";
     if (self.currentPositionWasDragged) {
         [mapView_ animateToLocation:self.draggedCurrentMarkerCoordinates];
     } else [mapView_ animateToLocation:self.userCoordinates];
-    
     
     viewDummy_ = [[UIView alloc] initWithFrame:self.view.bounds];
     viewDummy_.backgroundColor = [UIColor colorWithHue:0.0 saturation:0.0 brightness:0.0 alpha:0.0];
