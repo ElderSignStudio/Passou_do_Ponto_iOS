@@ -20,6 +20,7 @@ static CGFloat kOverlayHeight = 100.0f;
 static NSString *postInsertUrl = @"http://passoudoponto.org/ocorrencia/insert";
 static NSString *postGetAllUrl = @"http://passoudoponto.org/ocorrencia/get_all";
 static NSString *postGetOccurenceType = @"http://passoudoponto.org/ocorrencia/ref_get_tipos";
+static NSString *postGetOccurenceByCurrentUser = @"http://passoudoponto.org/usuario/ocorrencias";
 
 @implementation ViewController {
     GMSMapView *mapView_;
@@ -179,6 +180,9 @@ static NSString *postGetOccurenceType = @"http://passoudoponto.org/ocorrencia/re
     self.currentLocationMarker.draggable = YES;
     
     [self updatePastOcurrencesFromServer];
+    
+    //[self testaSession];
+    //[self getOccurencesByCurrentUser];
     
 }
 
@@ -625,6 +629,104 @@ static NSString *postGetOccurenceType = @"http://passoudoponto.org/ocorrencia/re
     }];
 }
 
+- (void)testaSession
+{
+    
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    
+    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+    
+    // Pede pro manager fazer o Post
+    [manager POST:@"http://passoudoponto.org/usuario/test_login/1" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        // Post funcionou
+        
+        NSError *json_error = nil;
+        id object = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:&json_error];
+        
+        
+        if (json_error != nil) { // Erro no Parser JSON
+            
+            [self printServerCommunicationMessage:responseObject];
+            NSLog(@"JSON Parser Error: %@", json_error);
+            [self showDialog:@"Communication Error" dialogType:NO];
+            
+        } else if ([object isKindOfClass:[NSArray class]]) {
+            
+            //Update o tipoDeOcorrencia picker
+            self.tipoDeOccorencias = (NSArray *)object;
+            
+            NSMutableArray *mutableArray = [[NSMutableArray alloc] init];
+            for (NSDictionary *tipo in self.tipoDeOccorencias) {
+                [mutableArray addObject:[tipo objectForKey:@"nome"]];
+            }
+            
+            tipoDeOcorrencias_ = [NSArray arrayWithArray:mutableArray];
+            
+            
+        } else NSLog(@"JSON Parser Error, Object is not a array!");
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        // Erro no POST
+        
+        NSLog(@"Post Request Error: %@", error);
+        
+        [self showDialog:@"Communication Error" dialogType:NO];
+    }];
+}
+
+
+- (void)getOccurencesByCurrentUser
+{
+    
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    
+    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+    
+    // Pede pro manager fazer o Post
+    [manager POST:postGetOccurenceByCurrentUser parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        // Post funcionou
+        
+        NSError *json_error = nil;
+        id object = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:&json_error];
+        
+        
+        if (json_error != nil) { // Erro no Parser JSON
+            
+            [self printServerCommunicationMessage:responseObject];
+            NSLog(@"JSON Parser Error: %@", json_error);
+            [self showDialog:@"Communication Error" dialogType:NO];
+            
+        } else if ([object isKindOfClass:[NSArray class]]) {
+            
+            //Update o tipoDeOcorrencia picker
+            self.tipoDeOccorencias = (NSArray *)object;
+            
+            NSMutableArray *mutableArray = [[NSMutableArray alloc] init];
+            for (NSDictionary *tipo in self.tipoDeOccorencias) {
+                [mutableArray addObject:[tipo objectForKey:@"nome"]];
+            }
+            
+            tipoDeOcorrencias_ = [NSArray arrayWithArray:mutableArray];
+            
+            
+        } else NSLog(@"JSON Parser Error, Object is not a array!");
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        // Erro no POST
+        
+        NSLog(@"Post Request Error: %@", error);
+        
+        [self showDialog:@"Communication Error" dialogType:NO];
+    }];
+}
+
+
 #pragma mark - "Passou do Ponto!" button Target
 
 -(void)passouDoPontoButtonPressed
@@ -699,5 +801,6 @@ static NSString *postGetOccurenceType = @"http://passoudoponto.org/ocorrencia/re
         block();
     });
 }
+
 
 @end
