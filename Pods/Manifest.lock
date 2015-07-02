@@ -20,6 +20,7 @@ PODS:
   - AFNetworking/UIKit (2.5.2):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
+  - GoogleMaps (1.10.1)
   - MRProgress (0.8.1):
     - MRProgress/ActivityIndicator (= 0.8.1)
     - MRProgress/Blur (= 0.8.1)
@@ -51,10 +52,12 @@ PODS:
 
 DEPENDENCIES:
   - AFNetworking (~> 2.5)
+  - GoogleMaps
   - MRProgress
 
 SPEC CHECKSUMS:
   AFNetworking: fefbce9660acb17f48ae0011292d4da0f457bf36
+  GoogleMaps: ebf08677f181d9c2dcdbd1721d206f02beccc9b1
   MRProgress: 72653f3ffd13c7bbac8c9de1da9bf0249fc2717d
 
 COCOAPODS: 0.35.0

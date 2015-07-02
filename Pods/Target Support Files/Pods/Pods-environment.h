@@ -48,6 +48,12 @@
 #define COCOAPODS_VERSION_MINOR_AFNetworking_UIKit 5
 #define COCOAPODS_VERSION_PATCH_AFNetworking_UIKit 2
 
+// GoogleMaps
+#define COCOAPODS_POD_AVAILABLE_GoogleMaps
+#define COCOAPODS_VERSION_MAJOR_GoogleMaps 1
+#define COCOAPODS_VERSION_MINOR_GoogleMaps 10
+#define COCOAPODS_VERSION_PATCH_GoogleMaps 1
+
 // MRProgress
 #define COCOAPODS_POD_AVAILABLE_MRProgress
 #define COCOAPODS_VERSION_MAJOR_MRProgress 0

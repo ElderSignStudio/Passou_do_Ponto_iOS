@@ -9,6 +9,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>Pods-GoogleMaps.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-MRProgress.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -22,17 +27,22 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>31B7D19893D42DA72C1D4E0A</key>
+		<key>1970421895A36E2A062368BF</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>B74A378AA54615765DC01617</key>
+		<key>99E78DA845F91C5DE01C553E</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>C5466E95591A07E8B1724DD7</key>
+		<key>ACD9756227271A9493AA9A3C</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>BA97616680DE2FE9C7BE0E78</key>
 		<dict>
 			<key>primary</key>
 			<true/>
