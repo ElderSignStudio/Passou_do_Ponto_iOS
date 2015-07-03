@@ -285,6 +285,25 @@ static NSString *postGetOccurenceByCurrentUser = @"http://passoudoponto.org/usua
     self.draggedCurrentMarkerCoordinates = marker.position;
 }
 
+- (BOOL)didTapMyLocationButtonForMapView:(GMSMapView *)mapView
+{
+    [mapView_ animateToLocation:self.userCoordinates];
+    
+    if (self.currentPositionWasDragged) {
+        self.currentPositionWasDragged = NO;
+        
+        // Create a new marker and initialize it. Only way for it to appear. SDK BUG
+        self.currentLocationMarker = [[GMSMarker alloc] init];
+        self.currentLocationMarker.title = self.userName;
+        self.currentLocationMarker.icon = [UIImage imageNamed:@"arrow"];
+        self.currentLocationMarker.draggable = YES;
+        
+        [self drawMarkers];
+    }
+    
+    return YES;
+}
+
 #pragma mark - UIPickerView methods
 
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView

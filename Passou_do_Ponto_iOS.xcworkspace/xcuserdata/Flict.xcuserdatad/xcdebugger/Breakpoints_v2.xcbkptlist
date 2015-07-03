@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Passou_do_Ponto_iOS/ViewController.m"
-            timestampString = "457572283.083916"
+            timestampString = "457578181.28504"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "611"
-            endingLineNumber = "611"
+            startingLineNumber = "629"
+            endingLineNumber = "629"
             landmarkName = "-updateOcurrenceTypeFromServer"
             landmarkType = "5">
          </BreakpointContent>
@@ -58,12 +58,44 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Passou_do_Ponto_iOS/ViewController.m"
-            timestampString = "457572283.083916"
+            timestampString = "457578181.28504"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "641"
-            endingLineNumber = "641"
+            startingLineNumber = "659"
+            endingLineNumber = "659"
             landmarkName = "-testaSession"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Passou_do_Ponto_iOS/ViewController.m"
+            timestampString = "457576354.93855"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "292"
+            endingLineNumber = "292"
+            landmarkName = "-didTapMyLocationButtonForMapView:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Passou_do_Ponto_iOS/ViewController.m"
+            timestampString = "457577110.536339"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "218"
+            endingLineNumber = "218"
+            landmarkName = "-drawMarkers"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
