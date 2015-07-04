@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Passou_do_Ponto_iOS/ViewController.m"
-            timestampString = "457578181.28504"
+            timestampString = "457741201.204128"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "629"
-            endingLineNumber = "629"
+            startingLineNumber = "628"
+            endingLineNumber = "628"
             landmarkName = "-updateOcurrenceTypeFromServer"
             landmarkType = "5">
          </BreakpointContent>
@@ -26,11 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Passou_do_Ponto_iOS/ViewController.m"
-            timestampString = "457572283.083916"
+            timestampString = "457741201.204128"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "241"
-            endingLineNumber = "241"
+            startingLineNumber = "240"
+            endingLineNumber = "240"
             landmarkName = "-drawMarkers"
             landmarkType = "5">
          </BreakpointContent>
@@ -42,11 +42,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Passou_do_Ponto_iOS/ViewController.m"
-            timestampString = "457572283.083916"
+            timestampString = "457741201.204128"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "258"
-            endingLineNumber = "258"
+            startingLineNumber = "257"
+            endingLineNumber = "257"
             landmarkName = "-drawMarkers"
             landmarkType = "5">
          </BreakpointContent>
@@ -58,11 +58,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Passou_do_Ponto_iOS/ViewController.m"
-            timestampString = "457578181.28504"
+            timestampString = "457741201.204128"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "659"
-            endingLineNumber = "659"
+            startingLineNumber = "658"
+            endingLineNumber = "658"
             landmarkName = "-testaSession"
             landmarkType = "5">
          </BreakpointContent>
@@ -74,11 +74,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Passou_do_Ponto_iOS/ViewController.m"
-            timestampString = "457576354.93855"
+            timestampString = "457741201.204128"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "292"
-            endingLineNumber = "292"
+            startingLineNumber = "291"
+            endingLineNumber = "291"
             landmarkName = "-didTapMyLocationButtonForMapView:"
             landmarkType = "5">
          </BreakpointContent>
@@ -90,11 +90,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Passou_do_Ponto_iOS/ViewController.m"
-            timestampString = "457577110.536339"
+            timestampString = "457741201.204128"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "218"
-            endingLineNumber = "218"
+            startingLineNumber = "217"
+            endingLineNumber = "217"
             landmarkName = "-drawMarkers"
             landmarkType = "5">
          </BreakpointContent>

@@ -181,8 +181,7 @@ static NSString *postGetOccurenceByCurrentUser = @"http://passoudoponto.org/usua
     
     [self updatePastOcurrencesFromServer];
     
-    //[self testaSession];
-    //[self getOccurencesByCurrentUser];
+    [self testaSession];
     
 }
 
@@ -671,20 +670,13 @@ static NSString *postGetOccurenceByCurrentUser = @"http://passoudoponto.org/usua
             NSLog(@"JSON Parser Error: %@", json_error);
             [self showDialog:@"Communication Error" dialogType:NO];
             
-        } else if ([object isKindOfClass:[NSArray class]]) {
+        } else if ([object isKindOfClass:[NSDictionary class]]) {
             
-            //Update o tipoDeOcorrencia picker
-            self.tipoDeOccorencias = (NSArray *)object;
+            NSDictionary *dict = (NSDictionary *)object;
+            NSLog(@"%@",dict);
+            [self getOccurencesByCurrentUser];
             
-            NSMutableArray *mutableArray = [[NSMutableArray alloc] init];
-            for (NSDictionary *tipo in self.tipoDeOccorencias) {
-                [mutableArray addObject:[tipo objectForKey:@"nome"]];
-            }
-            
-            tipoDeOcorrencias_ = [NSArray arrayWithArray:mutableArray];
-            
-            
-        } else NSLog(@"JSON Parser Error, Object is not a array!");
+        } else NSLog(@"JSON Parser Error, Object is not a %@, is a %@!", [NSDictionary class], [object class]);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
@@ -720,20 +712,12 @@ static NSString *postGetOccurenceByCurrentUser = @"http://passoudoponto.org/usua
             NSLog(@"JSON Parser Error: %@", json_error);
             [self showDialog:@"Communication Error" dialogType:NO];
             
-        } else if ([object isKindOfClass:[NSArray class]]) {
+        } else if ([object isKindOfClass:[NSDictionary class]]) {
             
-            //Update o tipoDeOcorrencia picker
-            self.tipoDeOccorencias = (NSArray *)object;
+            NSDictionary *dict = (NSDictionary *)object;
+            NSLog(@"%@",dict);
             
-            NSMutableArray *mutableArray = [[NSMutableArray alloc] init];
-            for (NSDictionary *tipo in self.tipoDeOccorencias) {
-                [mutableArray addObject:[tipo objectForKey:@"nome"]];
-            }
-            
-            tipoDeOcorrencias_ = [NSArray arrayWithArray:mutableArray];
-            
-            
-        } else NSLog(@"JSON Parser Error, Object is not a array!");
+        } else NSLog(@"JSON Parser Error, Object is not a %@, is a %@!", [NSDictionary class], [object class]);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
