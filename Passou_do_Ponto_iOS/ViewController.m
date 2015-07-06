@@ -181,7 +181,7 @@ static NSString *postGetOccurenceByCurrentUser = @"http://passoudoponto.org/usua
     
     [self updatePastOcurrencesFromServer];
     
-    [self testaSession];
+    //[self testaSession];
     
 }
 

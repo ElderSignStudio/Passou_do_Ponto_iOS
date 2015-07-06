@@ -46,7 +46,7 @@
                             <textInputTraits key="textInputTraits"/>
                         </textField>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SCY-dm-bSF">
-                            <rect key="frame" x="271" y="211" width="58" height="30"/>
+                            <rect key="frame" x="167" y="211" width="58" height="30"/>
                             <state key="normal" title="Conecta">
                                 <color key="titleColor" red="0.0" green="0.0" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -63,9 +63,20 @@
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <textInputTraits key="textInputTraits"/>
                         </textField>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2dV-rQ-Qdm">
+                            <rect key="frame" x="370" y="211" width="63" height="30"/>
+                            <state key="normal" title="Cadastra">
+                                <color key="titleColor" red="0.0" green="0.0" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="cadastraButtonPressed:" destination="-1" eventType="touchUpInside" id="V8U-94-4UX"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
+                        <constraint firstItem="2dV-rQ-Qdm" firstAttribute="trailing" secondItem="Q9K-vG-BTG" secondAttribute="trailing" id="2pj-bZ-wE7"/>
                         <constraint firstAttribute="centerX" secondItem="1F8-vL-hNs" secondAttribute="centerX" id="B1B-Fn-tFG"/>
                         <constraint firstAttribute="centerX" secondItem="i54-d1-6sx" secondAttribute="centerX" id="DMo-Cc-lJO"/>
                         <constraint firstAttribute="centerX" secondItem="Q9K-vG-BTG" secondAttribute="centerX" id="R2J-Xd-tvQ"/>
@@ -76,8 +87,9 @@
                         <constraint firstAttribute="centerY" secondItem="6Up-yU-bly" secondAttribute="centerY" constant="-4" id="m4A-5I-Q5K"/>
                         <constraint firstItem="i54-d1-6sx" firstAttribute="top" secondItem="6Up-yU-bly" secondAttribute="bottom" constant="8" id="mRo-Nq-n56"/>
                         <constraint firstAttribute="centerY" secondItem="i54-d1-6sx" secondAttribute="centerY" id="mal-Lw-elw"/>
-                        <constraint firstAttribute="centerX" secondItem="SCY-dm-bSF" secondAttribute="centerX" id="nRh-Qi-vI8"/>
+                        <constraint firstItem="2dV-rQ-Qdm" firstAttribute="top" secondItem="Q9K-vG-BTG" secondAttribute="bottom" constant="8" id="sQE-rf-Wds"/>
                         <constraint firstItem="SCY-dm-bSF" firstAttribute="top" secondItem="Q9K-vG-BTG" secondAttribute="bottom" constant="8" id="xF6-Ch-s6x"/>
+                        <constraint firstItem="Q9K-vG-BTG" firstAttribute="leading" secondItem="SCY-dm-bSF" secondAttribute="leading" id="y98-Ui-PvI"/>
                     </constraints>
                     <variation key="default">
                         <mask key="constraints">
