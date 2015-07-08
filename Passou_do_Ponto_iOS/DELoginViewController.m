@@ -12,6 +12,7 @@
 #import "DECadastroViewController.h"
 #import <AFNetworking.h>
 #import "DENotificationsCentral.h"
+#import "DERequestManager.h"
 
 static NSString *postInsertNewUser = @"http://passoudoponto.org/usuario/insert";
 
@@ -53,8 +54,8 @@ static NSString *postInsertNewUser = @"http://passoudoponto.org/usuario/insert";
                      if (!error) {
                          
                          [strongDelegate loginSuccessful:result[@"first_name"]];
-#warning tiras os comments aqui de baixo
-                         //[self dismissViewControllerAnimated:YES completion:nil];
+//AQUI PARA TIRAR O FB AUTOMATICO
+                         [self dismissViewControllerAnimated:YES completion:nil];
                          
                      } else {
                          FBSDKLoginManager *manager = [[FBSDKLoginManager alloc] init];
@@ -170,77 +171,31 @@ static NSString *postInsertNewUser = @"http://passoudoponto.org/usuario/insert";
 
 - (void)cadastroPreenchido:(NSDictionary *)cadastro
 {
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    DERequestManager *sharedRM = [DERequestManager sharedRequestManager];
     
-    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
-    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
-    
-    // Pede pro manager fazer o Post
-    
-    NSDictionary *teste_param = @{
-                               @"login" : @"Danadinho",
-                               @"email" : @"alo@alo.com",
-                               @"nome" : @"Teta",
-                               @"sobrenome" : @"Tetinha",
-                               @"nascimento" : @"18/09/1981",
-                               @"password" : @"tetassa",
-                               @"password_2" : @"tetassa",
-                               };
-    
-    
-    [manager POST:postInsertNewUser parameters:/*cadastro*/teste_param success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [sharedRM postToServer:postInsertNewUser
+                parameters:cadastro
+             caseOfSuccess:^(NSString *success) {
+                 
+                 // SUCCESS
+                 
+                 id<DELoginProtocol> strongDelegate = self.delegate;
+                 
+                 if ([strongDelegate respondsToSelector:@selector(loginSuccessful:)]) {
+                     
+                     [strongDelegate loginSuccessful:[cadastro objectForKey:@"login"]];
+                     [self dismissViewControllerAnimated:YES completion:nil];
+                     [self dismissViewControllerAnimated:YES completion:nil];
+                 }
+                 
+             }
+             caseOfFailure:^(int errorType, NSString *error) {
+                 
+                 // FAILURE
+                 DENotificationsCentral *sharedNC = [DENotificationsCentral sharedNotificationCentral];
+                 [sharedNC showAlert:self.cvc content:error];
 
-        // Post funcionou
-        
-        NSError *json_error = nil;
-        id object = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:&json_error];
-        
-        
-        if (json_error != nil) { // Erro no Parser JSON
-            
-            NSData *jsonData = responseObject;
-            const unsigned char *ptr = [jsonData bytes];
-            
-            NSMutableString *texto = [[NSMutableString alloc] initWithString:@""];
-            
-            for (int i=0; i<[jsonData length]; i++) {
-                unsigned char c = *ptr++;
-                [texto appendString:[NSString stringWithFormat:@"%c",c]];
-            }
-            
-            NSLog(@"JSON Parser Error! Texto: %@ / Erro: %@",texto, json_error);
-            
-        } else if ([object isKindOfClass:[NSDictionary class]]) {
-            
-            NSString *status = [object objectForKey:@"status"];
-            
-            if ([status isEqual: @"OK"]) {
-                NSLog(@"OK Msg: %@",[object objectForKey:@"msg"]);
-                
-                id<DELoginProtocol> strongDelegate = self.delegate;
-                
-                if ([strongDelegate respondsToSelector:@selector(loginSuccessful:)]) {
-                    
-                    [strongDelegate loginSuccessful:[cadastro objectForKey:@"login"]];
-                    [self dismissViewControllerAnimated:YES completion:nil];
-                    [self dismissViewControllerAnimated:YES completion:nil];
-                }
-                
-            } else if ([status isEqual: @"ERROR"]){
-                
-                DENotificationsCentral *sharedNC = [DENotificationsCentral sharedNotificationCentral];
-                [sharedNC showAlert:self.cvc content:[object objectForKey:@"msg"]];
-                
-            }
-        } else NSLog(@"JSON Parser Error, Object is not a dictionary!");
-        
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
-        // Erro no POST
-        
-        NSLog(@"Post Request Error: %@", error);
-        
-    }];
+             }];
 
 }
 

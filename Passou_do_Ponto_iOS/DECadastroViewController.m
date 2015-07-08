@@ -41,15 +41,18 @@
         
         // Manda de volta o cadastro
         
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        [formatter setDateFormat:@"dd/MM/yyyy"];
+        
         NSDictionary *cadastro = @{
                                      @"login" : self.userNameTextField.text,
                                      @"senha" : self.passwordTextField.text,
-                                     @"email" : @"",
-                                     @"nome" : @"",
-                                     @"sobrenome" : @"",
-                                     @"nascimento" : @"",
-                                     @"password" : @"",
-                                     @"password_2" : @"",
+                                     @"email" : self.emailTextField.text,
+                                     @"nome" : self.firstNameTextField.text,
+                                     @"sobrenome" : self.FamilyNameTextField.text,
+                                     @"nascimento" : [formatter stringFromDate:self.birthDatePicker.date],
+                                     @"password" : self.passwordTextField.text,
+                                     @"password_2" : self.confirmPasswordTextField.text,
                                      };
         
         [strongDelegate cadastroPreenchido:cadastro];
