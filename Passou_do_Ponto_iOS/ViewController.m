@@ -15,6 +15,8 @@
 #import <MobileCoreServices/MobileCoreServices.h>
 #import <AFNetworking.h>
 #import "DELoginViewController.h"
+#import "DERequestManager.h"
+#import "DENotificationsCentral.h"
 
 static CGFloat kOverlayHeight = 100.0f;
 static NSString *postInsertUrl = @"http://passoudoponto.org/ocorrencia/insert";
@@ -152,9 +154,9 @@ static NSString *postGetOccurenceByCurrentUser = @"http://passoudoponto.org/usua
 {
     if (!self.userHasLoggedIn) {
         NSBundle *appBundle = [NSBundle mainBundle];
-        DELoginViewController *lvc = [[DELoginViewController alloc] initWithNibName:@"DELoginViewController" bundle:appBundle];
-        lvc.delegate = self;
-        [self presentViewController:lvc animated:YES completion:nil];
+        self.lvc = [[DELoginViewController alloc] initWithNibName:@"DELoginViewController" bundle:appBundle];
+        self.lvc.delegate = self;
+        [self presentViewController:self.lvc animated:YES completion:nil];
     }
     
     
@@ -181,7 +183,7 @@ static NSString *postGetOccurenceByCurrentUser = @"http://passoudoponto.org/usua
     
     [self updatePastOcurrencesFromServer];
     
-    //[self testaSession];
+    [self testaSession];
     
 }
 
@@ -486,247 +488,153 @@ static NSString *postGetOccurenceByCurrentUser = @"http://passoudoponto.org/usua
 
 - (void)postToServer:(NSDictionary *)parameters
 {
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     
-    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
-    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+    [MRProgressOverlayView showOverlayAddedTo:self.view title:@"Enviando..." mode:MRProgressOverlayViewModeIndeterminate animated:YES];
     
-    // Pede pro manager fazer o Post
-    [manager POST:postInsertUrl parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        
-        // progress bar
-        [MRProgressOverlayView showOverlayAddedTo:self.view title:@"Enviando..." mode:MRProgressOverlayViewModeIndeterminate animated:YES];
-        
-        // Post funcionou
-        
-        NSError *json_error = nil;
-        id object = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:&json_error];
-        
-        
-        if (json_error != nil) { // Erro no Parser JSON
-            
-            NSData *jsonData = responseObject;
-            const unsigned char *ptr = [jsonData bytes];
-            
-            NSMutableString *texto = [[NSMutableString alloc] initWithString:@""];
-            
-            for (int i=0; i<[jsonData length]; i++) {
-                unsigned char c = *ptr++;
-                [texto appendString:[NSString stringWithFormat:@"%c",c]];
-            }
-            
-            NSLog(@"JSON Parser Error! Texto: %@ / Erro: %@",texto, json_error);
-            
-            [self showDialog:@"Communication Error" dialogType:NO];
-            
-        } else if ([object isKindOfClass:[NSDictionary class]]) {
-            
-            NSString *status = [object objectForKey:@"status"];
-                                
-            if ([status isEqual: @"OK"]) {
-                NSLog(@"OK Msg: %@",[object objectForKey:@"msg"]);
-                
-                [self showDialog:@"Enviado com sucesso!" dialogType:YES];
-                
-                [self updatePastOcurrencesFromServer];
-                
-            } else if ([status isEqual: @"ERROR"]){
-                NSLog(@"Server Error: %@",[object objectForKey:@"msg"]);
-                
-                [self showDialog:@"Server Error" dialogType:NO];
-                
-            }
-        } else NSLog(@"JSON Parser Error, Object is not a dictionary!");
-        
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
-        // Erro no POST
-        
-        NSLog(@"Post Request Error: %@", error);
-        
-        [self showDialog:@"Communication Error" dialogType:NO];
-    }];
-
+    DERequestManager *sharedRM = [DERequestManager sharedRequestManager];
+    
+    [sharedRM postToServer:postInsertUrl
+                parameters:parameters
+             caseOfSuccess:^(NSString *success) {
+                 
+                 // SUCCESS
+                 
+                 [self showDialog:@"Enviado com sucesso!" dialogType:YES];
+                 
+                 [self updatePastOcurrencesFromServer];
+                 
+             }
+             caseOfFailure:^(int errorType, NSString *error) {
+                 
+                 // FAILURE
+                 
+                 switch (errorType) {
+                     case 1:
+                         [self showDialog:@"Communication Error" dialogType:NO];
+                         break;
+                    
+                     case 2:
+                         [self showDialog:@"Authorization Denied" dialogType:NO];
+                         break;
+                         
+                     case 3:
+                         [self showDialog:@"You need to be logged in" dialogType:NO];
+                         [self presentViewController:self.lvc animated:YES completion:nil];
+                         break;
+                         
+                     default:
+                         [self showDialog:@"Unknown Error" dialogType:NO];
+                         break;
+                 }
+                 
+             }];
     
 }
 
 - (void)updatePastOcurrencesFromServer
 {
-    
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    
-    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
-    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
-    
-    // Pede pro manager fazer o Post
-    [manager POST:postGetAllUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        
-        // progress bar
-        [MRProgressOverlayView showOverlayAddedTo:self.view title:@"Buscando ocorrencias..." mode:MRProgressOverlayViewModeIndeterminate animated:YES];
-        
-        // Post funcionou
-        
-        NSError *json_error = nil;
-        id object = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:&json_error];
-        
-        
-        if (json_error != nil) { // Erro no Parser JSON
-            
-            [self printServerCommunicationMessage:responseObject];
-            NSLog(@"JSON Parser Error: %@", json_error);
-            [self showDialog:@"Communication Error" dialogType:NO];
-            
-        } else if ([object isKindOfClass:[NSArray class]]) {
-        
-            //[self waitSecondsAndExecute:^{
-                self.pastOccurrences = (NSArray *)object;
-                
-                [self drawMarkers];
-                
-                [MRProgressOverlayView dismissOverlayForView:self.view animated:YES];
-            //} delayTime:0];
-            
-            
-        } else NSLog(@"JSON Parser Error, Object is not a array!");
-        
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
-        // Erro no POST
-        
-        NSLog(@"Post Request Error: %@", error);
-        
-        [self showDialog:@"Communication Error" dialogType:NO];
-    }];
+    DERequestManager *sharedRM = [DERequestManager sharedRequestManager];
+    [sharedRM getFromServer:postGetAllUrl
+              expectedClass:[NSArray class]
+              caseOfSuccess:^(id responseObject) {
+                  
+                  // SUCCESS
+                  
+                  self.pastOccurrences = (NSArray *)responseObject;
+                  
+                  [self drawMarkers];
+                  
+                  [MRProgressOverlayView dismissOverlayForView:self.view animated:YES];
+              }
+              caseOfFailure:^(NSString *error) {
+                  
+                  // FAILURE
+                  [self showDialog:@"Communication Error" dialogType:NO];
+              }];
 }
 
 - (void)updateOcurrenceTypeFromServer
 {
     
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    DERequestManager *sharedRM = [DERequestManager sharedRequestManager];
     
-    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
-    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
-    
-    // Pede pro manager fazer o Post
-    [manager POST:postGetOccurenceType parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [sharedRM getFromServer:postGetOccurenceType
+              expectedClass:[NSArray class]
+              caseOfSuccess:^(id responseObject) {
+                  
+                  // SUCCESS
+                  
+                  //Update o tipoDeOcorrencia picker
+                  self.tipoDeOccorencias = (NSArray *)responseObject;
+                  
+                  NSMutableArray *mutableArray = [[NSMutableArray alloc] init];
+                  for (NSDictionary *tipo in self.tipoDeOccorencias) {
+                      [mutableArray addObject:[tipo objectForKey:@"nome"]];
+                  }
+                  
+                  tipoDeOcorrencias_ = [NSArray arrayWithArray:mutableArray];
+
+                  
+              } caseOfFailure:^(NSString *error) {
+                  
+                  // FAILURE
         
-        // Post funcionou
-        
-        NSError *json_error = nil;
-        id object = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:&json_error];
-        
-        
-        if (json_error != nil) { // Erro no Parser JSON
-            
-            [self printServerCommunicationMessage:responseObject];
-            NSLog(@"JSON Parser Error: %@", json_error);
-            [self showDialog:@"Communication Error" dialogType:NO];
-            
-        } else if ([object isKindOfClass:[NSArray class]]) {
-            
-            //Update o tipoDeOcorrencia picker
-            self.tipoDeOccorencias = (NSArray *)object;
-            
-            NSMutableArray *mutableArray = [[NSMutableArray alloc] init];
-            for (NSDictionary *tipo in self.tipoDeOccorencias) {
-                [mutableArray addObject:[tipo objectForKey:@"nome"]];
-            }
-            
-            tipoDeOcorrencias_ = [NSArray arrayWithArray:mutableArray];
-            
-            
-        } else NSLog(@"JSON Parser Error, Object is not a array!");
-        
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
-        // Erro no POST
-        
-        NSLog(@"Post Request Error: %@", error);
-        
-        [self showDialog:@"Communication Error" dialogType:NO];
+                  [self showDialog:@"Communication Error" dialogType:NO];
     }];
+    
 }
 
 - (void)testaSession
 {
+    DERequestManager *sharedRM = [DERequestManager sharedRequestManager];
     
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    [sharedRM postToServer:@"http://passoudoponto.org/usuario/test_login/1"
+                parameters:nil
+             caseOfSuccess:^(NSString *success) {
+                 
+                 [self getOccurencesByCurrentUser];
+             }
+             caseOfFailure:^(int errorType, NSString *error) {
+                 switch (errorType) {
+                     case 1:
+                         [self showDialog:error dialogType:NO];
+                         break;
+                         
+                     case 2:
+                         [self showDialog:@"Authorization Denied" dialogType:NO];
+                         break;
+                         
+                     case 3:
+                         [self showDialog:@"You need to be logged in" dialogType:NO];
+                         [self presentViewController:self.lvc animated:YES completion:nil];
+                         break;
+                         
+                     default:
+                         [self showDialog:@"Unknown Error" dialogType:NO];
+                         break;
+                 }
+                 
+                 [self getOccurencesByCurrentUser];
+
+             }];
     
-    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
-    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
-    
-    // Pede pro manager fazer o Post
-    [manager POST:@"http://passoudoponto.org/usuario/test_login/1" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        
-        // Post funcionou
-        
-        NSError *json_error = nil;
-        id object = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:&json_error];
-        
-        
-        if (json_error != nil) { // Erro no Parser JSON
-            
-            [self printServerCommunicationMessage:responseObject];
-            NSLog(@"JSON Parser Error: %@", json_error);
-            [self showDialog:@"Communication Error" dialogType:NO];
-            
-        } else if ([object isKindOfClass:[NSDictionary class]]) {
-            
-            NSDictionary *dict = (NSDictionary *)object;
-            NSLog(@"%@",dict);
-            [self getOccurencesByCurrentUser];
-            
-        } else NSLog(@"JSON Parser Error, Object is not a %@, is a %@!", [NSDictionary class], [object class]);
-        
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
-        // Erro no POST
-        
-        NSLog(@"Post Request Error: %@", error);
-        
-        [self showDialog:@"Communication Error" dialogType:NO];
-    }];
 }
 
 
 - (void)getOccurencesByCurrentUser
 {
     
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    DERequestManager *sharedRM = [DERequestManager sharedRequestManager];
     
-    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
-    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
-    
-    // Pede pro manager fazer o Post
-    [manager POST:postGetOccurenceByCurrentUser parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        
-        // Post funcionou
-        
-        NSError *json_error = nil;
-        id object = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:&json_error];
-        
-        
-        if (json_error != nil) { // Erro no Parser JSON
-            
-            [self printServerCommunicationMessage:responseObject];
-            NSLog(@"JSON Parser Error: %@", json_error);
-            [self showDialog:@"Communication Error" dialogType:NO];
-            
-        } else if ([object isKindOfClass:[NSDictionary class]]) {
-            
-            NSDictionary *dict = (NSDictionary *)object;
-            NSLog(@"%@",dict);
-            
-        } else NSLog(@"JSON Parser Error, Object is not a %@, is a %@!", [NSDictionary class], [object class]);
-        
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
-        // Erro no POST
-        
-        NSLog(@"Post Request Error: %@", error);
-        
-        [self showDialog:@"Communication Error" dialogType:NO];
-    }];
+    [sharedRM getFromServer:postGetOccurenceByCurrentUser
+              expectedClass:[NSDictionary class]
+              caseOfSuccess:^(id responseObject) {
+                  NSDictionary *dict = (NSDictionary *)responseObject;
+                  NSLog(@"%@",dict);
+              }
+              caseOfFailure:^(NSString *error) {
+                  [self showDialog:error dialogType:NO];
+              }];
 }
 
 

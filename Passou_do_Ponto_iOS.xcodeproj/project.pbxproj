@@ -16,6 +16,7 @@
 		74335D421AD1B99600E4833A /* DELoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74335D401AD1B99600E4833A /* DELoginViewController.m */; };
 		74335D431AD1B99600E4833A /* DELoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74335D411AD1B99600E4833A /* DELoginViewController.xib */; };
 		744E300E1ACE34C200D8A913 /* DETipoDaOcorrenciaView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 744E300D1ACE34C200D8A913 /* DETipoDaOcorrenciaView.xib */; };
+		7488C85D1B4AFEA6006DFA2F /* DERequestManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7488C85C1B4AFEA6006DFA2F /* DERequestManager.m */; };
 		7497E69F1AD6E172001C6333 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7497E69E1AD6E172001C6333 /* FBSDKCoreKit.framework */; };
 		7497E6A51AD6E85F001C6333 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7497E6A41AD6E85F001C6333 /* FBSDKLoginKit.framework */; };
 		74B5B8BF1ACDCFCA00A4EDF6 /* arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 74B5B8BD1ACDCFCA00A4EDF6 /* arrow.png */; };
@@ -66,6 +67,8 @@
 		74335D401AD1B99600E4833A /* DELoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DELoginViewController.m; sourceTree = "<group>"; };
 		74335D411AD1B99600E4833A /* DELoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DELoginViewController.xib; sourceTree = "<group>"; };
 		744E300D1ACE34C200D8A913 /* DETipoDaOcorrenciaView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DETipoDaOcorrenciaView.xib; sourceTree = "<group>"; };
+		7488C85B1B4AFEA6006DFA2F /* DERequestManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DERequestManager.h; sourceTree = "<group>"; };
+		7488C85C1B4AFEA6006DFA2F /* DERequestManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DERequestManager.m; sourceTree = "<group>"; };
 		7497E69E1AD6E172001C6333 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = FacebookSDK/FBSDKCoreKit.framework; sourceTree = SOURCE_ROOT; };
 		7497E6A41AD6E85F001C6333 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = FacebookSDK/FBSDKLoginKit.framework; sourceTree = SOURCE_ROOT; };
 		74B5B8BD1ACDCFCA00A4EDF6 /* arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = arrow.png; path = Resources/arrow.png; sourceTree = "<group>"; };
@@ -170,6 +173,8 @@
 				74F5E18A1B4899A900533453 /* DECadastroViewController.xib */,
 				74F5E18D1B48AA4600533453 /* DENotificationsCentral.h */,
 				74F5E18E1B48AA4600533453 /* DENotificationsCentral.m */,
+				7488C85B1B4AFEA6006DFA2F /* DERequestManager.h */,
+				7488C85C1B4AFEA6006DFA2F /* DERequestManager.m */,
 				7415EE341AC795E700979899 /* Images.xcassets */,
 				7415EE271AC795E600979899 /* Supporting Files */,
 			);
@@ -386,6 +391,7 @@
 				7415EE2D1AC795E700979899 /* AppDelegate.m in Sources */,
 				7415EE2A1AC795E700979899 /* main.m in Sources */,
 				74335D421AD1B99600E4833A /* DELoginViewController.m in Sources */,
+				7488C85D1B4AFEA6006DFA2F /* DERequestManager.m in Sources */,
 				74F5E18F1B48AA4600533453 /* DENotificationsCentral.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -12,6 +12,8 @@
 
 @interface ViewController : UIViewController <UIPickerViewDelegate, UIPickerViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate, DELoginProtocol, GMSMapViewDelegate>
 
+@property (nonatomic, strong) DELoginViewController *lvc;
+
 @property (nonatomic, strong) UIImage *photo;
 @property (nonatomic, strong) NSDictionary *photoMetadata;
 @property (nonatomic) BOOL userHasLoggedIn;
