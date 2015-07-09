@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "DENotificationsCentral.h"
 
 @interface DEControlPanelViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 
@@ -16,5 +17,7 @@
 @property (weak, nonatomic) IBOutlet UITableView *listaOcorrenciasTableView;
 
 @property (strong, nonatomic) NSArray *userOcorrencias;
+
+@property (strong, nonatomic) DENotificationsCentral *sharedNC;
 
 @end

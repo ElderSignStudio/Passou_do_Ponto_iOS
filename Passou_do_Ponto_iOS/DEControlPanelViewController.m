@@ -7,6 +7,10 @@
 //
 
 #import "DEControlPanelViewController.h"
+#import "DERequestManager.h"
+#import "DENotificationsCentral.h"
+
+static NSString *postDeletaOcorrencia = @"http://passoudoponto.org/ocorrencia/delete/";
 
 @interface DEControlPanelViewController ()
 
@@ -21,6 +25,8 @@
     // Do any additional setup after loading the view from its nib.
     
     self.listaOcorrenciasTableView.allowsSelectionDuringEditing = NO;
+    
+    self.sharedNC = [DENotificationsCentral sharedNotificationCentral];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -78,9 +84,43 @@
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    NSDictionary *item = (NSDictionary *)self.userOcorrencias[indexPath.row];
+    
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        //something
+        
+        [self deleteOcorrencia:[item objectForKey:@"id"] rowNumber:indexPath.row];
+    
     }
+}
+
+#pragma mark - AFNetwork methods
+
+- (void)deleteOcorrencia:(NSString *)id rowNumber:(NSUInteger)row
+{
+    // monta a url
+    NSMutableString *postUrl = [NSMutableString stringWithString:postDeletaOcorrencia];
+    [postUrl appendString:id];
+    
+    DERequestManager *sharedRM = [DERequestManager sharedRequestManager];
+    [sharedRM postToServer:postUrl
+                parameters:nil
+             caseOfSuccess:^(NSString *success) {
+                 
+                 // Remoção ocorrida, remove na array tambem
+                 
+                 NSMutableArray *tempArray = [NSMutableArray arrayWithArray:self.userOcorrencias];
+                 [tempArray removeObjectAtIndex:row];
+                 self.userOcorrencias = [NSArray arrayWithArray:tempArray];
+                 
+                 [self.listaOcorrenciasTableView reloadData];
+             }
+             caseOfFailure:^(int errorType, NSString *error) {
+                 
+                 [self.sharedNC showDialog:error dialogType:NO duration:2.0 viewToShow:self.view];
+                 
+             }];
+    
+    
 }
 
 @end

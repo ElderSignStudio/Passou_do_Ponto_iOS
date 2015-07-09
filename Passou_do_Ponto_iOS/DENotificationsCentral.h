@@ -12,6 +12,7 @@
 @interface DENotificationsCentral : NSObject
 
 - (void)showAlert:(UIViewController *)view content:(NSString *)text;
+- (void)showDialog:(NSString *)text dialogType:(BOOL)success duration:(float)delay viewToShow:(UIView *)view;
 
 + (id)sharedNotificationCentral;
 

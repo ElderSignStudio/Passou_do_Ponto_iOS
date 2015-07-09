@@ -7,6 +7,7 @@
 //
 
 #import "DENotificationsCentral.h"
+#import <MRProgress.h>
 
 @implementation DENotificationsCentral
 
@@ -46,6 +47,33 @@
     [alert addAction:defaultAction];
     [view presentViewController:alert animated:YES completion:nil];
     
+}
+
+
+#pragma mark - MRProgress Dialogs
+
+
+- (void)showDialog:(NSString *)text dialogType:(BOOL)success duration:(float)delay viewToShow:(UIView *)view
+{
+    [MRProgressOverlayView dismissOverlayForView:view animated:YES];
+    
+    MRProgressOverlayView *progressView = [MRProgressOverlayView showOverlayAddedTo:view animated:YES];
+    
+    progressView.titleLabelText = text;
+    
+    if (success) {
+        progressView.mode = MRProgressOverlayViewModeCheckmark;
+    } else progressView.mode = MRProgressOverlayViewModeCross;
+    
+    if (delay > 0.0) {
+        [self performSelector:@selector(dismissDialog:) withObject:progressView afterDelay:delay];
+    }
+    
+}
+
+- (void)dismissDialog:(MRProgressOverlayView *)overlayView
+{
+    [overlayView dismiss:YES];
 }
 
 
