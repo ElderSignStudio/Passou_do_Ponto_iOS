@@ -11,11 +11,11 @@
 
 #import "ViewController.h"
 #import <GoogleMaps/GoogleMaps.h>
-#import <MRProgress.h>
 #import <MobileCoreServices/MobileCoreServices.h>
 #import <AFNetworking.h>
 #import "DELoginViewController.h"
 #import "DERequestManager.h"
+#import "DENotificationsCentral.h"
 #import "DENotificationsCentral.h"
 
 static CGFloat kOverlayHeight = 100.0f;
@@ -35,6 +35,8 @@ static NSString *postGetOccurenceByCurrentUser = @"http://passoudoponto.org/usua
     
     UIView *popoverView_;
     UIView *viewDummy_;
+    
+    DENotificationsCentral *sharedNC_;
 }
 
 #pragma mark - Initializers
@@ -96,6 +98,9 @@ static NSString *postGetOccurenceByCurrentUser = @"http://passoudoponto.org/usua
     self.userHasLoggedIn = NO;
     self.userName = @"no_username";
     self.currentPositionWasDragged = NO;
+    
+    // Get pointer to the sharednotificationcentral, for error, dialogs, etc
+    sharedNC_ = [DENotificationsCentral sharedNotificationCentral];
     
     // Create and configure overlay frame
     CGRect overlayFrame = CGRectMake(0, -kOverlayHeight, 0, kOverlayHeight);
@@ -335,9 +340,6 @@ static NSString *postGetOccurenceByCurrentUser = @"http://passoudoponto.org/usua
 
 - (IBAction)enviarButtonPressed:(UIButton *)sender {
     
-    // fecha janela
-    [self performSelector:@selector(dismissOverlay) withObject:nil afterDelay:1.0];
-    
     [popoverView_ removeFromSuperview];
     [viewDummy_ removeFromSuperview];
     
@@ -498,8 +500,6 @@ static NSString *postGetOccurenceByCurrentUser = @"http://passoudoponto.org/usua
 - (void)postToServer:(NSDictionary *)parameters
 {
     
-    [MRProgressOverlayView showOverlayAddedTo:self.view title:@"Enviando..." mode:MRProgressOverlayViewModeIndeterminate animated:YES];
-    
     DERequestManager *sharedRM = [DERequestManager sharedRequestManager];
     
     [sharedRM postToServer:postInsertUrl
@@ -507,8 +507,7 @@ static NSString *postGetOccurenceByCurrentUser = @"http://passoudoponto.org/usua
              caseOfSuccess:^(NSString *success) {
                  
                  // SUCCESS
-                 
-                 [self showDialog:@"Enviado com sucesso!" dialogType:YES];
+                 [sharedNC_ showDialog:success dialogType:YES duration:2.0 viewToShow:self.view];
                  
                  [self updatePastOcurrencesFromServer];
                  
@@ -517,25 +516,9 @@ static NSString *postGetOccurenceByCurrentUser = @"http://passoudoponto.org/usua
                  
                  // FAILURE
                  
-                 switch (errorType) {
-                     case 1:
-                         [self showDialog:@"Communication Error" dialogType:NO];
-                         break;
-                    
-                     case 2:
-                         [self showDialog:@"Authorization Denied" dialogType:NO];
-                         break;
-                         
-                     case 3:
-                         [self showDialog:@"You need to be logged in" dialogType:NO];
-                         [self presentViewController:self.lvc animated:YES completion:nil];
-                         break;
-                         
-                     default:
-                         [self showDialog:@"Unknown Error" dialogType:NO];
-                         break;
-                 }
+                 [sharedNC_ showDialog:error dialogType:NO duration:2.0 viewToShow:self.view];
                  
+                 if (errorType == 3) [self presentViewController:self.lvc animated:YES completion:nil];
              }];
     
 }
@@ -552,13 +535,11 @@ static NSString *postGetOccurenceByCurrentUser = @"http://passoudoponto.org/usua
                   self.pastOccurrences = (NSArray *)responseObject;
                   
                   [self drawMarkers];
-                  
-                  [MRProgressOverlayView dismissOverlayForView:self.view animated:YES];
               }
               caseOfFailure:^(NSString *error) {
                   
                   // FAILURE
-                  [self showDialog:@"Communication Error" dialogType:NO];
+                  [sharedNC_ showDialog:error dialogType:NO duration:2.0 viewToShow:self.view];
               }];
 }
 
@@ -588,7 +569,7 @@ static NSString *postGetOccurenceByCurrentUser = @"http://passoudoponto.org/usua
                   
                   // FAILURE
         
-                  [self showDialog:@"Communication Error" dialogType:NO];
+                  [sharedNC_ showDialog:error dialogType:NO duration:2.0 viewToShow:self.view];
     }];
     
 }
@@ -629,12 +610,6 @@ static NSString *postGetOccurenceByCurrentUser = @"http://passoudoponto.org/usua
 }
 
 
-- (void)dismissOverlay
-{
-    [MRProgressOverlayView dismissOverlayForView:self.view animated:YES];
-}
-
-
 - (void)controlPanelButtonPressed
 {
     DERequestManager *sharedRM = [DERequestManager sharedRequestManager];
@@ -664,22 +639,9 @@ static NSString *postGetOccurenceByCurrentUser = @"http://passoudoponto.org/usua
               }
               caseOfFailure:^(NSString *error) {
                   
-                  [self showDialog:error dialogType:NO];
+                  [sharedNC_ showDialog:error dialogType:NO duration:2.0 viewToShow:self.view];
               }];
 
-    
-}
-
-#pragma mark - Helper Methods
-
-- (void)showDialog:(NSString *)text dialogType:(BOOL)success
-{
-    [MRProgressOverlayView dismissOverlayForView:self.view animated:YES];
-    
-    if (success) {
-        [MRProgressOverlayView showOverlayAddedTo:self.view title:text mode:MRProgressOverlayViewModeCheckmark animated:NO];
-    } else [MRProgressOverlayView showOverlayAddedTo:self.view title:text mode:MRProgressOverlayViewModeCross animated:NO];
-    
     
 }
 

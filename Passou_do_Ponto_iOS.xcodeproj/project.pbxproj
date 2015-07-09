@@ -167,24 +167,15 @@
 			children = (
 				74B5B8C11ACDCFD300A4EDF6 /* Resources */,
 				74B7B4CF1AC79A4A00E16438 /* Frameworks */,
-				7415EE2B1AC795E700979899 /* AppDelegate.h */,
-				7415EE2C1AC795E700979899 /* AppDelegate.m */,
+				74F0B7D41B4F3AEB00B110AA /* AppDelegate */,
 				7415EE2E1AC795E700979899 /* ViewController.h */,
 				7415EE2F1AC795E700979899 /* ViewController.m */,
 				744E300D1ACE34C200D8A913 /* DETipoDaOcorrenciaView.xib */,
-				74335D3F1AD1B99600E4833A /* DELoginViewController.h */,
-				74335D401AD1B99600E4833A /* DELoginViewController.m */,
-				74335D411AD1B99600E4833A /* DELoginViewController.xib */,
-				74F5E1881B4899A900533453 /* DECadastroViewController.h */,
-				74F5E1891B4899A900533453 /* DECadastroViewController.m */,
-				74F5E18A1B4899A900533453 /* DECadastroViewController.xib */,
 				74F5E18D1B48AA4600533453 /* DENotificationsCentral.h */,
 				74F5E18E1B48AA4600533453 /* DENotificationsCentral.m */,
 				7488C85B1B4AFEA6006DFA2F /* DERequestManager.h */,
 				7488C85C1B4AFEA6006DFA2F /* DERequestManager.m */,
-				7483F1DA1B4DFA1C008CFFD3 /* DEControlPanelViewController.h */,
-				7483F1DB1B4DFA1C008CFFD3 /* DEControlPanelViewController.m */,
-				7483F1DC1B4DFA1C008CFFD3 /* DEControlPanelViewController.xib */,
+				74F0B7D31B4F3ACD00B110AA /* Secondary Screens */,
 				7415EE341AC795E700979899 /* Images.xcassets */,
 				7415EE271AC795E600979899 /* Supporting Files */,
 			);
@@ -247,6 +238,47 @@
 				74FDEF071AC79A7800CE47D7 /* AVFoundation.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		74F0B7D31B4F3ACD00B110AA /* Secondary Screens */ = {
+			isa = PBXGroup;
+			children = (
+				74F0B7D51B4F3B0C00B110AA /* Login / Cadastro */,
+				74F0B7D61B4F3B1600B110AA /* Control Panel */,
+			);
+			name = "Secondary Screens";
+			sourceTree = "<group>";
+		};
+		74F0B7D41B4F3AEB00B110AA /* AppDelegate */ = {
+			isa = PBXGroup;
+			children = (
+				7415EE2B1AC795E700979899 /* AppDelegate.h */,
+				7415EE2C1AC795E700979899 /* AppDelegate.m */,
+			);
+			name = AppDelegate;
+			sourceTree = "<group>";
+		};
+		74F0B7D51B4F3B0C00B110AA /* Login / Cadastro */ = {
+			isa = PBXGroup;
+			children = (
+				74335D3F1AD1B99600E4833A /* DELoginViewController.h */,
+				74335D401AD1B99600E4833A /* DELoginViewController.m */,
+				74335D411AD1B99600E4833A /* DELoginViewController.xib */,
+				74F5E1881B4899A900533453 /* DECadastroViewController.h */,
+				74F5E1891B4899A900533453 /* DECadastroViewController.m */,
+				74F5E18A1B4899A900533453 /* DECadastroViewController.xib */,
+			);
+			name = "Login / Cadastro";
+			sourceTree = "<group>";
+		};
+		74F0B7D61B4F3B1600B110AA /* Control Panel */ = {
+			isa = PBXGroup;
+			children = (
+				7483F1DA1B4DFA1C008CFFD3 /* DEControlPanelViewController.h */,
+				7483F1DB1B4DFA1C008CFFD3 /* DEControlPanelViewController.m */,
+				7483F1DC1B4DFA1C008CFFD3 /* DEControlPanelViewController.xib */,
+			);
+			name = "Control Panel";
 			sourceTree = "<group>";
 		};
 		A2ED9C692BD7FEA168912A6B /* Pods */ = {

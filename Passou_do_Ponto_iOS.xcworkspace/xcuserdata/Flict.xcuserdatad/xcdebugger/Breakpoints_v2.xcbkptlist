@@ -9,13 +9,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Passou_do_Ponto_iOS/ViewController.m"
-            timestampString = "458094657.554134"
+            filePath = "Passou_do_Ponto_iOS/DENotificationsCentral.m"
+            timestampString = "458176498.132706"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "188"
-            endingLineNumber = "188"
-            landmarkName = "-loginSuccessful:"
+            startingLineNumber = "68"
+            endingLineNumber = "68"
+            landmarkName = "-showDialog:dialogType:duration:viewToShow:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
