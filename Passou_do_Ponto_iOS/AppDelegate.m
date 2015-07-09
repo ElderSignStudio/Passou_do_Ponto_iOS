@@ -26,9 +26,7 @@
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
-    
     ViewController *vc = [[ViewController alloc] init];
-    
     self.window.rootViewController = vc;
     
     [self.window makeKeyAndVisible];

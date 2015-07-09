@@ -114,8 +114,19 @@ static NSString *postGetOccurenceByCurrentUser = @"http://passoudoponto.org/usua
     // Button target method
     [passouDoPontoButton addTarget:self action:@selector(passouDoPontoButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     
+    
+    // Create the control panel button
+    UIButton *controlPanelButton = [UIButton buttonWithType:UIButtonTypeInfoDark];
+    controlPanelButton.frame = CGRectMake(0.0, 0.0, 40.0, 40.0);
+    controlPanelButton.tintColor = [UIColor blackColor];
+
+    // Button target method
+    [controlPanelButton addTarget:self action:@selector(controlPanelButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+    
+    
     // Add button to overlay and overlay to view
     [overlay_ addSubview:passouDoPontoButton];
+    [overlay_ addSubview:controlPanelButton];
     [self.view addSubview:overlay_];
     
     // Buttons Constraints
@@ -182,8 +193,6 @@ static NSString *postGetOccurenceByCurrentUser = @"http://passoudoponto.org/usua
     self.currentLocationMarker.draggable = YES;
     
     [self updatePastOcurrencesFromServer];
-    
-    //[self testaSession];
     
 }
 
@@ -584,61 +593,7 @@ static NSString *postGetOccurenceByCurrentUser = @"http://passoudoponto.org/usua
     
 }
 
-- (void)testaSession
-{
-    DERequestManager *sharedRM = [DERequestManager sharedRequestManager];
-    
-    [sharedRM postToServer:@"http://passoudoponto.org/usuario/test_login/1"
-                parameters:nil
-             caseOfSuccess:^(NSString *success) {
-                 
-                 [self getOccurencesByCurrentUser];
-             }
-             caseOfFailure:^(int errorType, NSString *error) {
-                 switch (errorType) {
-                     case 1:
-                         [self showDialog:error dialogType:NO];
-                         break;
-                         
-                     case 2:
-                         [self showDialog:@"Authorization Denied" dialogType:NO];
-                         break;
-                         
-                     case 3:
-                         [self showDialog:@"You need to be logged in" dialogType:NO];
-                         [self presentViewController:self.lvc animated:YES completion:nil];
-                         break;
-                         
-                     default:
-                         [self showDialog:@"Unknown Error" dialogType:NO];
-                         break;
-                 }
-                 
-                 [self getOccurencesByCurrentUser];
-
-             }];
-    
-}
-
-
-- (void)getOccurencesByCurrentUser
-{
-    
-    DERequestManager *sharedRM = [DERequestManager sharedRequestManager];
-    
-    [sharedRM getFromServer:postGetOccurenceByCurrentUser
-              expectedClass:[NSDictionary class]
-              caseOfSuccess:^(id responseObject) {
-                  NSDictionary *dict = (NSDictionary *)responseObject;
-                  NSLog(@"%@",dict);
-              }
-              caseOfFailure:^(NSString *error) {
-                  [self showDialog:error dialogType:NO];
-              }];
-}
-
-
-#pragma mark - "Passou do Ponto!" button Target
+#pragma mark - Buttons Target
 
 -(void)passouDoPontoButtonPressed
 {
@@ -646,6 +601,8 @@ static NSString *postGetOccurenceByCurrentUser = @"http://passoudoponto.org/usua
     if (self.currentPositionWasDragged) {
         [mapView_ animateToLocation:self.draggedCurrentMarkerCoordinates];
     } else [mapView_ animateToLocation:self.userCoordinates];
+    
+    
     
     viewDummy_ = [[UIView alloc] initWithFrame:self.view.bounds];
     viewDummy_.backgroundColor = [UIColor colorWithHue:0.0 saturation:0.0 brightness:0.0 alpha:0.0];
@@ -662,8 +619,10 @@ static NSString *postGetOccurenceByCurrentUser = @"http://passoudoponto.org/usua
     
     // Animating a entrada da view
     [UIView animateWithDuration:0.5 delay:0.0 options:0 animations:^{
+        
         popoverView_.center = viewDummy_.center;
         viewDummy_.backgroundColor = [UIColor colorWithHue:0.0 saturation:0.0 brightness:0.0 alpha:0.7];
+        
     } completion:NULL];
     
     
@@ -676,6 +635,41 @@ static NSString *postGetOccurenceByCurrentUser = @"http://passoudoponto.org/usua
 }
 
 
+- (void)controlPanelButtonPressed
+{
+    DERequestManager *sharedRM = [DERequestManager sharedRequestManager];
+    [sharedRM postToServer:@"http://passoudoponto.org/usuario/test_login/1"
+                parameters:nil
+             caseOfSuccess:^(NSString *success) {
+                 [self getOcorrenciasUsuario];
+             }
+             caseOfFailure:^(int errorType, NSString *error) {
+                 
+             }];
+}
+
+- (void)getOcorrenciasUsuario
+{
+    self.cpvc = [[DEControlPanelViewController alloc] init];
+    
+    DERequestManager *sharedRM = [DERequestManager sharedRequestManager];
+    
+    [sharedRM getFromServer:postGetOccurenceByCurrentUser
+              expectedClass:[NSDictionary class]
+              caseOfSuccess:^(id responseObject) {
+                  
+                  self.cpvc.userOcorrencias = (NSArray *)[(NSDictionary *)responseObject objectForKey:@"ocorrencias"];
+
+                  [self presentViewController:self.cpvc animated:YES completion:nil];
+              }
+              caseOfFailure:^(NSString *error) {
+                  
+                  [self showDialog:error dialogType:NO];
+              }];
+
+    
+}
+
 #pragma mark - Helper Methods
 
 - (void)showDialog:(NSString *)text dialogType:(BOOL)success
@@ -687,30 +681,6 @@ static NSString *postGetOccurenceByCurrentUser = @"http://passoudoponto.org/usua
     } else [MRProgressOverlayView showOverlayAddedTo:self.view title:text mode:MRProgressOverlayViewModeCross animated:NO];
     
     
-}
-
-- (void)printServerCommunicationMessage:(NSData *)data
-{
-    const unsigned char *ptr = [data bytes];
-    
-    NSMutableString *texto = [[NSMutableString alloc] initWithString:@""];
-    
-    for (int i=0; i<[data length]; i++) {
-        unsigned char c = *ptr++;
-        [texto appendString:[NSString stringWithFormat:@"%c",c]];
-    }
-    
-    NSLog(@"Texto: %@",texto);
-
-}
-
-- (void)waitSecondsAndExecute:(void (^)(void))block delayTime:(double)seconds
-{
-    double delayInSeconds = seconds;
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        block();
-    });
 }
 
 

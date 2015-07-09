@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <GoogleMaps/GoogleMaps.h>
 #import "DELoginViewController.h"
+#import "DEControlPanelViewController.h"
 
 @interface ViewController : UIViewController <UIPickerViewDelegate, UIPickerViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate, DELoginProtocol, GMSMapViewDelegate>
 
@@ -29,6 +30,8 @@
 @property (nonatomic) GMSMarker *currentLocationMarker;
 
 @property (nonatomic, strong) NSArray *tipoDeOccorencias;
+
+@property (nonatomic, strong) DEControlPanelViewController *cpvc;
 
 // IBOutlets
 
