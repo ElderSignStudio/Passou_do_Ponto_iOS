@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "DENotificationsCentral.h"
+#import "DEControlPanelEditViewController.h"
 
-@interface DEControlPanelViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
+@interface DEControlPanelViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, DEControlPanelEditProtocol>
 
 @property (weak, nonatomic) IBOutlet UIImageView *avatarImageView;
 @property (weak, nonatomic) IBOutlet UILabel *firstNameLabel;
@@ -17,6 +18,8 @@
 @property (weak, nonatomic) IBOutlet UITableView *listaOcorrenciasTableView;
 
 @property (strong, nonatomic) NSArray *userOcorrencias;
+@property(strong, nonatomic) NSArray *tipoDeOccorencias;
+
 
 @property (strong, nonatomic) DENotificationsCentral *sharedNC;
 

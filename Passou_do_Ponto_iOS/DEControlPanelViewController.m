@@ -9,8 +9,12 @@
 #import "DEControlPanelViewController.h"
 #import "DERequestManager.h"
 #import "DENotificationsCentral.h"
+#import "DEControlPanelEditViewController.h"
 
 static NSString *postDeletaOcorrencia = @"http://passoudoponto.org/ocorrencia/delete/";
+static NSString *postGetOccurenceType = @"http://passoudoponto.org/ocorrencia/ref_get_tipos";
+static NSString *postOccurenceUpdate = @"http://passoudoponto.org/ocorrencia/update";
+static NSString *postGetOccurenceByCurrentUser = @"http://passoudoponto.org/usuario/ocorrencias";
 
 @interface DEControlPanelViewController ()
 
@@ -93,7 +97,21 @@ static NSString *postDeletaOcorrencia = @"http://passoudoponto.org/ocorrencia/de
     }
 }
 
-#pragma mark - AFNetwork methods
+- (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+    NSDictionary *item = (NSDictionary *)self.userOcorrencias[indexPath.row];
+    
+    DEControlPanelEditViewController *editViewController = [[DEControlPanelEditViewController alloc] init];
+    editViewController.ocorrenciaEditada = item;
+    editViewController.tiposDeOcorrencia = self.tipoDeOccorencias;
+    editViewController.delegate = self;
+    
+    [self presentViewController:editViewController animated:YES completion:nil];
+}
+
+
+#pragma mark - AFNetwork Methods
 
 - (void)deleteOcorrencia:(NSString *)id rowNumber:(NSUInteger)row
 {
@@ -121,6 +139,49 @@ static NSString *postDeletaOcorrencia = @"http://passoudoponto.org/ocorrencia/de
              }];
     
     
+}
+
+- (void)updateOcorrenciasUsuario
+{
+    DERequestManager *sharedRM = [DERequestManager sharedRequestManager];
+    
+    [sharedRM getFromServer:postGetOccurenceByCurrentUser
+              expectedClass:[NSDictionary class]
+              caseOfSuccess:^(id responseObject) {
+                  
+                  self.userOcorrencias = (NSArray *)[(NSDictionary *)responseObject objectForKey:@"ocorrencias"];
+              }
+              caseOfFailure:^(NSString *error) {
+                  
+                  [self.sharedNC showDialog:error dialogType:NO duration:2.0 viewToShow:self.view];
+              }];
+    
+    
+}
+
+#pragma mark - DEControlPanelEdit Protocol
+
+- (void)editCompleted:(NSDictionary *)ocorrenciaAtualizada
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+    
+    // pede para o server atualizar
+    
+    DERequestManager *sharedRM = [DERequestManager sharedRequestManager];
+    
+    DENotificationsCentral *sharedNC = [DENotificationsCentral sharedNotificationCentral];
+    
+    [sharedRM postToServer:postOccurenceUpdate parameters:ocorrenciaAtualizada caseOfSuccess:^(NSString *success) {
+        
+        [self updateOcorrenciasUsuario];
+        [self.listaOcorrenciasTableView reloadData];
+        
+        [sharedNC showDialog:success dialogType:YES duration:2.0 viewToShow:self.view];
+        
+    } caseOfFailure:^(int errorType, NSString *error) {
+        
+        [sharedNC showDialog:error dialogType:NO duration:2.0 viewToShow:self.view];
+    }];
 }
 
 @end

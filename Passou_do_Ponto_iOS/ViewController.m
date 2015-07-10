@@ -634,6 +634,7 @@ static NSString *postGetOccurenceByCurrentUser = @"http://passoudoponto.org/usua
               caseOfSuccess:^(id responseObject) {
                   
                   self.cpvc.userOcorrencias = (NSArray *)[(NSDictionary *)responseObject objectForKey:@"ocorrencias"];
+                  self.cpvc.tipoDeOccorencias = tipoDeOcorrencias_;
 
                   [self presentViewController:self.cpvc animated:YES completion:nil];
               }
