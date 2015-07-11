@@ -17,12 +17,7 @@
 #import "DERequestManager.h"
 #import "DENotificationsCentral.h"
 #import "DENotificationsCentral.h"
-
-static CGFloat kOverlayHeight = 100.0f;
-static NSString *postInsertUrl = @"http://passoudoponto.org/ocorrencia/insert";
-static NSString *postGetAllUrl = @"http://passoudoponto.org/ocorrencia/get_all";
-static NSString *postGetOccurenceType = @"http://passoudoponto.org/ocorrencia/ref_get_tipos";
-static NSString *postGetOccurenceByCurrentUser = @"http://passoudoponto.org/usuario/ocorrencias";
+#import "Constants.h"
 
 @implementation ViewController {
     GMSMapView *mapView_;

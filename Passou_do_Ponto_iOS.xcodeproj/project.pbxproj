@@ -71,6 +71,7 @@
 		74335D3F1AD1B99600E4833A /* DELoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DELoginViewController.h; sourceTree = "<group>"; };
 		74335D401AD1B99600E4833A /* DELoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DELoginViewController.m; sourceTree = "<group>"; };
 		74335D411AD1B99600E4833A /* DELoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DELoginViewController.xib; sourceTree = "<group>"; };
+		74429F601B51CFB5002518FF /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		744E300D1ACE34C200D8A913 /* DETipoDaOcorrenciaView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DETipoDaOcorrenciaView.xib; sourceTree = "<group>"; };
 		7483F1DA1B4DFA1C008CFFD3 /* DEControlPanelViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DEControlPanelViewController.h; sourceTree = "<group>"; };
 		7483F1DB1B4DFA1C008CFFD3 /* DEControlPanelViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DEControlPanelViewController.m; sourceTree = "<group>"; };
@@ -173,6 +174,7 @@
 				74B5B8C11ACDCFD300A4EDF6 /* Resources */,
 				74B7B4CF1AC79A4A00E16438 /* Frameworks */,
 				74F0B7D41B4F3AEB00B110AA /* AppDelegate */,
+				74429F601B51CFB5002518FF /* Constants.h */,
 				7415EE2E1AC795E700979899 /* ViewController.h */,
 				7415EE2F1AC795E700979899 /* ViewController.m */,
 				744E300D1ACE34C200D8A913 /* DETipoDaOcorrenciaView.xib */,

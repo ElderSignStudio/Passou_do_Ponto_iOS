@@ -13,8 +13,7 @@
 #import <AFNetworking.h>
 #import "DENotificationsCentral.h"
 #import "DERequestManager.h"
-
-static NSString *postInsertNewUser = @"http://passoudoponto.org/usuario/insert";
+#import "Constants.h"
 
 @interface DELoginViewController () 
 

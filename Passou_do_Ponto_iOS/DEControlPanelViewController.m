@@ -10,11 +10,7 @@
 #import "DERequestManager.h"
 #import "DENotificationsCentral.h"
 #import "DEControlPanelEditViewController.h"
-
-static NSString *postDeletaOcorrencia = @"http://passoudoponto.org/ocorrencia/delete/";
-static NSString *postGetOccurenceType = @"http://passoudoponto.org/ocorrencia/ref_get_tipos";
-static NSString *postOccurenceUpdate = @"http://passoudoponto.org/ocorrencia/update";
-static NSString *postGetOccurenceByCurrentUser = @"http://passoudoponto.org/usuario/ocorrencias";
+#import "Constants.h"
 
 @interface DEControlPanelViewController ()
 

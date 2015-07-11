@@ -8,10 +8,7 @@
 
 #import "DERequestManager.h"
 #import <AFNetworking.h>
-
-static int generalError = 1;
-static int authError = 2;
-static int accessDenied = 3;
+#import "Constants.h"
 
 @implementation DERequestManager
 
