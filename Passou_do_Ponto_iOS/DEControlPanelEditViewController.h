@@ -10,17 +10,30 @@
 
 @protocol DEControlPanelEditProtocol;
 
-@interface DEControlPanelEditViewController : UIViewController <UIPickerViewDelegate>
+@interface DEControlPanelEditViewController : UIViewController <UIPickerViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
 @property (nonatomic, weak) id<DEControlPanelEditProtocol> delegate;
+
+@property (nonatomic) BOOL ocorrenciaENova;
 
 @property (weak, nonatomic) IBOutlet UIPickerView *tipoOcorrenciaPicker;
 @property (weak, nonatomic) IBOutlet UITextField *numeroOnibusTextField;
 @property (weak, nonatomic) IBOutlet UILabel *latitudeTextField;
 @property (weak, nonatomic) IBOutlet UILabel *longitudeTextField;
+@property (weak, nonatomic) IBOutlet UIButton *fotoButton;
 
 @property (nonatomic, strong) NSArray *tiposDeOcorrencia;
+
+// EDIT OCORRENCIAS
 @property (nonatomic, strong) NSDictionary *ocorrenciaEditada;
+
+// NEW OCORRENCIA
+@property (nonatomic, strong) NSString *lat;
+@property (nonatomic, strong) NSString *lng;
+
+// PHOTO
+@property (nonatomic, strong) UIImage *photo;
+@property (nonatomic, strong) NSDictionary *photoMetadata;
 
 @end
 

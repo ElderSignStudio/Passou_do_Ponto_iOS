@@ -47,7 +47,12 @@
 #pragma mark - Buttons
 
 - (IBAction)doneButtonPressed:(UIButton *)sender {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    
+    id<DEControlPanelProtocol> strongDelegate = self.delegate;
+    
+    if ([strongDelegate respondsToSelector:@selector(doneEditing)]) {
+        [strongDelegate doneEditing];
+    }
 }
 
 #pragma mark - Tableview methods
@@ -102,6 +107,7 @@
     editViewController.ocorrenciaEditada = item;
     editViewController.tiposDeOcorrencia = self.tipoDeOccorencias;
     editViewController.delegate = self;
+    editViewController.ocorrenciaENova = NO;
     
     [self presentViewController:editViewController animated:YES completion:nil];
 }
@@ -159,7 +165,6 @@
 
 - (void)editCompleted:(NSDictionary *)ocorrenciaAtualizada
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
     
     // pede para o server atualizar
     
@@ -169,6 +174,8 @@
     
     [sharedRM postToServer:postOccurenceUpdate parameters:ocorrenciaAtualizada caseOfSuccess:^(NSString *success) {
         
+        [self dismissViewControllerAnimated:YES completion:nil];
+        
         [self updateOcorrenciasUsuario];
         [self.listaOcorrenciasTableView reloadData];
         
@@ -176,7 +183,10 @@
         
     } caseOfFailure:^(int errorType, NSString *error) {
         
-        [sharedNC showDialog:error dialogType:NO duration:2.0 viewToShow:self.view];
+#warning tirar isse dismiss daqui debaixo, assim que o chris concertar o erro do server PHP no OK do edit.
+        [self dismissViewControllerAnimated:YES completion:nil];
+        
+        [sharedNC showDialog:error dialogType:NO duration:2.0 viewToShow:[[[[UIApplication sharedApplication] keyWindow] subviews] lastObject]];
     }];
 }
 

@@ -256,20 +256,24 @@
             
             occorenciaMarker = [[GMSMarker alloc] init];
             
-            CLLocationCoordinate2D coord = self.userCoordinates;
-            coord.latitude =  [[occurence objectForKey:@"lat"] doubleValue];
-            coord.longitude = [[occurence objectForKey:@"lng"] doubleValue];
-            
-            //NSLog(@"Plotting id=%@ Lat: %f Long: %f", [occurence objectForKey:@"id"], coord.latitude, coord.longitude);
-            
-            occorenciaMarker.position = coord;
-            
-            NSInteger index = [[occurence objectForKey:@"tipo_id"] integerValue];
-            NSDictionary *tipo = self.tipoDeOccorencias[index-1];
-            
-            occorenciaMarker.title = [tipo objectForKey:@"nome"];
-            occorenciaMarker.snippet = [NSString stringWithFormat:@"%@\n%@\n%@",[occurence objectForKey:@"num_onibus"], [occurence objectForKey:@"data_hora"], [occurence objectForKey:@"nome"]];
-            occorenciaMarker.map = mapView_;
+            if ([[occurence objectForKey:@"lat"] class] == [NSNull class] || [[occurence objectForKey:@"lng"] class] == [NSNull class]) {
+                NSLog(@"%@",occurence);
+                
+            } else{
+                
+                CLLocationCoordinate2D coord = self.userCoordinates;
+                coord.latitude =  [[occurence objectForKey:@"lat"] doubleValue];
+                coord.longitude = [[occurence objectForKey:@"lng"] doubleValue];
+                
+                occorenciaMarker.position = coord;
+                
+                NSInteger index = [[occurence objectForKey:@"tipo_id"] integerValue];
+                NSDictionary *tipo = self.tipoDeOccorencias[index-1];
+                
+                occorenciaMarker.title = [tipo objectForKey:@"nome"];
+                occorenciaMarker.snippet = [NSString stringWithFormat:@"%@\n%@\n%@",[occurence objectForKey:@"num_onibus"], [occurence objectForKey:@"data_hora"], [occurence objectForKey:@"nome"]];
+                occorenciaMarker.map = mapView_;
+            }
             
         }
     }
@@ -312,6 +316,43 @@
     }
     
     return YES;
+}
+
+#pragma mark - DEControlPanel Procol
+
+- (void)doneEditing
+{
+    [self updatePastOcurrencesFromServer];
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark - DEControlPanelEdit Procol
+
+- (void)editCompleted:(NSDictionary *)ocorrenciaAtualizada
+{
+    DERequestManager *sharedRM = [DERequestManager sharedRequestManager];
+    
+    [sharedRM postToServer:postInsertUrl
+                parameters:ocorrenciaAtualizada
+             caseOfSuccess:^(NSString *success) {
+                 
+                 [self dismissViewControllerAnimated:YES completion:nil];
+                 
+                 // SUCCESS
+                 [sharedNC_ showDialog:success dialogType:YES duration:2.0 viewToShow:self.view];
+                 
+                 [self updatePastOcurrencesFromServer];
+                 
+             }
+             caseOfFailure:^(int errorType, NSString *error) {
+                 
+                 // FAILURE
+                 
+                 [sharedNC_ showDialog:error dialogType:NO duration:2.0 viewToShow:[[[[UIApplication sharedApplication] keyWindow] subviews] lastObject]];
+                 
+                 if (errorType == 3) [self presentViewController:self.lvc animated:YES completion:nil];
+             }];
+
 }
 
 #pragma mark - UIPickerView methods
@@ -580,31 +621,52 @@
     
     
     
-    viewDummy_ = [[UIView alloc] initWithFrame:self.view.bounds];
-    viewDummy_.backgroundColor = [UIColor colorWithHue:0.0 saturation:0.0 brightness:0.0 alpha:0.0];
+//    viewDummy_ = [[UIView alloc] initWithFrame:self.view.bounds];
+//    viewDummy_.backgroundColor = [UIColor colorWithHue:0.0 saturation:0.0 brightness:0.0 alpha:0.0];
+//    
+//    popoverView_ = [[[NSBundle mainBundle] loadNibNamed:@"DETipoDaOcorrenciaView"
+//                                                  owner:self
+//                                                options:nil] objectAtIndex:0];
+//    [popoverView_ setFrame:CGRectMake(50, -200, 275, 200)];
+//    
+//    
+//    [viewDummy_ addSubview:popoverView_];
+//    
+//    [self.view addSubview:viewDummy_];
+//    
+//    // Animating a entrada da view
+//    [UIView animateWithDuration:0.5 delay:0.0 options:0 animations:^{
+//        
+//        popoverView_.center = viewDummy_.center;
+//        viewDummy_.backgroundColor = [UIColor colorWithHue:0.0 saturation:0.0 brightness:0.0 alpha:0.7];
+//        
+//    } completion:NULL];
     
-    popoverView_ = [[[NSBundle mainBundle] loadNibNamed:@"DETipoDaOcorrenciaView"
-                                                  owner:self
-                                                options:nil] objectAtIndex:0];
-    [popoverView_ setFrame:CGRectMake(50, -200, 275, 200)];
+    CLLocationCoordinate2D coordinate = mapView_.myLocation.coordinate;
+    
+    DEControlPanelEditViewController *editViewController = [[DEControlPanelEditViewController alloc] init];
+    
+    editViewController.ocorrenciaEditada = nil;
+    editViewController.tiposDeOcorrencia = tipoDeOcorrencias_;
+    editViewController.delegate = self;
+    editViewController.ocorrenciaENova = YES;
     
     
-    [viewDummy_ addSubview:popoverView_];
+    if (self.currentPositionWasDragged) {
     
-    [self.view addSubview:viewDummy_];
+        editViewController.lat = [[NSNumber numberWithDouble:self.draggedCurrentMarkerCoordinates.latitude] stringValue];
+        editViewController.lng = [[NSNumber numberWithDouble:self.draggedCurrentMarkerCoordinates.longitude] stringValue];
     
-    // Animating a entrada da view
-    [UIView animateWithDuration:0.5 delay:0.0 options:0 animations:^{
-        
-        popoverView_.center = viewDummy_.center;
-        viewDummy_.backgroundColor = [UIColor colorWithHue:0.0 saturation:0.0 brightness:0.0 alpha:0.7];
-        
-    } completion:NULL];
+    } else {
+        editViewController.lat = [[NSNumber numberWithDouble:coordinate.latitude] stringValue];
+        editViewController.lng = [[NSNumber numberWithDouble:coordinate.longitude] stringValue];
+    }
     
+    [self presentViewController:editViewController animated:YES completion:nil];
     
 }
 
-
+#warning este método é um teste. retirar quando chris der o ok do login!
 - (void)controlPanelButtonPressed
 {
     DERequestManager *sharedRM = [DERequestManager sharedRequestManager];
@@ -630,6 +692,7 @@
                   
                   self.cpvc.userOcorrencias = (NSArray *)[(NSDictionary *)responseObject objectForKey:@"ocorrencias"];
                   self.cpvc.tipoDeOccorencias = tipoDeOcorrencias_;
+                  self.cpvc.delegate = self;
 
                   [self presentViewController:self.cpvc animated:YES completion:nil];
               }

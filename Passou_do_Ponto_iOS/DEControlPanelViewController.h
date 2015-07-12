@@ -10,6 +10,8 @@
 #import "DENotificationsCentral.h"
 #import "DEControlPanelEditViewController.h"
 
+@protocol DEControlPanelProtocol;
+
 @interface DEControlPanelViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, DEControlPanelEditProtocol>
 
 @property (weak, nonatomic) IBOutlet UIImageView *avatarImageView;
@@ -20,7 +22,14 @@
 @property (strong, nonatomic) NSArray *userOcorrencias;
 @property(strong, nonatomic) NSArray *tipoDeOccorencias;
 
-
 @property (strong, nonatomic) DENotificationsCentral *sharedNC;
+
+@property (weak, nonatomic) id<DEControlPanelProtocol> delegate;
+
+@end
+
+@protocol DEControlPanelProtocol <NSObject>
+
+- (void)doneEditing;
 
 @end

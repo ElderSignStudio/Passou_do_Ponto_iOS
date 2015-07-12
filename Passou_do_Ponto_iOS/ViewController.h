@@ -11,7 +11,7 @@
 #import "DELoginViewController.h"
 #import "DEControlPanelViewController.h"
 
-@interface ViewController : UIViewController <UIPickerViewDelegate, UIPickerViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate, DELoginProtocol, GMSMapViewDelegate>
+@interface ViewController : UIViewController <UIPickerViewDelegate, DEControlPanelEditProtocol, DEControlPanelProtocol, UIPickerViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate, DELoginProtocol, GMSMapViewDelegate>
 
 @property (nonatomic, strong) DELoginViewController *lvc;
 

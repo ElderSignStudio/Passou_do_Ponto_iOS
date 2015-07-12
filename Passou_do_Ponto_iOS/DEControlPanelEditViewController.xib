@@ -6,6 +6,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DEControlPanelEditViewController">
             <connections>
+                <outlet property="fotoButton" destination="yVw-dP-Cdq" id="1gA-1R-Tpc"/>
                 <outlet property="latitudeTextField" destination="Qg2-tC-hDi" id="P0Q-40-ULb"/>
                 <outlet property="longitudeTextField" destination="qaw-i7-TVz" id="cOh-jg-FeY"/>
                 <outlet property="numeroOnibusTextField" destination="WCL-A7-8p3" id="s45-sM-dio"/>
@@ -107,6 +108,15 @@
                         <action selector="cancelButtonPressed:" destination="-1" eventType="touchUpInside" id="URY-de-2xV"/>
                     </connections>
                 </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yVw-dP-Cdq">
+                    <rect key="frame" x="280" y="479" width="32" height="30"/>
+                    <state key="normal" title="Foto">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="fotoButtonPressed:" destination="-1" eventType="touchUpInside" id="K9U-Fz-OLu"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
@@ -114,10 +124,12 @@
                 <constraint firstItem="IuJ-a7-cQk" firstAttribute="top" secondItem="i8i-wQ-aGF" secondAttribute="bottom" constant="8" id="9Hn-sc-Q7A"/>
                 <constraint firstAttribute="centerX" secondItem="ZnS-wP-3HW" secondAttribute="centerX" constant="4" id="B6H-Tj-348"/>
                 <constraint firstItem="A1w-RU-SYI" firstAttribute="top" secondItem="WCL-A7-8p3" secondAttribute="bottom" constant="27" id="Bch-ZL-DkG"/>
+                <constraint firstItem="i8i-wQ-aGF" firstAttribute="centerX" secondItem="yVw-dP-Cdq" secondAttribute="centerX" constant="0.5" id="Eyh-n2-5ZX"/>
                 <constraint firstItem="y0I-Sf-mcp" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Fjk-Kz-ECY"/>
                 <constraint firstItem="IuJ-a7-cQk" firstAttribute="leading" secondItem="i8i-wQ-aGF" secondAttribute="leading" id="HyF-vQ-0mR"/>
                 <constraint firstAttribute="centerX" secondItem="i8i-wQ-aGF" secondAttribute="centerX" constant="3.5" id="ITi-pZ-r2U"/>
                 <constraint firstAttribute="centerX" secondItem="qhh-TP-2MT" secondAttribute="centerX" constant="3.5" id="JCy-3U-rr5"/>
+                <constraint firstItem="yVw-dP-Cdq" firstAttribute="top" secondItem="i8i-wQ-aGF" secondAttribute="bottom" constant="8" id="KtZ-4t-TGj"/>
                 <constraint firstAttribute="centerX" secondItem="WCL-A7-8p3" secondAttribute="centerX" constant="3.5" id="Pkg-po-gM2"/>
                 <constraint firstItem="Bhd-Jp-68c" firstAttribute="trailing" secondItem="i8i-wQ-aGF" secondAttribute="trailing" id="QvU-AM-Nv0"/>
                 <constraint firstItem="ZnS-wP-3HW" firstAttribute="top" secondItem="y0I-Sf-mcp" secondAttribute="bottom" constant="8" id="S6U-zP-Rtn"/>
