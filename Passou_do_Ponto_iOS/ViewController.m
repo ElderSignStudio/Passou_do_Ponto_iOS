@@ -88,8 +88,7 @@
     [super viewDidLoad];
     
     // Initialize variables
-    self.photo = nil;
-    self.photoMetadata = nil;
+
     self.userHasLoggedIn = NO;
     self.userName = @"no_username";
     self.currentPositionWasDragged = NO;

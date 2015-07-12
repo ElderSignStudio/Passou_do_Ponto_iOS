@@ -19,6 +19,9 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
+    self.photo = nil;
+    self.photoMetadata = nil;
+    
     if (self.ocorrenciaENova) {
         
         self.numeroOnibusTextField.text = (NSString *)[self.ocorrenciaEditada objectForKey:@""];

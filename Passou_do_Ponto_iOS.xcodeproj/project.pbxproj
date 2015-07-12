@@ -15,7 +15,6 @@
 		7415EE441AC795E700979899 /* Passou_do_Ponto_iOSTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7415EE431AC795E700979899 /* Passou_do_Ponto_iOSTests.m */; };
 		74335D421AD1B99600E4833A /* DELoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74335D401AD1B99600E4833A /* DELoginViewController.m */; };
 		74335D431AD1B99600E4833A /* DELoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74335D411AD1B99600E4833A /* DELoginViewController.xib */; };
-		744E300E1ACE34C200D8A913 /* DETipoDaOcorrenciaView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 744E300D1ACE34C200D8A913 /* DETipoDaOcorrenciaView.xib */; };
 		7483F1DD1B4DFA1C008CFFD3 /* DEControlPanelViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7483F1DB1B4DFA1C008CFFD3 /* DEControlPanelViewController.m */; };
 		7483F1DE1B4DFA1C008CFFD3 /* DEControlPanelViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7483F1DC1B4DFA1C008CFFD3 /* DEControlPanelViewController.xib */; };
 		7488C85D1B4AFEA6006DFA2F /* DERequestManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7488C85C1B4AFEA6006DFA2F /* DERequestManager.m */; };
@@ -72,7 +71,6 @@
 		74335D401AD1B99600E4833A /* DELoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DELoginViewController.m; sourceTree = "<group>"; };
 		74335D411AD1B99600E4833A /* DELoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DELoginViewController.xib; sourceTree = "<group>"; };
 		74429F601B51CFB5002518FF /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
-		744E300D1ACE34C200D8A913 /* DETipoDaOcorrenciaView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DETipoDaOcorrenciaView.xib; sourceTree = "<group>"; };
 		7483F1DA1B4DFA1C008CFFD3 /* DEControlPanelViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DEControlPanelViewController.h; sourceTree = "<group>"; };
 		7483F1DB1B4DFA1C008CFFD3 /* DEControlPanelViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DEControlPanelViewController.m; sourceTree = "<group>"; };
 		7483F1DC1B4DFA1C008CFFD3 /* DEControlPanelViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DEControlPanelViewController.xib; sourceTree = "<group>"; };
@@ -177,7 +175,6 @@
 				74429F601B51CFB5002518FF /* Constants.h */,
 				7415EE2E1AC795E700979899 /* ViewController.h */,
 				7415EE2F1AC795E700979899 /* ViewController.m */,
-				744E300D1ACE34C200D8A913 /* DETipoDaOcorrenciaView.xib */,
 				74F5E18D1B48AA4600533453 /* DENotificationsCentral.h */,
 				74F5E18E1B48AA4600533453 /* DENotificationsCentral.m */,
 				7488C85B1B4AFEA6006DFA2F /* DERequestManager.h */,
@@ -391,7 +388,6 @@
 				74C3A2731B4DFF0A00F50C42 /* temp_avatar.png in Resources */,
 				74F5E18C1B4899A900533453 /* DECadastroViewController.xib in Resources */,
 				7415EE351AC795E700979899 /* Images.xcassets in Resources */,
-				744E300E1ACE34C200D8A913 /* DETipoDaOcorrenciaView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
