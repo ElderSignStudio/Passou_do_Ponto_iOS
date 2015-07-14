@@ -178,23 +178,6 @@
                      context:NULL];
 }
 
-#pragma mark - DELoginProtocol Methods
-
-- (void)loginSuccessful:(NSString *)username
-{
-    self.userHasLoggedIn = YES;
-    self.userName = username;
-    
-    // Initialize CurrentPosition Marker
-    self.currentLocationMarker = [[GMSMarker alloc] init];
-    self.currentLocationMarker.title = self.userName;
-    self.currentLocationMarker.icon = [UIImage imageNamed:@"arrow"];
-    self.currentLocationMarker.draggable = YES;
-    
-    [self updatePastOcurrencesFromServer];
-    
-}
-
 #pragma mark - KVO updates
 
 - (void)observeValueForKeyPath:(NSString *)keyPath
@@ -279,6 +262,17 @@
     
 }
 
+- (void)initializeCurrentMarkerPositions:(NSString *)username
+{
+    // Initialize CurrentPosition Marker
+    self.currentLocationMarker = [[GMSMarker alloc] init];
+    self.currentLocationMarker.title = self.userName;
+    self.currentLocationMarker.icon = [UIImage imageNamed:@"arrow"];
+    self.currentLocationMarker.draggable = YES;
+    
+    [self updatePastOcurrencesFromServer];
+}
+
 - (void)centerMapOn:(CLLocationCoordinate2D)coord
 {
     [mapView_ animateToLocation:coord];
@@ -315,6 +309,89 @@
     }
     
     return YES;
+}
+
+#pragma mark - Buttons Target
+
+-(void)passouDoPontoButtonPressed
+{
+    // center map on where user wants to add ocorrencia
+    if (self.currentPositionWasDragged) {
+        [mapView_ animateToLocation:self.draggedCurrentMarkerCoordinates];
+    } else [mapView_ animateToLocation:self.userCoordinates];
+    
+    CLLocationCoordinate2D coordinate = mapView_.myLocation.coordinate;
+    
+    DEControlPanelEditViewController *editViewController = [[DEControlPanelEditViewController alloc] init];
+    
+    editViewController.ocorrenciaEditada = nil;
+    editViewController.tiposDeOcorrencia = tipoDeOcorrencias_;
+    editViewController.delegate = self;
+    editViewController.ocorrenciaENova = YES;
+    
+    
+    if (self.currentPositionWasDragged) {
+        
+        editViewController.lat = [[NSNumber numberWithDouble:self.draggedCurrentMarkerCoordinates.latitude] stringValue];
+        editViewController.lng = [[NSNumber numberWithDouble:self.draggedCurrentMarkerCoordinates.longitude] stringValue];
+        
+    } else {
+        editViewController.lat = [[NSNumber numberWithDouble:coordinate.latitude] stringValue];
+        editViewController.lng = [[NSNumber numberWithDouble:coordinate.longitude] stringValue];
+    }
+    
+    [self presentViewController:editViewController animated:YES completion:nil];
+    
+}
+
+#warning este método é um teste. retirar quando chris der o ok do login!
+- (void)controlPanelButtonPressed
+{
+    DERequestManager *sharedRM = [DERequestManager sharedRequestManager];
+    [sharedRM postToServer:@"http://passoudoponto.org/usuario/test_login/1"
+                parameters:nil
+             caseOfSuccess:^(NSString *success) {
+                 [self getOcorrenciasUsuario];
+             }
+             caseOfFailure:^(int errorType, NSString *error) {
+                 
+             }];
+}
+
+- (void)getOcorrenciasUsuario
+{
+    self.cpvc = [[DEControlPanelViewController alloc] init];
+    
+    DERequestManager *sharedRM = [DERequestManager sharedRequestManager];
+    
+    [sharedRM getFromServer:postGetOccurenceByCurrentUser
+              expectedClass:[NSDictionary class]
+              caseOfSuccess:^(id responseObject) {
+                  
+                  self.cpvc.userOcorrencias = (NSArray *)[(NSDictionary *)responseObject objectForKey:@"ocorrencias"];
+                  self.cpvc.tipoDeOccorencias = tipoDeOcorrencias_;
+                  self.cpvc.userName = self.userName;
+                  self.cpvc.delegate = self;
+                  
+                  [self presentViewController:self.cpvc animated:YES completion:nil];
+              }
+              caseOfFailure:^(NSString *error) {
+                  
+                  [sharedNC_ showDialog:error dialogType:NO duration:2.0 viewToShow:self.view];
+              }];
+    
+    
+}
+
+#pragma mark - DELoginProtocol Methods
+
+- (void)loginSuccessful:(NSString *)username
+{
+    self.userHasLoggedIn = YES;
+    self.userName = username;
+
+    [self initializeCurrentMarkerPositions:username];
+    
 }
 
 #pragma mark - DEControlPanel Procol
@@ -406,76 +483,7 @@
     
 }
 
-#pragma mark - Buttons Target
 
--(void)passouDoPontoButtonPressed
-{
-    // center map on where user wants to add ocorrencia
-    if (self.currentPositionWasDragged) {
-        [mapView_ animateToLocation:self.draggedCurrentMarkerCoordinates];
-    } else [mapView_ animateToLocation:self.userCoordinates];
-    
-    CLLocationCoordinate2D coordinate = mapView_.myLocation.coordinate;
-    
-    DEControlPanelEditViewController *editViewController = [[DEControlPanelEditViewController alloc] init];
-    
-    editViewController.ocorrenciaEditada = nil;
-    editViewController.tiposDeOcorrencia = tipoDeOcorrencias_;
-    editViewController.delegate = self;
-    editViewController.ocorrenciaENova = YES;
-    
-    
-    if (self.currentPositionWasDragged) {
-    
-        editViewController.lat = [[NSNumber numberWithDouble:self.draggedCurrentMarkerCoordinates.latitude] stringValue];
-        editViewController.lng = [[NSNumber numberWithDouble:self.draggedCurrentMarkerCoordinates.longitude] stringValue];
-    
-    } else {
-        editViewController.lat = [[NSNumber numberWithDouble:coordinate.latitude] stringValue];
-        editViewController.lng = [[NSNumber numberWithDouble:coordinate.longitude] stringValue];
-    }
-    
-    [self presentViewController:editViewController animated:YES completion:nil];
-    
-}
-
-#warning este método é um teste. retirar quando chris der o ok do login!
-- (void)controlPanelButtonPressed
-{
-    DERequestManager *sharedRM = [DERequestManager sharedRequestManager];
-    [sharedRM postToServer:@"http://passoudoponto.org/usuario/test_login/1"
-                parameters:nil
-             caseOfSuccess:^(NSString *success) {
-                 [self getOcorrenciasUsuario];
-             }
-             caseOfFailure:^(int errorType, NSString *error) {
-                 
-             }];
-}
-
-- (void)getOcorrenciasUsuario
-{
-    self.cpvc = [[DEControlPanelViewController alloc] init];
-    
-    DERequestManager *sharedRM = [DERequestManager sharedRequestManager];
-    
-    [sharedRM getFromServer:postGetOccurenceByCurrentUser
-              expectedClass:[NSDictionary class]
-              caseOfSuccess:^(id responseObject) {
-                  
-                  self.cpvc.userOcorrencias = (NSArray *)[(NSDictionary *)responseObject objectForKey:@"ocorrencias"];
-                  self.cpvc.tipoDeOccorencias = tipoDeOcorrencias_;
-                  self.cpvc.delegate = self;
-
-                  [self presentViewController:self.cpvc animated:YES completion:nil];
-              }
-              caseOfFailure:^(NSString *error) {
-                  
-                  [sharedNC_ showDialog:error dialogType:NO duration:2.0 viewToShow:self.view];
-              }];
-
-    
-}
 
 
 @end

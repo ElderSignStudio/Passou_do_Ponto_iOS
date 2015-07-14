@@ -9,15 +9,17 @@
 #import <UIKit/UIKit.h>
 #import "DENotificationsCentral.h"
 #import "DEControlPanelEditViewController.h"
+#import "DECadastroViewController.h"
 
 @protocol DEControlPanelProtocol;
 
-@interface DEControlPanelViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, DEControlPanelEditProtocol>
+@interface DEControlPanelViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, DEControlPanelEditProtocol, DECadastroProtocol>
 
 @property (weak, nonatomic) IBOutlet UIImageView *avatarImageView;
 @property (weak, nonatomic) IBOutlet UILabel *firstNameLabel;
-@property (weak, nonatomic) IBOutlet UILabel *familyNameLabel;
 @property (weak, nonatomic) IBOutlet UITableView *listaOcorrenciasTableView;
+
+@property (strong, nonatomic) NSString *userName;
 
 @property (strong, nonatomic) NSArray *userOcorrencias;
 @property(strong, nonatomic) NSArray *tipoDeOccorencias;

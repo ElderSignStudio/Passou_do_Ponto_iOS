@@ -21,6 +21,16 @@
 
 @property (nonatomic, weak) id<DECadastroProtocol> delegate;
 
+//EDIT
+
+@property (weak, nonatomic) NSString *userName;
+@property (weak, nonatomic) NSString *password;
+@property (weak, nonatomic) NSString *confirmPassword;
+@property (weak, nonatomic) NSString *firstName;
+@property (weak, nonatomic) NSString *familyName;
+@property (weak, nonatomic) NSString *email;
+@property (weak, nonatomic) NSString *birthDate;
+
 @end
 
 @protocol DECadastroProtocol <NSObject>

@@ -11,6 +11,7 @@
 #import "DENotificationsCentral.h"
 #import "DEControlPanelEditViewController.h"
 #import "Constants.h"
+#import "DECadastroViewController.h"
 
 @interface DEControlPanelViewController ()
 
@@ -27,6 +28,8 @@
     self.listaOcorrenciasTableView.allowsSelectionDuringEditing = NO;
     
     self.sharedNC = [DENotificationsCentral sharedNotificationCentral];
+    
+    self.firstNameLabel.text = self.userName;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -54,6 +57,17 @@
         [strongDelegate doneEditing];
     }
 }
+
+- (IBAction)editUsuarioButtonPressed:(UIButton *)sender {
+    
+    // Chama a tela de cadastro
+    
+    DECadastroViewController *cvc = [[DECadastroViewController alloc] init];
+    
+    cvc.delegate = self;
+    [self presentViewController:cvc animated:YES completion:nil];
+}
+
 
 #pragma mark - Tableview methods
 
@@ -188,6 +202,13 @@
         
         [sharedNC showDialog:error dialogType:NO duration:2.0 viewToShow:[[[[UIApplication sharedApplication] keyWindow] subviews] lastObject]];
     }];
+}
+
+#pragma mark - DECadastro Protocol
+
+- (void)cadastroPreenchido:(NSDictionary *)cadastro
+{
+    
 }
 
 @end

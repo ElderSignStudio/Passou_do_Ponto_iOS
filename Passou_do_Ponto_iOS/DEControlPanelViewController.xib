@@ -7,7 +7,6 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DEControlPanelViewController">
             <connections>
                 <outlet property="avatarImageView" destination="OSn-gg-6El" id="JCN-Kv-O8S"/>
-                <outlet property="familyNameLabel" destination="NrZ-ia-l2R" id="qpa-Hs-Ybh"/>
                 <outlet property="firstNameLabel" destination="NUf-BZ-KAs" id="yJe-7e-ThK"/>
                 <outlet property="listaOcorrenciasTableView" destination="Nms-Li-O4o" id="tcl-Cu-rTo"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -43,22 +42,27 @@
                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sobrenome" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NrZ-ia-l2R">
-                            <rect key="frame" x="256" y="164" width="89" height="21"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                            <nil key="highlightedColor"/>
-                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BnO-pA-QWp">
+                            <rect key="frame" x="204" y="31" width="188" height="113"/>
+                            <state key="normal">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="editUsuarioButtonPressed:" destination="-1" eventType="touchUpInside" id="ETo-US-C4K"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstItem="NrZ-ia-l2R" firstAttribute="top" secondItem="NUf-BZ-KAs" secondAttribute="bottom" constant="8" id="8M4-id-1BA"/>
                         <constraint firstAttribute="centerX" secondItem="NUf-BZ-KAs" secondAttribute="centerX" id="BYx-zu-b9W"/>
                         <constraint firstAttribute="height" constant="199" id="HRw-AF-plq"/>
                         <constraint firstAttribute="centerX" secondItem="OSn-gg-6El" secondAttribute="centerX" id="Kag-if-xie"/>
-                        <constraint firstAttribute="centerX" secondItem="NrZ-ia-l2R" secondAttribute="centerX" constant="-0.5" id="L0j-O0-UaJ"/>
+                        <constraint firstItem="OSn-gg-6El" firstAttribute="height" secondItem="BnO-pA-QWp" secondAttribute="height" id="TjL-0G-HhY"/>
+                        <constraint firstItem="OSn-gg-6El" firstAttribute="centerY" secondItem="BnO-pA-QWp" secondAttribute="centerY" constant="-23" id="YeS-LP-lDH"/>
+                        <constraint firstItem="OSn-gg-6El" firstAttribute="centerX" secondItem="BnO-pA-QWp" secondAttribute="centerX" constant="2.5" id="ZIr-hK-0ct"/>
                         <constraint firstItem="NUf-BZ-KAs" firstAttribute="top" secondItem="OSn-gg-6El" secondAttribute="bottom" constant="14" id="dbR-fo-Q3h"/>
                         <constraint firstItem="OSn-gg-6El" firstAttribute="top" secondItem="NSW-5b-fYb" secondAttribute="top" constant="8" id="dfi-bG-Ohq"/>
+                        <constraint firstItem="OSn-gg-6El" firstAttribute="width" secondItem="BnO-pA-QWp" secondAttribute="width" id="dxo-Ow-9at"/>
                     </constraints>
                 </view>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="Nms-Li-O4o">
