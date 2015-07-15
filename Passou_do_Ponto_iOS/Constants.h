@@ -17,6 +17,8 @@ static NSString *postGetOccurenceByCurrentUser = @"http://passoudoponto.org/usua
 static NSString *postInsertNewUser = @"http://passoudoponto.org/usuario/insert";
 static NSString *postDeletaOcorrencia = @"http://passoudoponto.org/ocorrencia/delete/";
 static NSString *postOccurenceUpdate = @"http://passoudoponto.org/ocorrencia/update";
+static NSString *postGetUserData = @"http://passoudoponto.org/usuario/get_data/";
+static NSString *postUpdateUserData = @"http://passoudoponto.org/usuario/update";
 
 
 static int generalError = 1;

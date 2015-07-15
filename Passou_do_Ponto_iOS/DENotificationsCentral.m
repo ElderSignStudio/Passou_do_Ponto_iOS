@@ -59,7 +59,7 @@
     
     MRProgressOverlayView *progressView = [MRProgressOverlayView showOverlayAddedTo:view animated:YES];
     
-    progressView.titleLabelText = text;
+    progressView.titleLabelText = [self removeHTML:text];
     
     if (success) {
         progressView.mode = MRProgressOverlayViewModeCheckmark;
@@ -76,5 +76,20 @@
     [overlayView dismiss:YES];
 }
 
+
+#pragma mark - String Manipulation
+
+- (NSString *)removeHTML:(NSString *)text
+{
+    NSArray *replaceAll = [NSArray arrayWithObjects:@"<BR>", @"</BR>", @"<br>", @"</br>", nil];
+    NSString *replaceWith = @"";
+    
+    for (NSString *toReplace in replaceAll) {
+        text = [text stringByReplacingOccurrencesOfString:toReplace withString:replaceWith];
+    }
+
+    
+    return text;
+}
 
 @end

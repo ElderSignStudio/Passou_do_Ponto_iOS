@@ -95,6 +95,7 @@
     
     self.cvc = [[DECadastroViewController alloc] init];
     self.cvc.delegate = self;
+    self.cvc.novoCadastro = TRUE;
     [self presentViewController:self.cvc animated:YES completion:nil];
     
 }

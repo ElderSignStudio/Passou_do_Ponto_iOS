@@ -65,7 +65,27 @@
     DECadastroViewController *cvc = [[DECadastroViewController alloc] init];
     
     cvc.delegate = self;
-    [self presentViewController:cvc animated:YES completion:nil];
+    cvc.novoCadastro = NO;
+    
+    DERequestManager *sharedRM = [DERequestManager sharedRequestManager];
+    [sharedRM getFromServer:postGetUserData caseOfSuccess:^(id responseObject, NSString *msg) {
+        
+        // pega os dados do usuario e atualiza
+        NSDictionary *dict = (NSDictionary *)responseObject;
+        
+        cvc.userName = [dict objectForKey:@"login"];
+        cvc.email = [dict objectForKey:@"email"];
+        cvc.firstName = [dict objectForKey:@"nome"];
+        cvc.familyName = [dict objectForKey:@"sobrenome"];
+        cvc.birthDate = [dict objectForKey:@"dt_nasc"];
+        
+        [self presentViewController:cvc animated:YES completion:nil];
+        
+    } caseOfFailure:^(int errorType, NSString *error) {
+        
+        [self.sharedNC showDialog:error dialogType:NO duration:2.0 viewToShow:self.view];
+
+    }];
 }
 
 
@@ -161,16 +181,16 @@
 {
     DERequestManager *sharedRM = [DERequestManager sharedRequestManager];
     
-    [sharedRM getFromServer:postGetOccurenceByCurrentUser
-              expectedClass:[NSDictionary class]
-              caseOfSuccess:^(id responseObject) {
-                  
-                  self.userOcorrencias = (NSArray *)[(NSDictionary *)responseObject objectForKey:@"ocorrencias"];
-              }
-              caseOfFailure:^(NSString *error) {
-                  
-                  [self.sharedNC showDialog:error dialogType:NO duration:2.0 viewToShow:self.view];
-              }];
+    [sharedRM getFromServer:postGetOccurenceByCurrentUser caseOfSuccess:^(id responseObject, NSString *msg) {
+        
+        self.userOcorrencias = (NSArray *)responseObject;
+        [self.listaOcorrenciasTableView reloadData];
+        
+    } caseOfFailure:^(int errorType, NSString *error) {
+        
+        [self.sharedNC showDialog:error dialogType:NO duration:2.0 viewToShow:self.view];
+
+    }];
     
     
 }
@@ -197,9 +217,6 @@
         
     } caseOfFailure:^(int errorType, NSString *error) {
         
-#warning tirar isse dismiss daqui debaixo, assim que o chris concertar o erro do server PHP no OK do edit.
-        [self dismissViewControllerAnimated:YES completion:nil];
-        
         [sharedNC showDialog:error dialogType:NO duration:2.0 viewToShow:[[[[UIApplication sharedApplication] keyWindow] subviews] lastObject]];
     }];
 }
@@ -208,7 +225,22 @@
 
 - (void)cadastroPreenchido:(NSDictionary *)cadastro
 {
+    DENotificationsCentral *sharedNC = [DENotificationsCentral sharedNotificationCentral];
     
+    // atualiza dados do usuário
+    
+    DERequestManager *sharedRM = [DERequestManager sharedRequestManager];
+    [sharedRM postToServer:postUpdateUserData parameters:cadastro caseOfSuccess:^(NSString *success) {
+        
+        [self dismissViewControllerAnimated:YES completion:nil];
+        
+        //self.userName = [cadastro objectForKey:@"login"];
+        
+        [sharedNC showDialog:success dialogType:YES duration:2.0 viewToShow:self.view];
+        
+    } caseOfFailure:^(int errorType, NSString *error) {
+        [sharedNC showDialog:error dialogType:NO duration:2.0 viewToShow:[[[[UIApplication sharedApplication] keyWindow] subviews] lastObject]];
+    }];
 }
 
 @end

@@ -11,6 +11,7 @@
                 <outlet property="confirmPasswordTextField" destination="Dgw-aj-mlg" id="qhf-rK-tNi"/>
                 <outlet property="emailTextField" destination="Q3C-9t-5PT" id="2j9-cQ-gvr"/>
                 <outlet property="firstNameTextField" destination="pgf-vL-am8" id="OQp-rL-u9l"/>
+                <outlet property="okButton" destination="Pqz-hP-d9V" id="E0U-OG-AD1"/>
                 <outlet property="passwordTextField" destination="T2Z-gd-8Oe" id="g5x-ty-SLa"/>
                 <outlet property="userNameTextField" destination="j2o-lb-53G" id="s3U-2r-qkK"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -58,8 +59,8 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pqz-hP-d9V">
-                    <rect key="frame" x="0.0" y="452" width="63" height="30"/>
-                    <state key="normal" title="Cadastra">
+                    <rect key="frame" x="0.0" y="452" width="30" height="30"/>
+                    <state key="normal" title="OK">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>

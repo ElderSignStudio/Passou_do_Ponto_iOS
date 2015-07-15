@@ -11,9 +11,8 @@
 @interface DERequestManager : NSObject
 
 - (void)getFromServer:(NSString *)url
-        expectedClass:(Class)expectedClass
-        caseOfSuccess:(void (^)(id responseObject))successBlock
-        caseOfFailure:(void (^)(NSString *error))failureBlock;
+        caseOfSuccess:(void (^)(id responseObject, NSString *msg))successBlock
+        caseOfFailure:(void (^)(int errorType, NSString *error))failureBlock;
 
 - (void)postToServer:(NSString *)url
           parameters:(NSDictionary *)param

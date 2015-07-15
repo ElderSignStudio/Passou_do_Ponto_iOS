@@ -222,8 +222,6 @@
     
     self.currentLocationMarker.map = mapView_;
     
-    //NSLog(@"My coord is Lat: %f Long: %f", self.userCoordinates.latitude, self.userCoordinates.longitude);
-    
     // Abre a info windows do marker
     //[mapView_ setSelectedMarker:self.currentLocationMarker];
     
@@ -354,8 +352,10 @@
                  [self getOcorrenciasUsuario];
              }
              caseOfFailure:^(int errorType, NSString *error) {
-                 
+                 [sharedNC_ showDialog:error dialogType:NO duration:2.0 viewToShow:self.view];
              }];
+    
+//    [self getOcorrenciasUsuario];
 }
 
 - (void)getOcorrenciasUsuario
@@ -365,17 +365,17 @@
     DERequestManager *sharedRM = [DERequestManager sharedRequestManager];
     
     [sharedRM getFromServer:postGetOccurenceByCurrentUser
-              expectedClass:[NSDictionary class]
-              caseOfSuccess:^(id responseObject) {
+              caseOfSuccess:^(id responseObject, NSString *msg) {
                   
-                  self.cpvc.userOcorrencias = (NSArray *)[(NSDictionary *)responseObject objectForKey:@"ocorrencias"];
+                  self.cpvc.userOcorrencias = (NSArray *)responseObject;
+                  //self.cpvc.userOcorrencias = (NSArray *)[(NSDictionary *)responseObject objectForKey:@"ocorrencias"];
                   self.cpvc.tipoDeOccorencias = tipoDeOcorrencias_;
                   self.cpvc.userName = self.userName;
                   self.cpvc.delegate = self;
                   
                   [self presentViewController:self.cpvc animated:YES completion:nil];
               }
-              caseOfFailure:^(NSString *error) {
+              caseOfFailure:^(int errorType, NSString *error) {
                   
                   [sharedNC_ showDialog:error dialogType:NO duration:2.0 viewToShow:self.view];
               }];
@@ -434,10 +434,10 @@
 
 - (void)updatePastOcurrencesFromServer
 {
+    
     DERequestManager *sharedRM = [DERequestManager sharedRequestManager];
     [sharedRM getFromServer:postGetAllUrl
-              expectedClass:[NSArray class]
-              caseOfSuccess:^(id responseObject) {
+              caseOfSuccess:^(id responseObject, NSString *msg) {
                   
                   // SUCCESS
                   
@@ -445,7 +445,7 @@
                   
                   [self drawMarkers];
               }
-              caseOfFailure:^(NSString *error) {
+              caseOfFailure:^(int errorType, NSString *error) {
                   
                   // FAILURE
                   [sharedNC_ showDialog:error dialogType:NO duration:2.0 viewToShow:self.view];
@@ -458,8 +458,7 @@
     DERequestManager *sharedRM = [DERequestManager sharedRequestManager];
     
     [sharedRM getFromServer:postGetOccurenceType
-              expectedClass:[NSArray class]
-              caseOfSuccess:^(id responseObject) {
+              caseOfSuccess:^(id responseObject, NSString *msg) {
                   
                   // SUCCESS
                   
@@ -474,7 +473,7 @@
                   tipoDeOcorrencias_ = [NSArray arrayWithArray:mutableArray];
 
                   
-              } caseOfFailure:^(NSString *error) {
+              } caseOfFailure:^(int errorType, NSString *error) {
                   
                   // FAILURE
         

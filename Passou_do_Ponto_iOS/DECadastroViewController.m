@@ -17,6 +17,25 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    
+    if (!self.novoCadastro) {
+        
+        self.userNameTextField.text = self.userName;
+        self.emailTextField.text = self.email;
+        self.firstNameTextField.text = self.firstName;
+        self.FamilyNameTextField.text = self.familyName;
+        
+        
+        // get the birthday
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        [formatter setDateFormat:@"yyyy/MM/dd"];
+        NSDate *date = [formatter dateFromString:self.birthDate];
+        
+        if (date != nil) {
+            self.birthDatePicker.date = date;
+        }
+        
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -46,7 +65,6 @@
         
         NSDictionary *cadastro = @{
                                      @"login" : self.userNameTextField.text,
-                                     @"senha" : self.passwordTextField.text,
                                      @"email" : self.emailTextField.text,
                                      @"nome" : self.firstNameTextField.text,
                                      @"sobrenome" : self.FamilyNameTextField.text,
@@ -56,8 +74,6 @@
                                      };
         
         [strongDelegate cadastroPreenchido:cadastro];
-        
-        //[self dismissViewControllerAnimated:YES completion:nil];
     
     }
 }

@@ -11,6 +11,9 @@
 @protocol DECadastroProtocol;
 
 @interface DECadastroViewController : UIViewController
+
+@property (nonatomic) BOOL novoCadastro;
+
 @property (weak, nonatomic) IBOutlet UITextField *userNameTextField;
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
 @property (weak, nonatomic) IBOutlet UITextField *confirmPasswordTextField;
@@ -18,14 +21,13 @@
 @property (weak, nonatomic) IBOutlet UITextField *FamilyNameTextField;
 @property (weak, nonatomic) IBOutlet UITextField *emailTextField;
 @property (weak, nonatomic) IBOutlet UIDatePicker *birthDatePicker;
+@property (weak, nonatomic) IBOutlet UIButton *okButton;
 
 @property (nonatomic, weak) id<DECadastroProtocol> delegate;
 
 //EDIT
 
 @property (weak, nonatomic) NSString *userName;
-@property (weak, nonatomic) NSString *password;
-@property (weak, nonatomic) NSString *confirmPassword;
 @property (weak, nonatomic) NSString *firstName;
 @property (weak, nonatomic) NSString *familyName;
 @property (weak, nonatomic) NSString *email;
