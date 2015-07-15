@@ -77,7 +77,7 @@
         cvc.email = [dict objectForKey:@"email"];
         cvc.firstName = [dict objectForKey:@"nome"];
         cvc.familyName = [dict objectForKey:@"sobrenome"];
-        cvc.birthDate = [dict objectForKey:@"dt_nasc"];
+        cvc.birthDate = [dict objectForKey:@"nasc"];
         
         [self presentViewController:cvc animated:YES completion:nil];
         
@@ -235,6 +235,7 @@
         [self dismissViewControllerAnimated:YES completion:nil];
         
         //self.userName = [cadastro objectForKey:@"login"];
+        self.firstNameLabel.text = [cadastro objectForKey:@"login"];
         
         [sharedNC showDialog:success dialogType:YES duration:2.0 viewToShow:self.view];
         

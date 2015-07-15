@@ -76,15 +76,15 @@
                 
             } else if ([status isEqual: @"ERROR"]){
             
-                failureBlock(generalError,[NSString stringWithFormat:@"%@",[object objectForKey:@"msg"]]);
+                    failureBlock(generalError,[NSString stringWithFormat:@"%@",[object objectForKey:@"msg"]]);
                 
             } else if ([status isEqual:@"AUTH_ERROR"]){
                 
-                failureBlock(authError,[NSString stringWithFormat:@"%@",[object objectForKey:@"msg"]]);
+                    failureBlock(authError,[NSString stringWithFormat:@"%@",[object objectForKey:@"msg"]]);
                 
             } else if ([status isEqual:@"ACCESS_DENIED"]){
                 
-                failureBlock(accessDenied,[NSString stringWithFormat:@"%@",[object objectForKey:@"msg"]]);
+                    failureBlock(accessDenied,[NSString stringWithFormat:@"%@",[object objectForKey:@"msg"]]);
             }
             
         } else NSLog(@"JSON Parser Error, returned object is not a dictionary!");
@@ -137,15 +137,15 @@
                 
             } else if ([status isEqual: @"ERROR"]){
                 
-                failureBlock(generalError,[NSString stringWithFormat:@"%@",[object objectForKey:@"msg"]]);
+                    failureBlock(generalError,[NSString stringWithFormat:@"%@",[object objectForKey:@"msg"]]);
                 
             } else if ([status isEqual:@"AUTH_ERROR"]){
                 
-                failureBlock(authError,[NSString stringWithFormat:@"%@",[object objectForKey:@"msg"]]);
+                    failureBlock(authError,[NSString stringWithFormat:@"%@",[object objectForKey:@"msg"]]);
                 
             } else if ([status isEqual:@"ACCESS_DENIED"]){
                 
-                failureBlock(accessDenied,[NSString stringWithFormat:@"%@",[object objectForKey:@"msg"]]);
+                    failureBlock(accessDenied,[NSString stringWithFormat:@"%@",[object objectForKey:@"msg"]]);
             }
             
         } else NSLog(@"JSON Parser Error, Object is not a NSDictionary! Here it is: %@", object);

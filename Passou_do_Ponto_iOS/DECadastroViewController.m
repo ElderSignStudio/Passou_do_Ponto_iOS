@@ -28,7 +28,7 @@
         
         // get the birthday
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-        [formatter setDateFormat:@"yyyy/MM/dd"];
+        [formatter setDateFormat:@"dd/MM/yyyy"];
         NSDate *date = [formatter dateFromString:self.birthDate];
         
         if (date != nil) {

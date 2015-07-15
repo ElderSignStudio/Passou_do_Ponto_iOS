@@ -169,6 +169,8 @@
         [self presentViewController:self.lvc animated:YES completion:nil];
     }
     
+    //NSLog(@"My Facebook Token String is: %@",[FBSDKAccessToken currentAccessToken].tokenString);
+    
     
 }
 
