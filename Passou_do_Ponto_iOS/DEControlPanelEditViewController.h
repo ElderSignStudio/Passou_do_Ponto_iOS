@@ -40,5 +40,6 @@
 @protocol DEControlPanelEditProtocol <NSObject>
 
 -(void)editCompleted:(NSDictionary *)ocorrenciaAtualizada;
+-(void)imagePickerFinished:(UIImage *)photo ocorrenciaId:(NSString *)ocorrenciaId;
 
 @end

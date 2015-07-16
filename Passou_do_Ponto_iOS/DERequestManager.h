@@ -7,6 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <AFNetworking.h>
+
 
 @interface DERequestManager : NSObject
 
@@ -18,6 +20,11 @@
           parameters:(NSDictionary *)param
        caseOfSuccess:(void (^)(NSString *success))successBlock
        caseOfFailure:(void (^)(int errorType, NSString *error))failureBlock;
+
+- (void)uploadPicture:(UIImage *)image
+         ocorrenciaId:(NSString *)ocorrenciaId
+        caseOfSuccess:(void (^)(NSString *success))successBlock
+        caseOfFailure:(void (^)(int errorType, NSString *error))failureBlock;
 
 + (id)sharedRequestManager;
 

@@ -171,7 +171,6 @@
     
     //NSLog(@"My Facebook Token String is: %@",[FBSDKAccessToken currentAccessToken].tokenString);
     
-    
 }
 
 - (void)dealloc {
@@ -433,6 +432,11 @@
 
 }
 
+
+- (void)imagePickerFinished:(NSURL *)photoURL
+{
+    NSLog(@"ImagePicker FINISHED. Photo URL: %@", photoURL);
+}
 
 - (void)updatePastOcurrencesFromServer
 {

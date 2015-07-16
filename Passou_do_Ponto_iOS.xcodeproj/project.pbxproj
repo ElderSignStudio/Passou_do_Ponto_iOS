@@ -213,6 +213,26 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		74A121171B5839DF00AFC43B /* Edit / New Ocorrencia */ = {
+			isa = PBXGroup;
+			children = (
+				74F0B7D71B4F3E3600B110AA /* DEControlPanelEditViewController.h */,
+				74F0B7D81B4F3E3600B110AA /* DEControlPanelEditViewController.m */,
+				74F0B7D91B4F3E3600B110AA /* DEControlPanelEditViewController.xib */,
+			);
+			name = "Edit / New Ocorrencia";
+			sourceTree = "<group>";
+		};
+		74A121181B5839F900AFC43B /* Edit / Novo Cadastro Usuário */ = {
+			isa = PBXGroup;
+			children = (
+				74F5E1881B4899A900533453 /* DECadastroViewController.h */,
+				74F5E1891B4899A900533453 /* DECadastroViewController.m */,
+				74F5E18A1B4899A900533453 /* DECadastroViewController.xib */,
+			);
+			name = "Edit / Novo Cadastro Usuário";
+			sourceTree = "<group>";
+		};
 		74B5B8C11ACDCFD300A4EDF6 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -247,6 +267,8 @@
 		74F0B7D31B4F3ACD00B110AA /* Secondary Screens */ = {
 			isa = PBXGroup;
 			children = (
+				74A121181B5839F900AFC43B /* Edit / Novo Cadastro Usuário */,
+				74A121171B5839DF00AFC43B /* Edit / New Ocorrencia */,
 				74F0B7D51B4F3B0C00B110AA /* Login / Cadastro */,
 				74F0B7D61B4F3B1600B110AA /* Control Panel */,
 			);
@@ -268,9 +290,6 @@
 				74335D3F1AD1B99600E4833A /* DELoginViewController.h */,
 				74335D401AD1B99600E4833A /* DELoginViewController.m */,
 				74335D411AD1B99600E4833A /* DELoginViewController.xib */,
-				74F5E1881B4899A900533453 /* DECadastroViewController.h */,
-				74F5E1891B4899A900533453 /* DECadastroViewController.m */,
-				74F5E18A1B4899A900533453 /* DECadastroViewController.xib */,
 			);
 			name = "Login / Cadastro";
 			sourceTree = "<group>";
@@ -281,9 +300,6 @@
 				7483F1DA1B4DFA1C008CFFD3 /* DEControlPanelViewController.h */,
 				7483F1DB1B4DFA1C008CFFD3 /* DEControlPanelViewController.m */,
 				7483F1DC1B4DFA1C008CFFD3 /* DEControlPanelViewController.xib */,
-				74F0B7D71B4F3E3600B110AA /* DEControlPanelEditViewController.h */,
-				74F0B7D81B4F3E3600B110AA /* DEControlPanelEditViewController.m */,
-				74F0B7D91B4F3E3600B110AA /* DEControlPanelEditViewController.xib */,
 			);
 			name = "Control Panel";
 			sourceTree = "<group>";

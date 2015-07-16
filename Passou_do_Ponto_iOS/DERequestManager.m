@@ -161,6 +161,92 @@
     
 }
 
+#pragma mark - Picture Methods
+
+
+- (void)uploadPicture:(UIImage *)image ocorrenciaId:(NSString *)ocorrenciaId caseOfSuccess:(void (^)(NSString *))successBlock caseOfFailure:(void (^)(int, NSString *))failureBlock
+{
+    if (image != nil) {
+        
+        AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+        
+        manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+        manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+        
+        NSDateFormatter *dateFormater = [[NSDateFormatter alloc] init];
+        [dateFormater setDateFormat:@"dd-MM-yyyy HH:mm"];
+        
+        NSString *fileName = [dateFormater stringFromDate:[NSDate date]];
+        NSString *fileExtension = @".jpg";
+        
+        NSDictionary *parameters = @{@"id" : ocorrenciaId,
+                                     @"userfile" : fileName};
+        
+        // Faz o POST
+        
+        [manager POST:uploadPictureURL parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+            
+            // BODY
+            
+            [formData appendPartWithFileData:UIImageJPEGRepresentation(image, 0.30)
+                                        name:@"userfile"
+                                    fileName:[fileName stringByAppendingString:fileExtension]
+                                    mimeType:@"image/jpeg"];
+            
+        } success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            
+            // Post funcionou
+            
+            NSError *json_error = nil;
+            id object = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:&json_error];
+            
+            if (json_error != nil) { // Erro no Parser JSON
+                
+                //Le o erro e logga no console
+                [self printServerCommunicationMessage:responseObject];
+                NSLog(@"JSON Parser Error: %@", json_error);
+                
+                //Manda erro de volta
+                failureBlock(0, @"Communication Error");
+                
+            } else if ([object isKindOfClass:[NSDictionary class]]) {
+                
+                NSString *status = [object objectForKey:@"status"];
+                
+                NSLog(@"%@",[object objectForKey:@"msg"]);
+                
+                if ([status isEqual: @"OK"]) {
+                    
+                    successBlock([object objectForKey:@"msg"]);
+                    
+                } else if ([status isEqual: @"ERROR"]){
+                    
+                    failureBlock(generalError,[NSString stringWithFormat:@"%@",[object objectForKey:@"msg"]]);
+                    
+                } else if ([status isEqual:@"AUTH_ERROR"]){
+                    
+                    failureBlock(authError,[NSString stringWithFormat:@"%@",[object objectForKey:@"msg"]]);
+                    
+                } else if ([status isEqual:@"ACCESS_DENIED"]){
+                    
+                    failureBlock(accessDenied,[NSString stringWithFormat:@"%@",[object objectForKey:@"msg"]]);
+                }
+                
+            } else NSLog(@"JSON Parser Error, Object is not a NSDictionary! Here it is: %@", object);
+            
+            
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            
+            // Erro no POST
+            
+            NSLog(@"Post Request Error: %@", error);
+            failureBlock(0, @"Communication Error");
+        }];
+    }
+
+}
+
+
 #pragma mark - Helper Methods
 
 - (void)printServerCommunicationMessage:(NSData *)data

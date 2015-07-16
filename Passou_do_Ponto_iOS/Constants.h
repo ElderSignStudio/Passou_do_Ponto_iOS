@@ -21,6 +21,8 @@ static NSString *postGetUserData = @"http://passoudoponto.org/usuario/get_data/"
 static NSString *postUpdateUserData = @"http://passoudoponto.org/usuario/update";
 
 
+static NSString *uploadPictureURL = @"http://passoudoponto.org/foto/upload";
+
 static int generalError = 1;
 static int authError = 2;
 static int accessDenied = 3;

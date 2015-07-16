@@ -33,6 +33,8 @@
         self.numeroOnibusTextField.text = (NSString *)[self.ocorrenciaEditada objectForKey:@"num_onibus"];
         self.longitudeTextField.text = (NSString *)[self.ocorrenciaEditada objectForKey:@"lng"];
         self.latitudeTextField.text = (NSString *)[self.ocorrenciaEditada objectForKey:@"lat"];
+        
+        self.fotoButton.hidden = NO;
     }
     
 }
@@ -142,7 +144,7 @@
 
 #pragma mark - Camera
 
-- (void) imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
     NSString *mediaType = info[UIImagePickerControllerMediaType];
     
@@ -157,6 +159,14 @@
         self.photo = info[UIImagePickerControllerOriginalImage];
         
         self.fotoButton.titleLabel.text = @"OK!";
+        
+        id<DEControlPanelEditProtocol> strongDelegate = self.delegate;
+        
+        if ([strongDelegate respondsToSelector:@selector(imagePickerFinished:ocorrenciaId:)]) {
+        
+            [strongDelegate imagePickerFinished:self.photo ocorrenciaId:(NSString *)[self.ocorrenciaEditada objectForKey:@"id"]];
+        }
+        
     }
     
     [picker dismissViewControllerAnimated:YES completion:nil];

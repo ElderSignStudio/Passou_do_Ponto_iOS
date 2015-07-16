@@ -30,6 +30,12 @@
     self.sharedNC = [DENotificationsCentral sharedNotificationCentral];
     
     self.firstNameLabel.text = self.userName;
+    
+//    //Teste upload foto
+//    DERequestManager *sharedRM = [DERequestManager sharedRequestManager];
+//    
+//    [sharedRM uploadPicture:[NSURL fileURLWithPath:@"file://Users/Flict/Downloads/snowy_mountain_png_by_absurdwordpreferred.png"]
+//                pictureData:[UIImage imageNamed:@"temp_avatar"]];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -219,6 +225,24 @@
         
         [sharedNC showDialog:error dialogType:NO duration:2.0 viewToShow:[[[[UIApplication sharedApplication] keyWindow] subviews] lastObject]];
     }];
+}
+
+
+- (void)imagePickerFinished:(UIImage *)photo ocorrenciaId:(NSString *)ocorrenciaId
+{
+    NSLog(@"Escolhida para a ID %@ a photo -> %@", ocorrenciaId, photo);
+    
+    DERequestManager *sharedRM = [DERequestManager sharedRequestManager];
+    
+    [sharedRM uploadPicture:photo ocorrenciaId:ocorrenciaId caseOfSuccess:^(NSString *success) {
+        
+        [self.sharedNC showDialog:success dialogType:YES duration:2.0 viewToShow:[[[[UIApplication sharedApplication] keyWindow] subviews] lastObject]];
+        
+    } caseOfFailure:^(int errorType, NSString *error) {
+        
+        [self.sharedNC showDialog:error dialogType:NO duration:2.0 viewToShow:[[[[UIApplication sharedApplication] keyWindow] subviews] lastObject]];
+    }];
+    
 }
 
 #pragma mark - DECadastro Protocol
