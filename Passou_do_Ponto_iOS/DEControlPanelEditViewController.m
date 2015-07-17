@@ -22,6 +22,8 @@
     self.photo = nil;
     self.photoMetadata = nil;
     
+    self.numeroOnibusTextField.delegate = self;
+    
     if (self.ocorrenciaENova) {
         
         self.numeroOnibusTextField.text = (NSString *)[self.ocorrenciaEditada objectForKey:@""];
@@ -142,6 +144,14 @@
     return self.tiposDeOcorrencia[row];
 }
 
+#pragma mark - TextField Delegate
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [textField resignFirstResponder];
+    return YES;
+}
+
 #pragma mark - Camera
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
@@ -158,11 +168,11 @@
         self.photoMetadata = info[UIImagePickerControllerMediaMetadata];
         self.photo = info[UIImagePickerControllerOriginalImage];
         
-        self.fotoButton.titleLabel.text = @"OK!";
-        
         id<DEControlPanelEditProtocol> strongDelegate = self.delegate;
         
         if ([strongDelegate respondsToSelector:@selector(imagePickerFinished:ocorrenciaId:)]) {
+            
+            self.fotoButton.titleLabel.text = @"Enviando...";
         
             [strongDelegate imagePickerFinished:self.photo ocorrenciaId:(NSString *)[self.ocorrenciaEditada objectForKey:@"id"]];
         }
@@ -175,6 +185,14 @@
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
 {
     [picker dismissViewControllerAnimated:YES completion:nil];
+}
+
+-(void)updatePhotoButton:(NSString *)text
+{
+    [self.fotoButton setTitle:text forState:UIControlStateNormal];
+    [self.fotoButton setTitle:text forState:UIControlStateSelected];
+    [self.fotoButton setTitle:text forState:UIControlStateHighlighted];
+    self.fotoButton.enabled = NO;
 }
 
 #pragma mark - Camera Helper Methods
@@ -214,5 +232,9 @@
     return result;
 }
 
+// Dismiss the keyboard when touching anywhere else
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    [self.view endEditing:YES];
+}
 
 @end

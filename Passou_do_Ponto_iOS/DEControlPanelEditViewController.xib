@@ -32,7 +32,7 @@
                         <constraint firstAttribute="width" constant="97" id="eTs-Si-kYV"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                    <textInputTraits key="textInputTraits"/>
+                    <textInputTraits key="textInputTraits" keyboardType="numbersAndPunctuation"/>
                 </textField>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IuJ-a7-cQk">
                     <rect key="frame" x="214" y="479" width="30" height="30"/>
@@ -140,7 +140,7 @@
                 <constraint firstItem="WCL-A7-8p3" firstAttribute="top" secondItem="ZnS-wP-3HW" secondAttribute="bottom" constant="8" id="z17-k9-uug"/>
                 <constraint firstItem="qhh-TP-2MT" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="44" id="ztD-e5-qdG"/>
             </constraints>
-            <point key="canvasLocation" x="594" y="364"/>
+            <point key="canvasLocation" x="552" y="302"/>
         </view>
     </objects>
 </document>

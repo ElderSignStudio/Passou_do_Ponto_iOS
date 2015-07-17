@@ -138,18 +138,17 @@
     }
 }
 
-- (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
     NSDictionary *item = (NSDictionary *)self.userOcorrencias[indexPath.row];
     
-    DEControlPanelEditViewController *editViewController = [[DEControlPanelEditViewController alloc] init];
-    editViewController.ocorrenciaEditada = item;
-    editViewController.tiposDeOcorrencia = self.tipoDeOccorencias;
-    editViewController.delegate = self;
-    editViewController.ocorrenciaENova = NO;
+    self.editViewController = [[DEControlPanelEditViewController alloc] init];
+    self.editViewController.ocorrenciaEditada = item;
+    self.editViewController.tiposDeOcorrencia = self.tipoDeOccorencias;
+    self.editViewController.delegate = self;
+    self.editViewController.ocorrenciaENova = NO;
     
-    [self presentViewController:editViewController animated:YES completion:nil];
+    [self presentViewController:self.editViewController animated:YES completion:nil];
 }
 
 
@@ -236,10 +235,12 @@
     
     [sharedRM uploadPicture:photo ocorrenciaId:ocorrenciaId caseOfSuccess:^(NSString *success) {
         
+        [self.editViewController updatePhotoButton:@"Enviada"];
         [self.sharedNC showDialog:success dialogType:YES duration:2.0 viewToShow:[[[[UIApplication sharedApplication] keyWindow] subviews] lastObject]];
         
     } caseOfFailure:^(int errorType, NSString *error) {
         
+        [self.editViewController updatePhotoButton:@"Foto"];
         [self.sharedNC showDialog:error dialogType:NO duration:2.0 viewToShow:[[[[UIApplication sharedApplication] keyWindow] subviews] lastObject]];
     }];
     

@@ -175,10 +175,9 @@
 				74429F601B51CFB5002518FF /* Constants.h */,
 				7415EE2E1AC795E700979899 /* ViewController.h */,
 				7415EE2F1AC795E700979899 /* ViewController.m */,
-				74F5E18D1B48AA4600533453 /* DENotificationsCentral.h */,
-				74F5E18E1B48AA4600533453 /* DENotificationsCentral.m */,
 				7488C85B1B4AFEA6006DFA2F /* DERequestManager.h */,
 				7488C85C1B4AFEA6006DFA2F /* DERequestManager.m */,
+				74A67C191B58829D00BD0325 /* Notification Central */,
 				74F0B7D31B4F3ACD00B110AA /* Secondary Screens */,
 				7415EE341AC795E700979899 /* Images.xcassets */,
 				7415EE271AC795E600979899 /* Supporting Files */,
@@ -231,6 +230,15 @@
 				74F5E18A1B4899A900533453 /* DECadastroViewController.xib */,
 			);
 			name = "Edit / Novo Cadastro Usuário";
+			sourceTree = "<group>";
+		};
+		74A67C191B58829D00BD0325 /* Notification Central */ = {
+			isa = PBXGroup;
+			children = (
+				74F5E18D1B48AA4600533453 /* DENotificationsCentral.h */,
+				74F5E18E1B48AA4600533453 /* DENotificationsCentral.m */,
+			);
+			name = "Notification Central";
 			sourceTree = "<group>";
 		};
 		74B5B8C11ACDCFD300A4EDF6 /* Resources */ = {

@@ -432,11 +432,11 @@
 
 }
 
-
-- (void)imagePickerFinished:(NSURL *)photoURL
+-(void)imagePickerFinished:(UIImage *)photo ocorrenciaId:(NSString *)ocorrenciaId
 {
-    NSLog(@"ImagePicker FINISHED. Photo URL: %@", photoURL);
+    
 }
+
 
 - (void)updatePastOcurrencesFromServer
 {

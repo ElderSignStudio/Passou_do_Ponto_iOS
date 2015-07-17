@@ -19,6 +19,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *firstNameLabel;
 @property (weak, nonatomic) IBOutlet UITableView *listaOcorrenciasTableView;
 
+@property (strong, nonatomic) DEControlPanelEditViewController *editViewController;
+
 @property (strong, nonatomic) NSString *userName;
 
 @property (strong, nonatomic) NSArray *userOcorrencias;

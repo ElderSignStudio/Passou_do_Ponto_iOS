@@ -10,7 +10,7 @@
 
 @protocol DEControlPanelEditProtocol;
 
-@interface DEControlPanelEditViewController : UIViewController <UIPickerViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
+@interface DEControlPanelEditViewController : UIViewController <UIPickerViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate>
 
 @property (nonatomic, weak) id<DEControlPanelEditProtocol> delegate;
 
@@ -34,6 +34,8 @@
 // PHOTO
 @property (nonatomic, strong) UIImage *photo;
 @property (nonatomic, strong) NSDictionary *photoMetadata;
+
+- (void)updatePhotoButton:(NSString *)text;
 
 @end
 
