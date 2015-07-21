@@ -49,6 +49,28 @@
     
 }
 
+-(void)showAlertYesOrNo:(UIViewController *)view content:(NSString *)text ifYesExecute:(void (^)(void))yesBlock
+{
+    UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Certeza?"
+                                                                   message:[text stringByReplacingOccurrencesOfString:@"</br>" withString:@"\n"]
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+    
+    
+    UIAlertAction* yesAction = [UIAlertAction actionWithTitle:@"Yes" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        // execute block sent
+        yesBlock();
+    }];
+    
+    UIAlertAction* noAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel
+                                                          handler:^(UIAlertAction * action) {}];
+    
+    [alert addAction:yesAction];
+    [alert addAction:noAction];
+    
+    [view presentViewController:alert animated:YES completion:nil];
+
+}
+
 
 #pragma mark - MRProgress Dialogs
 

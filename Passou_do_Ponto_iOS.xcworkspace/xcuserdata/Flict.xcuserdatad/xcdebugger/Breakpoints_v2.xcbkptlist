@@ -9,13 +9,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Passou_do_Ponto_iOS/DEControlPanelViewController.m"
-            timestampString = "458786565.983249"
+            filePath = "Passou_do_Ponto_iOS/DEFotosOcorrenciaViewController.m"
+            timestampString = "459133046.653894"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "239"
-            endingLineNumber = "239"
-            landmarkName = "-imagePickerFinished:ocorrenciaId:"
+            startingLineNumber = "104"
+            endingLineNumber = "104"
+            landmarkName = "-photoButtonPressed:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -25,13 +25,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Passou_do_Ponto_iOS/DEControlPanelViewController.m"
-            timestampString = "458787666.981084"
+            filePath = "Passou_do_Ponto_iOS/DEFotosOcorrenciaViewController.m"
+            timestampString = "459133046.653894"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "244"
-            endingLineNumber = "244"
-            landmarkName = "-imagePickerFinished:ocorrenciaId:"
+            startingLineNumber = "203"
+            endingLineNumber = "203"
+            landmarkName = "-updateScreenImages"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -41,29 +41,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Passou_do_Ponto_iOS/DEControlPanelEditViewController.m"
-            timestampString = "458787666.981084"
+            filePath = "Passou_do_Ponto_iOS/DEFotosOcorrenciaViewController.m"
+            timestampString = "459132992.375047"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "151"
-            endingLineNumber = "151"
-            landmarkName = "-textFieldShouldReturn:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Passou_do_Ponto_iOS/DEControlPanelEditViewController.m"
-            timestampString = "458787666.981084"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "194"
-            endingLineNumber = "194"
-            landmarkName = "-updatePhotoButton:"
+            startingLineNumber = "21"
+            endingLineNumber = "21"
+            landmarkName = "-viewDidLoad"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

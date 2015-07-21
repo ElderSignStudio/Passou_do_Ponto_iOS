@@ -7,14 +7,18 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "DEFotosOcorrenciaViewController.h"
 
 @protocol DEControlPanelEditProtocol;
 
-@interface DEControlPanelEditViewController : UIViewController <UIPickerViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate>
+@interface DEControlPanelEditViewController : UIViewController <UIPickerViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate, DEOcorrenciaPhotoProtocol>
 
 @property (nonatomic, weak) id<DEControlPanelEditProtocol> delegate;
 
 @property (nonatomic) BOOL ocorrenciaENova;
+
+@property (nonatomic, strong) DEFotosOcorrenciaViewController *fotoViewController;
+@property (nonatomic, strong) NSDictionary *photos;
 
 @property (weak, nonatomic) IBOutlet UIPickerView *tipoOcorrenciaPicker;
 @property (weak, nonatomic) IBOutlet UITextField *numeroOnibusTextField;

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DEFotosOcorrenciaViewController">
+            <connections>
+                <outlet property="photoButton0" destination="0x8-ye-Krw" id="sZX-TD-wtf"/>
+                <outlet property="photoButton1" destination="af4-eF-a8e" id="FbW-79-KsQ"/>
+                <outlet property="photoButton2" destination="sXf-fM-mQI" id="tvR-Wz-s0e"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CJs-E2-Cdd">
+                    <rect key="frame" x="282" y="562" width="37" height="30"/>
+                    <state key="normal" title="Done">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="doneButtonPressed:" destination="-1" eventType="touchUpInside" id="wdg-Pf-4g1"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="af4-eF-a8e">
+                    <rect key="frame" x="235" y="242" width="130" height="116"/>
+                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="116" id="Srw-59-Ot1"/>
+                        <constraint firstAttribute="width" constant="130" id="yY4-zV-IDB"/>
+                    </constraints>
+                    <state key="normal" title="Button">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="photoButtonPressed:" destination="-1" eventType="touchUpInside" id="Cgq-n1-BkF"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sXf-fM-mQI">
+                    <rect key="frame" x="235" y="402" width="130" height="116"/>
+                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="130" id="eIe-zW-E4u"/>
+                        <constraint firstAttribute="height" constant="116" id="xov-ZM-C8u"/>
+                    </constraints>
+                    <state key="normal" title="Button">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="photoButtonPressed:" destination="-1" eventType="touchUpInside" id="XZU-4C-Vez"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0x8-ye-Krw">
+                    <rect key="frame" x="235" y="79" width="130" height="116"/>
+                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="130" id="kaa-i8-qby"/>
+                        <constraint firstAttribute="height" constant="116" id="v3m-bb-4MJ"/>
+                    </constraints>
+                    <state key="normal" title="Button">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="photoButtonPressed:" destination="-1" eventType="touchUpInside" id="aeV-lY-bYp"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="CJs-E2-Cdd" secondAttribute="bottom" constant="8" id="1xz-iY-cay"/>
+                <constraint firstAttribute="centerY" secondItem="af4-eF-a8e" secondAttribute="centerY" id="Dn8-Wp-CIY"/>
+                <constraint firstAttribute="centerX" secondItem="0x8-ye-Krw" secondAttribute="centerX" id="ENM-p6-Luo"/>
+                <constraint firstAttribute="centerX" secondItem="CJs-E2-Cdd" secondAttribute="centerX" constant="-0.5" id="RGh-5c-xXg"/>
+                <constraint firstAttribute="centerX" secondItem="af4-eF-a8e" secondAttribute="centerX" id="dPN-gN-bwj"/>
+                <constraint firstAttribute="centerX" secondItem="sXf-fM-mQI" secondAttribute="centerX" id="fa0-Uh-CqC"/>
+                <constraint firstItem="af4-eF-a8e" firstAttribute="top" secondItem="0x8-ye-Krw" secondAttribute="bottom" constant="47" id="m3Z-98-4fc"/>
+                <constraint firstItem="sXf-fM-mQI" firstAttribute="top" secondItem="af4-eF-a8e" secondAttribute="bottom" constant="44" id="rGg-hL-xN7"/>
+            </constraints>
+        </view>
+    </objects>
+</document>

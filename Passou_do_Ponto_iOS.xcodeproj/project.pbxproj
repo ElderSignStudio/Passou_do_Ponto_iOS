@@ -15,6 +15,9 @@
 		7415EE441AC795E700979899 /* Passou_do_Ponto_iOSTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7415EE431AC795E700979899 /* Passou_do_Ponto_iOSTests.m */; };
 		74335D421AD1B99600E4833A /* DELoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74335D401AD1B99600E4833A /* DELoginViewController.m */; };
 		74335D431AD1B99600E4833A /* DELoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74335D411AD1B99600E4833A /* DELoginViewController.xib */; };
+		7471B1331B5D699000EFFA61 /* DEFotosOcorrenciaViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7471B1311B5D699000EFFA61 /* DEFotosOcorrenciaViewController.m */; };
+		7471B1341B5D699000EFFA61 /* DEFotosOcorrenciaViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7471B1321B5D699000EFFA61 /* DEFotosOcorrenciaViewController.xib */; };
+		7471B1361B5D6CB100EFFA61 /* default-placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 7471B1351B5D6CB100EFFA61 /* default-placeholder.png */; };
 		7483F1DD1B4DFA1C008CFFD3 /* DEControlPanelViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7483F1DB1B4DFA1C008CFFD3 /* DEControlPanelViewController.m */; };
 		7483F1DE1B4DFA1C008CFFD3 /* DEControlPanelViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7483F1DC1B4DFA1C008CFFD3 /* DEControlPanelViewController.xib */; };
 		7488C85D1B4AFEA6006DFA2F /* DERequestManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7488C85C1B4AFEA6006DFA2F /* DERequestManager.m */; };
@@ -71,6 +74,10 @@
 		74335D401AD1B99600E4833A /* DELoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DELoginViewController.m; sourceTree = "<group>"; };
 		74335D411AD1B99600E4833A /* DELoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DELoginViewController.xib; sourceTree = "<group>"; };
 		74429F601B51CFB5002518FF /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
+		7471B1301B5D699000EFFA61 /* DEFotosOcorrenciaViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DEFotosOcorrenciaViewController.h; sourceTree = "<group>"; };
+		7471B1311B5D699000EFFA61 /* DEFotosOcorrenciaViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DEFotosOcorrenciaViewController.m; sourceTree = "<group>"; };
+		7471B1321B5D699000EFFA61 /* DEFotosOcorrenciaViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DEFotosOcorrenciaViewController.xib; sourceTree = "<group>"; };
+		7471B1351B5D6CB100EFFA61 /* default-placeholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "default-placeholder.png"; sourceTree = "<group>"; };
 		7483F1DA1B4DFA1C008CFFD3 /* DEControlPanelViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DEControlPanelViewController.h; sourceTree = "<group>"; };
 		7483F1DB1B4DFA1C008CFFD3 /* DEControlPanelViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DEControlPanelViewController.m; sourceTree = "<group>"; };
 		7483F1DC1B4DFA1C008CFFD3 /* DEControlPanelViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DEControlPanelViewController.xib; sourceTree = "<group>"; };
@@ -212,6 +219,16 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		7471B12F1B5D694E00EFFA61 /* Foto */ = {
+			isa = PBXGroup;
+			children = (
+				7471B1301B5D699000EFFA61 /* DEFotosOcorrenciaViewController.h */,
+				7471B1311B5D699000EFFA61 /* DEFotosOcorrenciaViewController.m */,
+				7471B1321B5D699000EFFA61 /* DEFotosOcorrenciaViewController.xib */,
+			);
+			name = Foto;
+			sourceTree = "<group>";
+		};
 		74A121171B5839DF00AFC43B /* Edit / New Ocorrencia */ = {
 			isa = PBXGroup;
 			children = (
@@ -244,6 +261,7 @@
 		74B5B8C11ACDCFD300A4EDF6 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				7471B1351B5D6CB100EFFA61 /* default-placeholder.png */,
 				74C3A2721B4DFF0A00F50C42 /* temp_avatar.png */,
 				74B5B8BD1ACDCFCA00A4EDF6 /* arrow.png */,
 				74B5B8BE1ACDCFCA00A4EDF6 /* arrow@2x.png */,
@@ -275,6 +293,7 @@
 		74F0B7D31B4F3ACD00B110AA /* Secondary Screens */ = {
 			isa = PBXGroup;
 			children = (
+				7471B12F1B5D694E00EFFA61 /* Foto */,
 				74A121181B5839F900AFC43B /* Edit / Novo Cadastro Usuário */,
 				74A121171B5839DF00AFC43B /* Edit / New Ocorrencia */,
 				74F0B7D51B4F3B0C00B110AA /* Login / Cadastro */,
@@ -409,8 +428,10 @@
 				74335D431AD1B99600E4833A /* DELoginViewController.xib in Resources */,
 				74B5B8C01ACDCFCA00A4EDF6 /* arrow@2x.png in Resources */,
 				7483F1DE1B4DFA1C008CFFD3 /* DEControlPanelViewController.xib in Resources */,
+				7471B1361B5D6CB100EFFA61 /* default-placeholder.png in Resources */,
 				74C3A2731B4DFF0A00F50C42 /* temp_avatar.png in Resources */,
 				74F5E18C1B4899A900533453 /* DECadastroViewController.xib in Resources */,
+				7471B1341B5D699000EFFA61 /* DEFotosOcorrenciaViewController.xib in Resources */,
 				7415EE351AC795E700979899 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -464,6 +485,7 @@
 			files = (
 				74F5E18B1B4899A900533453 /* DECadastroViewController.m in Sources */,
 				7415EE301AC795E700979899 /* ViewController.m in Sources */,
+				7471B1331B5D699000EFFA61 /* DEFotosOcorrenciaViewController.m in Sources */,
 				74F0B7DA1B4F3E3600B110AA /* DEControlPanelEditViewController.m in Sources */,
 				7483F1DD1B4DFA1C008CFFD3 /* DEControlPanelViewController.m in Sources */,
 				7415EE2D1AC795E700979899 /* AppDelegate.m in Sources */,

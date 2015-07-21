@@ -19,6 +19,7 @@ static NSString *postDeletaOcorrencia = @"http://passoudoponto.org/ocorrencia/de
 static NSString *postOccurenceUpdate = @"http://passoudoponto.org/ocorrencia/update";
 static NSString *postGetUserData = @"http://passoudoponto.org/usuario/get_data/";
 static NSString *postUpdateUserData = @"http://passoudoponto.org/usuario/update";
+static NSString *postGetOcorrenciaFotos = @"http://passoudoponto.org/foto/ocorrencia/";
 
 
 static NSString *uploadPictureURL = @"http://passoudoponto.org/foto/upload";
