@@ -24,7 +24,9 @@
     self.photoButton1.imageView.tag = 1;
     self.photoButton2.imageView.tag = 2;
     
-    
+    if (self.photos) {
+        self.photosMutable = [self.photos mutableCopy];
+    } else self.photosMutable = [[NSMutableDictionary alloc] init];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -34,10 +36,6 @@
 
 -(void)viewWillAppear:(BOOL)animated
 {
-    if (self.photos) {
-        self.photosMutable = [self.photos mutableCopy];
-    } else self.photosMutable = [[NSMutableDictionary alloc] init];
-    
     [self updateScreenImages];
 
 }
