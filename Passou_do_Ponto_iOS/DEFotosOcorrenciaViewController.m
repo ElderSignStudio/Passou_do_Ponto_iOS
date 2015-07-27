@@ -9,6 +9,7 @@
 #import "DEFotosOcorrenciaViewController.h"
 #import <MobileCoreServices/MobileCoreServices.h>
 #import "DENotificationsCentral.h"
+#import "Constants.h"
 
 @interface DEFotosOcorrenciaViewController ()
 
@@ -23,10 +24,8 @@
     self.photoButton0.imageView.tag = 0;
     self.photoButton1.imageView.tag = 1;
     self.photoButton2.imageView.tag = 2;
-    
-    if (self.photos) {
-        self.photosMutable = [self.photos mutableCopy];
-    } else self.photosMutable = [[NSMutableDictionary alloc] init];
+
+    self.photoMutableArray = [[NSMutableArray alloc] initWithCapacity:3];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -36,6 +35,26 @@
 
 -(void)viewWillAppear:(BOOL)animated
 {
+    
+    if (self.photoArray && [self.photoMutableArray count] == 0) {
+        
+        // Cria o novo Array de Dict que será usado nesta tel
+        for (NSDictionary *originalDict in self.photoArray) {
+            
+            NSMutableString *url = [NSMutableString stringWithString:filenameURL];
+            [url appendString:[originalDict objectForKey:@"nome_arquivo"]];
+            
+            [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:url]]];
+            
+            
+            NSDictionary *newDict = @{@"id" : [originalDict objectForKey:@"id"],
+                                      @"photo" : [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:url]]]};
+            
+            [self.photoMutableArray addObject:newDict];
+        }
+        
+    }
+    
     [self updateScreenImages];
 
 }
@@ -56,9 +75,7 @@
     
     self.photoClicked = sender.imageView.tag;
     
-    NSString *photoClickedString = [NSString stringWithFormat:@"%ld",(long)self.photoClicked];
-    
-    if ([self.photosMutable objectForKey:photoClickedString] == nil) {
+    if ([self.photoMutableArray count] <= self.photoClicked) {
         
         // Não tem foto neste button, abre o picker
         
@@ -99,7 +116,7 @@
             
             // Se o cara confirma, deleta de verdade
             
-            [self.photosMutable removeObjectForKey:[NSString stringWithFormat:@"%ld",(long)self.photoClicked]];
+            [self.photoMutableArray removeObjectAtIndex:self.photoClicked];
             [self updateScreenImages];
         }];
         
@@ -116,8 +133,11 @@
     
     if ([strongDelegate respondsToSelector:@selector(photosChosen:)]) {
         
-        [strongDelegate photosChosen:self.photosMutable];
+        [strongDelegate photosChosen:(NSArray *)self.photoMutableArray];
     }
+    
+    [self.photoMutableArray removeAllObjects];
+    
 }
 
 #pragma mark - Photo
@@ -134,11 +154,11 @@
         
         //self.photoMetadata = info[UIImagePickerControllerMediaMetadata];
         
-        // coloca a foto n dict
+        // coloca a foto n array de dict
         
-        [self.photosMutable setObject:info[UIImagePickerControllerOriginalImage] forKey:[NSString stringWithFormat:@"%ld", (long)self.photoClicked]];
+        NSDictionary *newDict = @{@"photo" : info[UIImagePickerControllerOriginalImage]};
+        [self.photoMutableArray addObject:newDict];
         
-        self.photos = @{[NSString stringWithFormat:@"%ld", (long)self.photoClicked] : info[UIImagePickerControllerOriginalImage]};
         [self updateScreenImages];
         
     }
@@ -197,18 +217,22 @@
 {
     // populate the screen UIImageViews
 
-    if ([self.photosMutable objectForKey:@"0"] != nil) {
-        [self.photoButton0 setImage:[self.photosMutable objectForKey:@"0"] forState:UIControlStateNormal];
+    if ([self.photoMutableArray count] > 0) {
+        
+        [self.photoButton0 setImage:[self.photoMutableArray[0] objectForKey:@"photo"] forState:UIControlStateNormal];
     } else [self.photoButton0 setImage:[UIImage imageNamed:@"default-placeholder"] forState:UIControlStateNormal];
+
     
-    
-    if ([self.photosMutable objectForKey:@"1"] != nil) {
-        [self.photoButton1 setImage:[self.photosMutable objectForKey:@"1"] forState:UIControlStateNormal];
+    if ([self.photoMutableArray count] > 1) {
+        
+        [self.photoButton1 setImage:[self.photoMutableArray[1] objectForKey:@"photo"] forState:UIControlStateNormal];
     } else [self.photoButton1 setImage:[UIImage imageNamed:@"default-placeholder"] forState:UIControlStateNormal];
     
-    if ([self.photosMutable objectForKey:@"2"] != nil) {
-        [self.photoButton2 setImage:[self.photosMutable objectForKey:@"2"] forState:UIControlStateNormal];
+    if ([self.photoMutableArray count] > 2) {
+        
+        [self.photoButton2 setImage:[self.photoMutableArray[2] objectForKey:@"photo"] forState:UIControlStateNormal];
     } else [self.photoButton2 setImage:[UIImage imageNamed:@"default-placeholder"] forState:UIControlStateNormal];
+    
 
 }
 

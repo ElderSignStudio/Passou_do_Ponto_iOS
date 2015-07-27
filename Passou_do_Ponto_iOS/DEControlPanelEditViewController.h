@@ -17,9 +17,6 @@
 
 @property (nonatomic) BOOL ocorrenciaENova;
 
-@property (nonatomic, strong) DEFotosOcorrenciaViewController *fotoViewController;
-@property (nonatomic, strong) NSDictionary *photos;
-
 @property (weak, nonatomic) IBOutlet UIPickerView *tipoOcorrenciaPicker;
 @property (weak, nonatomic) IBOutlet UITextField *numeroOnibusTextField;
 @property (weak, nonatomic) IBOutlet UILabel *latitudeTextField;
@@ -36,16 +33,15 @@
 @property (nonatomic, strong) NSString *lng;
 
 // PHOTO
-@property (nonatomic, strong) UIImage *photo;
-@property (nonatomic, strong) NSDictionary *photoMetadata;
-
-- (void)updatePhotoButton:(NSString *)text;
+@property (nonatomic, strong) DEFotosOcorrenciaViewController *fotoViewController;
+@property (nonatomic, strong) NSArray *photoArray;
+@property (nonatomic, strong) NSMutableArray *photosToBeDeleted;
+@property (nonatomic, strong) NSMutableArray *photosToBeInserted;
 
 @end
 
 @protocol DEControlPanelEditProtocol <NSObject>
 
 -(void)editCompleted:(NSDictionary *)ocorrenciaAtualizada;
--(void)imagePickerFinished:(UIImage *)photo ocorrenciaId:(NSString *)ocorrenciaId;
 
 @end

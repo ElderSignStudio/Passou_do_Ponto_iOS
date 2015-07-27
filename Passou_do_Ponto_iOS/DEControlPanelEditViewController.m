@@ -23,9 +23,6 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    self.photo = nil;
-    self.photoMetadata = nil;
-    
     self.numeroOnibusTextField.delegate = self;
     
     if (self.ocorrenciaENova) {
@@ -103,34 +100,21 @@
 
 - (IBAction)fotoButtonPressed:(UIButton *)sender {
     
-    
     NSMutableString *url = [NSMutableString stringWithString:postGetOcorrenciaFotos];
     [url appendString:[self.ocorrenciaEditada objectForKey:@"id"]];
 
     DERequestManager *sharedRM = [DERequestManager sharedRequestManager];
     [sharedRM getFromServer:url caseOfSuccess:^(id responseObject, NSString *msg) {
+    
+        self.photosToBeDeleted = [[NSMutableArray alloc] init];
+        self.photosToBeInserted = [[NSMutableArray alloc] init];
         
         // Pegou a listagem de fotos
-        NSArray *listagemFotos = (NSArray *)responseObject;
-
-        // Monta o NSDictionary de UIImages
-        NSMutableDictionary *mutableImages = [[NSMutableDictionary alloc] init];
-
-        for (NSInteger count = [listagemFotos count]; count > 0; count--) {
-            
-            NSMutableString *url = [NSMutableString stringWithString:filenameURL];
-            [url appendString:[listagemFotos[count-1] objectForKey:@"nome_arquivo"]];
-            
-            [mutableImages setObject:[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:url]]]
-                              forKey:[NSString stringWithFormat:@"%ld",(long)count-1]];
-            
-        }
-        
-        self.photos = (NSDictionary *)mutableImages;
+        self.photoArray = (NSArray *)responseObject;
         
         // Propriedades da DEFotosOcorrenciaViewController
         self.fotoViewController.delegate = self;
-        self.fotoViewController.photos = self.photos;
+        self.fotoViewController.photoArray = self.photoArray;
         
         [self presentViewController:self.fotoViewController animated:YES completion:nil];
         
@@ -141,35 +125,6 @@
         DENotificationsCentral *sharedNC = [DENotificationsCentral sharedNotificationCentral];
         [sharedNC showDialog:error dialogType:NO duration:2.0 viewToShow:[[[[UIApplication sharedApplication] keyWindow] subviews] lastObject]];
     }];
-
-    
-//    if ([self isCameraAvailable] && [self doesCameraSupportTakingPhotos]) {
-//        
-//        UIImagePickerController *ipc = [[UIImagePickerController alloc] init];
-//        ipc.sourceType = UIImagePickerControllerSourceTypeCamera;
-//        
-//        NSString *requiredMediaType = (__bridge NSString *)kUTTypeImage;
-//        ipc.mediaTypes = [[NSArray alloc] initWithObjects:requiredMediaType, nil];
-//        
-//        ipc.allowsEditing = YES;
-//        ipc.delegate = self;
-//        
-//        [self presentViewController:ipc animated:YES completion:nil];
-//        
-//    } else {
-//        // Camera não disponível
-//        
-//        UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Ops"
-//                                                                       message:@"Camera não disponível!"
-//                                                                preferredStyle:UIAlertControllerStyleAlert];
-//        
-//        UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
-//                                                              handler:^(UIAlertAction * action) {}];
-//        
-//        [alert addAction:defaultAction];
-//        [self presentViewController:alert animated:YES completion:nil];
-//    }
-
 
 }
 
@@ -199,117 +154,121 @@
     return YES;
 }
 
-#pragma mark - Camera
-
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
-{
-    NSString *mediaType = info[UIImagePickerControllerMediaType];
-    
-    if ([mediaType isEqualToString:(__bridge NSString *)kUTTypeMovie]) { // se veio um VIDEO
-        NSURL *urlOfVideo = info[UIImagePickerControllerMediaURL];
-        NSLog(@"Video URL = %@",urlOfVideo);
-        
-    } else if ([mediaType isEqualToString:(__bridge NSString *)kUTTypeImage]){ // se veio uma IMAGEM
-        // get the metadata
-        
-        self.photoMetadata = info[UIImagePickerControllerMediaMetadata];
-        self.photo = info[UIImagePickerControllerOriginalImage];
-        
-        id<DEControlPanelEditProtocol> strongDelegate = self.delegate;
-        
-        if ([strongDelegate respondsToSelector:@selector(imagePickerFinished:ocorrenciaId:)]) {
-            
-            self.fotoButton.titleLabel.text = @"Enviando...";
-        
-            [strongDelegate imagePickerFinished:self.photo ocorrenciaId:(NSString *)[self.ocorrenciaEditada objectForKey:@"id"]];
-        }
-        
-    }
-    
-    [picker dismissViewControllerAnimated:YES completion:nil];
-}
-
-- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
-{
-    [picker dismissViewControllerAnimated:YES completion:nil];
-}
-
--(void)updatePhotoButton:(NSString *)text
-{
-    [self.fotoButton setTitle:text forState:UIControlStateNormal];
-    [self.fotoButton setTitle:text forState:UIControlStateSelected];
-    [self.fotoButton setTitle:text forState:UIControlStateHighlighted];
-    self.fotoButton.enabled = NO;
-}
-
-#pragma mark - Camera Helper Methods
-
-// Existe uma camera no device?
-- (BOOL)isCameraAvailable
-{
-    return [UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera];
-}
-
-// Camera suporta fotos?
-- (BOOL) doesCameraSupportTakingPhotos
-{
-    return [self cameraSupportsMedia:(__bridge NSString *)kUTTypeImage sourceType:UIImagePickerControllerSourceTypeCamera];
-}
-
-// Verifica se a camera siporta o tipo de função
-- (BOOL)cameraSupportsMedia:(NSString *)paramMediaType sourceType:(UIImagePickerControllerSourceType)paramSourceType
-{
-    __block BOOL result = NO; // __block: variavel RESULT se modificada dentro de mum block vai aparecer fora tambem
-    
-    if ([paramMediaType length] == 0) {
-        NSLog(@"Media type is empty.");
-        return NO;
-    }
-    
-    NSArray *availableMediaTypes = [UIImagePickerController availableMediaTypesForSourceType:paramSourceType];
-    
-    [availableMediaTypes enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        NSString *mediaType = (NSString *)obj;
-        if ([mediaType isEqualToString:paramMediaType]) {
-            result = YES;
-            *stop = YES;
-        }
-    }];
-    
-    return result;
-}
 
 #pragma mark - DEOcorrenciaPhotoProtocol
 
-- (void)photosChosen:(NSDictionary *)photos
+- (void)photosChosen:(NSArray *)photoArray
 {
-    for (NSInteger i = 0; i < 3; i++) {
+//    NSLog(@"Self: %@",self.photoArray);
+//    NSLog(@"Nova: %@",photoArray);
+    
+    // Deleta as fotos que não precisa mais
+    for (NSDictionary *originalDict in self.photoArray) {
+        // percorre a array original de fotos
         
-        UIImage *originalImage = [self.photos objectForKey:[NSString stringWithFormat:@"%ld",(long)i]];
-        UIImage *newImage = [photos objectForKey:[NSString stringWithFormat:@"%ld",(long)i]];
+        NSString *originalId = [originalDict objectForKey:@"id"];
+        BOOL encontrou = NO;
         
-        if (originalImage != newImage) {
-            // são diferentes
+        for (NSDictionary *novoDict in photoArray) {
+            // percorre o novo array
             
-            if (newImage) {
-                // Insere o novo no lugar
-                NSLog(@"Inserindo %@ no lugar do %@" ,newImage, originalImage);
-                
-            } else {
-                // Não existe um novo, é um delete.
-                NSLog(@"Deletando o %@" ,originalImage);
-                
+            NSString *novoId = [novoDict objectForKey:@"id"];
+            
+            if ([originalId isEqualToString:novoId]) {
+                // achou o mesmo ID
+                encontrou = YES;
+                break;
             }
-            
         }
         
+        if (!encontrou) {
+            // Deleta
+            
+            // monta o url
+            NSString *idOcorrencia = [self.ocorrenciaEditada objectForKey:@"id"];
+            NSString *idFoto = [originalDict objectForKey:@"id"];
+            NSString *url = [NSString stringWithFormat:@"%@%@/%@",postDeleteFoto,idOcorrencia,idFoto];
+            
+            [self.photosToBeDeleted addObject:url];
+            
+        }
     }
+    
+    // Insere as novas fotos
+    for (NSDictionary *novoDict in photoArray) {
+        
+        if (![novoDict objectForKey:@"id"]) {
+            // não tem o campo ID, ou seja, foto nova. Insere
+            
+            [self.photosToBeInserted addObject:[novoDict objectForKey:@"photo"]];
+        }
+    }
+    
+    [self deleteAndInsertPhotos:[self.ocorrenciaEditada objectForKey:@"id"] toBeDeletedArray:self.photosToBeDeleted toBeInsertedArray:self.photosToBeInserted];
+    
 }
 
-- (BOOL)deletePhoto:(NSInteger)chosenPhoto
+- (void)deleteAndInsertPhotos:(NSString *)idOcorrencia toBeDeletedArray:(NSArray *)toBeDeleted toBeInsertedArray:(NSArray *)toBeInserted
 {
-    NSLog(@"Will delete photo %ld",(long)chosenPhoto);
-    return YES;
+
+    
+    DERequestManager *sharedRM = [DERequestManager sharedRequestManager];
+    
+    // Define errors to be processed when everything is complete.
+    __block NSArray *tbdArray = toBeDeleted;
+    __block NSArray *tbiArray = toBeInserted;
+    __block NSString *ocorrenciaId = idOcorrencia;
+    __block NSString *deleteError = nil;
+    __block NSString *insertError = nil;
+    __block NSString *deleteSuccess = nil;
+    __block NSString *insertSucess = nil;
+    
+    // Create the dispatch group
+    dispatch_group_t serviceGroup = dispatch_group_create();
+
+    for (NSString *url in tbdArray) {
+        // Start the first service
+        dispatch_group_enter(serviceGroup);
+        [sharedRM postToServer:url parameters:nil caseOfSuccess:^(NSString *success) {
+            
+            //success
+            deleteSuccess = success;
+            dispatch_group_leave(serviceGroup);
+        } caseOfFailure:^(int errorType, NSString *error) {
+            //failure
+            deleteError = error;
+            dispatch_group_leave(serviceGroup);
+        }];
+    }
+    
+    for (UIImage *image in tbiArray) {
+        // Start the second service
+        dispatch_group_enter(serviceGroup);
+        [sharedRM uploadPicture:image ocorrenciaId:ocorrenciaId caseOfSuccess:^(NSString *success) {
+            
+            //success
+            insertSucess = success;
+            dispatch_group_leave(serviceGroup);
+        } caseOfFailure:^(int errorType, NSString *error) {
+            //failure
+            insertError = error;
+            dispatch_group_leave(serviceGroup);
+        }];
+    }
+    
+    dispatch_group_notify(serviceGroup,dispatch_get_main_queue(),^{
+        
+        // Assess any errors
+        if (deleteError || insertError)
+        {
+            // GENERAL ERROR
+            DENotificationsCentral *sharedNC = [DENotificationsCentral sharedNotificationCentral];
+            [sharedNC showDialog:@"Erro ao inserir/deletar foto." dialogType:NO duration:2.0 viewToShow:[[[[UIApplication sharedApplication] keyWindow] subviews] lastObject]];
+        }
+        
+        // FInal completion code
+
+    });
 }
 
 #pragma mark - Helper methods
@@ -319,16 +278,5 @@
     [self.view endEditing:YES];
 }
 
-- (NSDictionary *) indexKeyedDictionaryFromArray:(NSArray *)array
-{
-    id objectInstance;
-    NSUInteger indexKey = 0U;
-    
-    NSMutableDictionary *mutableDictionary = [[NSMutableDictionary alloc] init];
-    for (objectInstance in array)
-        [mutableDictionary setObject:objectInstance forKey:[NSNumber numberWithUnsignedInt:indexKey++]];
-    
-    return (NSDictionary *)mutableDictionary;
-}
 
 @end

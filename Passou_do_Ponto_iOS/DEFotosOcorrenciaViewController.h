@@ -16,8 +16,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *photoButton1;
 @property (weak, nonatomic) IBOutlet UIButton *photoButton2;
 
-@property (nonatomic, strong) NSDictionary *photos;
-@property (nonatomic, strong) NSMutableDictionary *photosMutable;
+@property (nonatomic, strong) NSArray *photoArray;
+@property (nonatomic, strong) NSMutableArray *photoMutableArray;
 
 @property (nonatomic) NSInteger photoClicked;
 
@@ -27,7 +27,7 @@
 
 @protocol DEOcorrenciaPhotoProtocol <NSObject>
 
--(void)photosChosen:(NSDictionary *)photos;
+-(void)photosChosen:(NSArray *)photoArray;
 
 @end
 

@@ -21,6 +21,7 @@ static NSString *postGetUserData = @"http://passoudoponto.org/usuario/get_data/"
 static NSString *postUpdateUserData = @"http://passoudoponto.org/usuario/update";
 static NSString *postGetOcorrenciaFotos = @"http://passoudoponto.org/foto/ocorrencia/";
 static NSString *filenameURL = @"http://passoudoponto.org/files/";
+static NSString *postDeleteFoto = @"http://passoudoponto.org/foto/delete/";
 
 
 static NSString *uploadPictureURL = @"http://passoudoponto.org/foto/upload";

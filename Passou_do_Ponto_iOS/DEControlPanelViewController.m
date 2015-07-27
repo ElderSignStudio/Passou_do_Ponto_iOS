@@ -226,26 +226,6 @@
     }];
 }
 
-
-- (void)imagePickerFinished:(UIImage *)photo ocorrenciaId:(NSString *)ocorrenciaId
-{
-    NSLog(@"Escolhida para a ID %@ a photo -> %@", ocorrenciaId, photo);
-    
-    DERequestManager *sharedRM = [DERequestManager sharedRequestManager];
-    
-    [sharedRM uploadPicture:photo ocorrenciaId:ocorrenciaId caseOfSuccess:^(NSString *success) {
-        
-        [self.editViewController updatePhotoButton:@"Enviada"];
-        [self.sharedNC showDialog:success dialogType:YES duration:2.0 viewToShow:[[[[UIApplication sharedApplication] keyWindow] subviews] lastObject]];
-        
-    } caseOfFailure:^(int errorType, NSString *error) {
-        
-        [self.editViewController updatePhotoButton:@"Foto"];
-        [self.sharedNC showDialog:error dialogType:NO duration:2.0 viewToShow:[[[[UIApplication sharedApplication] keyWindow] subviews] lastObject]];
-    }];
-    
-}
-
 #pragma mark - DECadastro Protocol
 
 - (void)cadastroPreenchido:(NSDictionary *)cadastro
