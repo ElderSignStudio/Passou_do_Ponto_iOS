@@ -115,6 +115,7 @@
         // Propriedades da DEFotosOcorrenciaViewController
         self.fotoViewController.delegate = self;
         self.fotoViewController.photoArray = self.photoArray;
+        self.fotoViewController.needToRefresh = YES;
         
         [self presentViewController:self.fotoViewController animated:YES completion:nil];
         

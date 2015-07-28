@@ -21,6 +21,8 @@
 
 @property (nonatomic) NSInteger photoClicked;
 
+@property (nonatomic) BOOL needToRefresh;
+
 @property (nonatomic, weak) id<DEOcorrenciaPhotoProtocol> delegate;
 
 @end

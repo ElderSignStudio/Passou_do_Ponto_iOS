@@ -36,24 +36,101 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     
-    if (self.photoArray && [self.photoMutableArray count] == 0) {
+    NSLog(@"MUTABLE: %@",self.photoMutableArray);
+    NSLog(@"RECEIVED: %@",self.photoArray);
+    
+    
+    if (self.needToRefresh) {
         
-        // Cria o novo Array de Dict que será usado nesta tel
-        for (NSDictionary *originalDict in self.photoArray) {
+        // DELETA no MutableArray os com ID não existente no array passado.
+        NSMutableArray *toBeDeleted = [NSMutableArray array];
+        
+        [self.photoMutableArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            
+            __block BOOL encontrou = NO;
+            
+            NSDictionary *dict = (NSDictionary *)obj;
+            
+            NSString *oldId = [dict objectForKey:@"id"];
+            
+            if (oldId) {
+                
+                [self.photoArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                    
+                    NSDictionary *newDict = (NSDictionary *)obj;
+                    
+                    NSString *newId = [newDict objectForKey:@"id"];
+                    
+                    if ([oldId isEqualToString:newId]) {
+                        encontrou = YES;
+                        *stop = YES;
+                    }
+                    
+                }];
+            }
+            
+            if (!encontrou) {
+                [toBeDeleted addObject:self.photoMutableArray[idx]];
+            }
+            
+        }];
+        
+        NSLog(@"Deletando: %@",toBeDeleted);
+        
+        [self.photoMutableArray removeObjectsInArray:toBeDeleted];
+        
+        // INSERT no mutableArray os com ID diferente
+        
+        NSMutableArray *toBeInserted = [NSMutableArray array];
+        
+        [self.photoArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            
+            __block BOOL encontrou = NO;
+            
+            NSDictionary *newDict = (NSDictionary *)obj;
+            NSString *newId = [newDict objectForKey:@"id"];
+            
+            [self.photoMutableArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                
+                NSDictionary *oldDict = (NSDictionary *)obj;
+                
+                NSString *oldId = [oldDict objectForKey:@"id"];
+                
+                if ([oldId isEqualToString:newId]) {
+                    encontrou = YES;
+                    *stop = YES;
+                }
+                
+            }];
+            
+            if (!encontrou) {
+                
+                [toBeInserted addObject:self.photoArray[idx]];
+            }
+            
+        }];
+        
+        for (NSDictionary *insert in toBeInserted) {
             
             NSMutableString *url = [NSMutableString stringWithString:filenameURL];
-            [url appendString:[originalDict objectForKey:@"nome_arquivo"]];
+            [url appendString:[insert objectForKey:@"nome_arquivo"]];
             
             [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:url]]];
             
             
-            NSDictionary *newDict = @{@"id" : [originalDict objectForKey:@"id"],
+            NSDictionary *newDict = @{@"id" : [insert objectForKey:@"id"],
                                       @"photo" : [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:url]]]};
             
+            NSLog(@"Adding: %@",newDict);
+            
             [self.photoMutableArray addObject:newDict];
+            
         }
         
+        self.needToRefresh = NO;
+
     }
+    
     
     [self updateScreenImages];
 
@@ -136,7 +213,7 @@
         [strongDelegate photosChosen:(NSArray *)self.photoMutableArray];
     }
     
-    [self.photoMutableArray removeAllObjects];
+    //[self.photoMutableArray removeAllObjects];
     
 }
 
