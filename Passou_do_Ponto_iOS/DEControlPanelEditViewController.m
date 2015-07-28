@@ -100,6 +100,10 @@
 
 - (IBAction)fotoButtonPressed:(UIButton *)sender {
     
+    // show alert que vai demorar
+    DENotificationsCentral *sharedNC = [DENotificationsCentral sharedNotificationCentral];
+    [sharedNC showDialogProgress:@"Carregando fotos" viewToShow:[[[[UIApplication sharedApplication] keyWindow] subviews] lastObject]];
+    
     NSMutableString *url = [NSMutableString stringWithString:postGetOcorrenciaFotos];
     [url appendString:[self.ocorrenciaEditada objectForKey:@"id"]];
 
@@ -212,6 +216,9 @@
 - (void)deleteAndInsertPhotos:(NSString *)idOcorrencia toBeDeletedArray:(NSArray *)toBeDeleted toBeInsertedArray:(NSArray *)toBeInserted
 {
 
+    // show alert que vai demorar
+    DENotificationsCentral *sharedNC = [DENotificationsCentral sharedNotificationCentral];
+    [sharedNC showDialogProgress:@"Updating" viewToShow:self.view];
     
     DERequestManager *sharedRM = [DERequestManager sharedRequestManager];
     
@@ -268,7 +275,7 @@
         }
         
         // FInal completion code
-
+        [sharedNC dismiss:self.view];
     });
 }
 

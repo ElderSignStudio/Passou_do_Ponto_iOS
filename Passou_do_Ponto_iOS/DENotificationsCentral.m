@@ -93,9 +93,27 @@
     
 }
 
+
+- (void)showDialogProgress:(NSString *)text viewToShow:(UIView *)view
+{
+    [MRProgressOverlayView dismissOverlayForView:view animated:YES];
+    
+    MRProgressOverlayView *progressView = [MRProgressOverlayView showOverlayAddedTo:view animated:YES];
+    
+    progressView.titleLabelText = [self removeHTML:text];
+    
+    progressView.mode = MRProgressOverlayViewModeIndeterminate;
+    
+}
+
 - (void)dismissDialog:(MRProgressOverlayView *)overlayView
 {
     [overlayView dismiss:YES];
+}
+
+- (void)dismiss:(UIView *)view
+{
+    [MRProgressOverlayView dismissOverlayForView:view animated:YES];
 }
 
 

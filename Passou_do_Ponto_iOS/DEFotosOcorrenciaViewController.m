@@ -35,11 +35,6 @@
 
 -(void)viewWillAppear:(BOOL)animated
 {
-    
-    NSLog(@"MUTABLE: %@",self.photoMutableArray);
-    NSLog(@"RECEIVED: %@",self.photoArray);
-    
-    
     if (self.needToRefresh) {
         
         // DELETA no MutableArray os com ID não existente no array passado.
@@ -74,8 +69,6 @@
             }
             
         }];
-        
-        NSLog(@"Deletando: %@",toBeDeleted);
         
         [self.photoMutableArray removeObjectsInArray:toBeDeleted];
         
@@ -121,8 +114,6 @@
             NSDictionary *newDict = @{@"id" : [insert objectForKey:@"id"],
                                       @"photo" : [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:url]]]};
             
-            NSLog(@"Adding: %@",newDict);
-            
             [self.photoMutableArray addObject:newDict];
             
         }
@@ -130,7 +121,6 @@
         self.needToRefresh = NO;
 
     }
-    
     
     [self updateScreenImages];
 
