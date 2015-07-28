@@ -347,16 +347,24 @@
 - (void)controlPanelButtonPressed
 {
     DERequestManager *sharedRM = [DERequestManager sharedRequestManager];
-    [sharedRM postToServer:@"http://passoudoponto.org/usuario/test_login/1"
-                parameters:nil
-             caseOfSuccess:^(NSString *success) {
-                 [self getOcorrenciasUsuario];
-             }
-             caseOfFailure:^(int errorType, NSString *error) {
-                 [sharedNC_ showDialog:error dialogType:NO duration:2.0 viewToShow:self.view];
-             }];
+    [sharedRM getFromServer:@"http://passoudoponto.org/usuario/get_data" caseOfSuccess:^(id responseObject, NSString *msg) {
+        NSLog(@"User data: %@",msg);
+    } caseOfFailure:^(int errorType, NSString *error) {
+        NSLog(@"Erro: %@",error);
+    }];
     
-//    [self getOcorrenciasUsuario];
+    
+//    DERequestManager *sharedRM = [DERequestManager sharedRequestManager];
+//    [sharedRM postToServer:@"http://passoudoponto.org/usuario/test_login/1"
+//                parameters:nil
+//             caseOfSuccess:^(NSString *success) {
+//                 [self getOcorrenciasUsuario];
+//             }
+//             caseOfFailure:^(int errorType, NSString *error) {
+//                 [sharedNC_ showDialog:error dialogType:NO duration:2.0 viewToShow:self.view];
+//             }];
+    
+    [self getOcorrenciasUsuario];
 }
 
 - (void)getOcorrenciasUsuario

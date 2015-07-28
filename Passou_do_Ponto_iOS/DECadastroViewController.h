@@ -10,7 +10,7 @@
 
 @protocol DECadastroProtocol;
 
-@interface DECadastroViewController : UIViewController
+@interface DECadastroViewController : UIViewController <UITextFieldDelegate>
 
 @property (nonatomic) BOOL novoCadastro;
 

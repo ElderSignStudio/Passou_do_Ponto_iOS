@@ -18,6 +18,13 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
+    self.userNameTextField.delegate = self;
+    self.passwordTextField.delegate = self;
+    self.confirmPasswordTextField.delegate = self;
+    self.firstNameTextField.delegate = self;
+    self.FamilyNameTextField.delegate = self;
+    self.emailTextField.delegate = self;
+    
     if (!self.novoCadastro) {
         
         self.userNameTextField.text = self.userName;
@@ -84,6 +91,20 @@
 }
 
 
+#pragma mark - TextField Delegate
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [textField resignFirstResponder];
+    return YES;
+}
+
+#pragma mark - Helper methods
+
+// Dismiss the keyboard when touching anywhere else
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    [self.view endEditing:YES];
+}
 
 
 @end

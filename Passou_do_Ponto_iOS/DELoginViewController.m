@@ -54,7 +54,7 @@
                          
                          [strongDelegate loginSuccessful:result[@"first_name"]];
 //AQUI PARA TIRAR O FB AUTOMATICO
-                         [self dismissViewControllerAnimated:YES completion:nil];
+//                         [self dismissViewControllerAnimated:YES completion:nil];
                          
                      } else {
                          FBSDKLoginManager *manager = [[FBSDKLoginManager alloc] init];
@@ -80,13 +80,28 @@
 
 - (IBAction)conectaButtonPressed:(UIButton *)sender {
     
-    id<DELoginProtocol> strongDelegate = self.delegate;
+    DENotificationsCentral *sharedNC = [DENotificationsCentral sharedNotificationCentral];
     
-    if ([strongDelegate respondsToSelector:@selector(loginSuccessful:)]) {
-        [strongDelegate loginSuccessful:self.usuarioTextField.text];
-    }
+    NSDictionary *parameters = @{@"login" : self.usuarioTextField.text,
+                                 @"password" : self.passwordTextField.text};
     
-    [self dismissViewControllerAnimated:YES completion:nil];
+    DERequestManager *sharedRM = [DERequestManager sharedRequestManager];
+    [sharedRM postToServer:postUserLogin parameters:parameters caseOfSuccess:^(NSString *success) {
+        
+        id<DELoginProtocol> strongDelegate = self.delegate;
+        
+        if ([strongDelegate respondsToSelector:@selector(loginSuccessful:)]) {
+            
+            [strongDelegate loginSuccessful:self.usuarioTextField.text];
+            [self dismissViewControllerAnimated:YES completion:nil];
+        }
+        [sharedNC showDialog:@"Bem vindo!" dialogType:YES duration:2.0 viewToShow:[[[[UIApplication sharedApplication] keyWindow] subviews] lastObject]];
+        
+    } caseOfFailure:^(int errorType, NSString *error) {
+        [sharedNC showDialog:error dialogType:NO duration:2.0 viewToShow:[[[[UIApplication sharedApplication] keyWindow] subviews] lastObject]];
+    }];
+    
+    
 }
 
 
