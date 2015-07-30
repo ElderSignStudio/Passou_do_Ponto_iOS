@@ -327,6 +327,7 @@
     editViewController.tiposDeOcorrencia = tipoDeOcorrencias_;
     editViewController.delegate = self;
     editViewController.ocorrenciaENova = YES;
+    editViewController.userId = self.userId;
     
     
     if (self.currentPositionWasDragged) {
@@ -343,31 +344,7 @@
     
 }
 
-#warning este método é um teste. retirar quando chris der o ok do login!
 - (void)controlPanelButtonPressed
-{
-    DERequestManager *sharedRM = [DERequestManager sharedRequestManager];
-    [sharedRM getFromServer:@"http://passoudoponto.org/usuario/get_data" caseOfSuccess:^(id responseObject, NSString *msg) {
-        NSLog(@"User data: %@",msg);
-    } caseOfFailure:^(int errorType, NSString *error) {
-        NSLog(@"Erro: %@",error);
-    }];
-    
-    
-//    DERequestManager *sharedRM = [DERequestManager sharedRequestManager];
-//    [sharedRM postToServer:@"http://passoudoponto.org/usuario/test_login/1"
-//                parameters:nil
-//             caseOfSuccess:^(NSString *success) {
-//                 [self getOcorrenciasUsuario];
-//             }
-//             caseOfFailure:^(int errorType, NSString *error) {
-//                 [sharedNC_ showDialog:error dialogType:NO duration:2.0 viewToShow:self.view];
-//             }];
-    
-    [self getOcorrenciasUsuario];
-}
-
-- (void)getOcorrenciasUsuario
 {
     self.cpvc = [[DEControlPanelViewController alloc] init];
     
@@ -381,6 +358,7 @@
                   self.cpvc.tipoDeOccorencias = tipoDeOcorrencias_;
                   self.cpvc.userName = self.userName;
                   self.cpvc.delegate = self;
+                  self.cpvc.userId = self.userId;
                   
                   [self presentViewController:self.cpvc animated:YES completion:nil];
               }
@@ -388,8 +366,6 @@
                   
                   [sharedNC_ showDialog:error dialogType:NO duration:2.0 viewToShow:self.view];
               }];
-    
-    
 }
 
 #pragma mark - DELoginProtocol Methods
@@ -399,7 +375,19 @@
     self.userHasLoggedIn = YES;
     self.userName = username;
 
-    [self initializeCurrentMarkerPositions:username];
+    DERequestManager *sharedRM = [DERequestManager sharedRequestManager];
+    [sharedRM getFromServer:postGetUserData caseOfSuccess:^(id responseObject, NSString *msg) {
+        
+        NSDictionary *dict = (NSDictionary *)responseObject;
+        self.userId = [dict objectForKey:@"id"];
+        
+        [self initializeCurrentMarkerPositions:username];
+        [self dismissViewControllerAnimated:YES completion:nil];
+        
+    } caseOfFailure:^(int errorType, NSString *error) {
+        
+        [sharedNC_ showDialog:error dialogType:NO duration:2.0 viewToShow:self.view];
+    }];
     
 }
 
@@ -438,11 +426,6 @@
                  if (errorType == 3) [self presentViewController:self.lvc animated:YES completion:nil];
              }];
 
-}
-
--(void)imagePickerFinished:(UIImage *)photo ocorrenciaId:(NSString *)ocorrenciaId
-{
-    
 }
 
 

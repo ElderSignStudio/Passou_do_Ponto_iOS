@@ -28,6 +28,8 @@
 
 @property (strong, nonatomic) DENotificationsCentral *sharedNC;
 
+@property (strong, nonatomic) NSString *userId;
+
 @property (weak, nonatomic) id<DEControlPanelProtocol> delegate;
 
 @end

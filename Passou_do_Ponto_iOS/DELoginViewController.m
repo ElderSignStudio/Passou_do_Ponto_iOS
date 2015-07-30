@@ -43,6 +43,7 @@
         if ([FBSDKAccessToken currentAccessToken]) {
             // User is logged in, do work such as go to next view controller.
             
+            
             id<DELoginProtocol> strongDelegate = self.delegate;
             
             if ([strongDelegate respondsToSelector:@selector(loginSuccessful:)]) {
@@ -52,9 +53,15 @@
                 {
                      if (!error) {
                          
-                         [strongDelegate loginSuccessful:result[@"first_name"]];
-//AQUI PARA TIRAR O FB AUTOMATICO
-//                         [self dismissViewControllerAnimated:YES completion:nil];
+                         DERequestManager *sharedRM = [DERequestManager sharedRequestManager];
+                         [sharedRM postToServer:postFacebookLogin parameters:nil caseOfSuccess:^(NSString *success) {
+                             NSLog(@"%@",success);
+                             [strongDelegate loginSuccessful:result[@"name"]];
+                             
+                         } caseOfFailure:^(int errorType, NSString *error) {
+                             NSLog(@"%@",error);
+                         }];
+                         
                          
                      } else {
                          FBSDKLoginManager *manager = [[FBSDKLoginManager alloc] init];
@@ -93,7 +100,7 @@
         if ([strongDelegate respondsToSelector:@selector(loginSuccessful:)]) {
             
             [strongDelegate loginSuccessful:self.usuarioTextField.text];
-            [self dismissViewControllerAnimated:YES completion:nil];
+            //[self dismissViewControllerAnimated:YES completion:nil];
         }
         [sharedNC showDialog:@"Bem vindo!" dialogType:YES duration:2.0 viewToShow:[[[[UIApplication sharedApplication] keyWindow] subviews] lastObject]];
         
@@ -151,8 +158,16 @@
             [[[FBSDKGraphRequest alloc] initWithGraphPath:@"me" parameters:nil] startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
                 if (!error) {
                     
-                    [strongDelegate loginSuccessful:result[@"first_name"]];
-                    [self dismissViewControllerAnimated:YES completion:nil];
+                    DERequestManager *sharedRM = [DERequestManager sharedRequestManager];
+                    [sharedRM postToServer:postFacebookLogin parameters:nil caseOfSuccess:^(NSString *success) {
+                        NSLog(@"%@",success);
+                        [strongDelegate loginSuccessful:result[@"name"]];
+                        
+                    } caseOfFailure:^(int errorType, NSString *error) {
+                        NSLog(@"%@",error);
+                    }];
+
+                    //[self dismissViewControllerAnimated:YES completion:nil];
                     
                 } else {
                     FBSDKLoginManager *manager = [[FBSDKLoginManager alloc] init];
@@ -213,5 +228,7 @@
              }];
 
 }
+
+
 
 @end

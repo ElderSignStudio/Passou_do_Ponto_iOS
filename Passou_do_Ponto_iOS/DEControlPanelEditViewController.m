@@ -77,7 +77,7 @@
                            @"lat" : self.lat,
                            @"lng" : self.lng,
                            @"tipo" : [[NSNumber numberWithLong:selectedRow] stringValue],
-                           @"usuario_id" : @"1",
+                           @"usuario_id" : self.userId,
                            @"nr_onibus" : self.numeroOnibusTextField.text,
                            @"nr_ordem" : @""
                            };

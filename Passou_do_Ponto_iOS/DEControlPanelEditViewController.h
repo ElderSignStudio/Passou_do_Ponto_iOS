@@ -17,6 +17,8 @@
 
 @property (nonatomic) BOOL ocorrenciaENova;
 
+@property (strong, nonatomic) NSString *userId;
+
 @property (weak, nonatomic) IBOutlet UIPickerView *tipoOcorrenciaPicker;
 @property (weak, nonatomic) IBOutlet UITextField *numeroOnibusTextField;
 @property (weak, nonatomic) IBOutlet UILabel *latitudeTextField;

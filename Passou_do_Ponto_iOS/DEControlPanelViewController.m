@@ -147,6 +147,7 @@
     self.editViewController.tiposDeOcorrencia = self.tipoDeOccorencias;
     self.editViewController.delegate = self;
     self.editViewController.ocorrenciaENova = NO;
+    self.editViewController.userId = self.userId;
     
     [self presentViewController:self.editViewController animated:YES completion:nil];
 }

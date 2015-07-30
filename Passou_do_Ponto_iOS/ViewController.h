@@ -17,6 +17,7 @@
 
 @property (nonatomic) BOOL userHasLoggedIn;
 @property (nonatomic, strong) NSString *userName;
+@property (nonatomic, strong) NSString *userId;
 
 @property (nonatomic, strong) CLLocationManager *locationManager;
 @property (nonatomic) CLLocationCoordinate2D userCoordinates;

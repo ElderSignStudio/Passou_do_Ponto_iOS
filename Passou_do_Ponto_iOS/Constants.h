@@ -23,7 +23,7 @@ static NSString *postGetOcorrenciaFotos = @"http://passoudoponto.org/foto/ocorre
 static NSString *filenameURL = @"http://passoudoponto.org/files/";
 static NSString *postDeleteFoto = @"http://passoudoponto.org/foto/delete/";
 static NSString *postUserLogin = @"http://passoudoponto.org/login/user_pass";
-
+static NSString *postFacebookLogin = @"http://passoudoponto.org/login/app_fb";
 
 static NSString *uploadPictureURL = @"http://passoudoponto.org/foto/upload";
 
