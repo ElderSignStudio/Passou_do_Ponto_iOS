@@ -83,7 +83,14 @@
         cvc.email = [dict objectForKey:@"email"];
         cvc.firstName = [dict objectForKey:@"nome"];
         cvc.familyName = [dict objectForKey:@"sobrenome"];
-        cvc.birthDate = [dict objectForKey:@"nasc"];
+        
+        NSString *nasc = (NSString *)[dict objectForKey:@"nasc"];
+        
+        if ([nasc class] == [NSNull class]) {
+            cvc.birthDate = @"01/01/1981";
+        } else cvc.birthDate = [dict objectForKey:@"nasc"];
+        
+        
         
         [self presentViewController:cvc animated:YES completion:nil];
         

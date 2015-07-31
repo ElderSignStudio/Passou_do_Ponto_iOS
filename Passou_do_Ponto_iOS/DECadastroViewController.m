@@ -36,11 +36,10 @@
         // get the birthday
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
         [formatter setDateFormat:@"dd/MM/yyyy"];
-        NSDate *date = [formatter dateFromString:self.birthDate];
         
-        if (date != nil) {
-            self.birthDatePicker.date = date;
-        }
+        
+        NSDate *date = [formatter dateFromString:self.birthDate];
+        self.birthDatePicker.date = date;
         
     }
 }
@@ -69,7 +68,7 @@
         
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
         [formatter setDateFormat:@"dd/MM/yyyy"];
-        
+            
         NSDictionary *cadastro = @{
                                      @"login" : self.userNameTextField.text,
                                      @"email" : self.emailTextField.text,

@@ -29,6 +29,14 @@
     self.loginButton.readPermissions = @[@"public_profile", @"email"];
     self.loginButton.delegate = self;
     
+    // Para matar a sessão.
+//    DERequestManager *sharedRM = [DERequestManager sharedRequestManager];
+//    [sharedRM postToServer:postUserLogout parameters:nil caseOfSuccess:^(NSString *success) {
+//        NSLog(@"%@",success);
+//    } caseOfFailure:^(int errorType, NSString *error) {
+//        NSLog(@"%@",error);
+//    }];
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -43,7 +51,6 @@
         if ([FBSDKAccessToken currentAccessToken]) {
             // User is logged in, do work such as go to next view controller.
             
-            
             id<DELoginProtocol> strongDelegate = self.delegate;
             
             if ([strongDelegate respondsToSelector:@selector(loginSuccessful:)]) {
@@ -53,13 +60,15 @@
                 {
                      if (!error) {
                          
+                         NSMutableString *mutableString = [NSMutableString stringWithString:postFacebookLogin];
+                         [mutableString appendString:[FBSDKAccessToken currentAccessToken].tokenString];
+                         
                          DERequestManager *sharedRM = [DERequestManager sharedRequestManager];
-                         [sharedRM postToServer:postFacebookLogin parameters:nil caseOfSuccess:^(NSString *success) {
-                             NSLog(@"%@",success);
+                         [sharedRM postToServer:mutableString parameters:nil caseOfSuccess:^(NSString *success) {
                              [strongDelegate loginSuccessful:result[@"name"]];
                              
                          } caseOfFailure:^(int errorType, NSString *error) {
-                             NSLog(@"%@",error);
+
                          }];
                          
                          
@@ -80,6 +89,32 @@
                      }
                  }];
             }
+
+        } else {
+            
+            // verifica se ja existe session user/pass
+            
+            DERequestManager *sharedRM = [DERequestManager sharedRequestManager];
+            [sharedRM getFromServer:postGetUserData caseOfSuccess:^(id responseObject, NSString *msg) {
+                
+                NSDictionary *dict = (NSDictionary *)responseObject;
+
+                if ([dict objectForKey:@"id"]) {
+                    
+                    id<DELoginProtocol> strongDelegate = self.delegate;
+                    
+                    if ([strongDelegate respondsToSelector:@selector(loginSuccessful:)]) {
+                        
+                        [strongDelegate loginSuccessful:[dict objectForKey:@"login"]];
+                        //[self dismissViewControllerAnimated:YES completion:nil];
+                    }
+                    DENotificationsCentral *sharedNC = [DENotificationsCentral sharedNotificationCentral];
+                    [sharedNC showDialog:@"Bem vindo!" dialogType:YES duration:2.0 viewToShow:[[[[UIApplication sharedApplication] keyWindow] subviews] lastObject]];
+                }
+                
+            } caseOfFailure:^(int errorType, NSString *error) {
+                
+            }];
 
         }
 }
@@ -158,13 +193,17 @@
             [[[FBSDKGraphRequest alloc] initWithGraphPath:@"me" parameters:nil] startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
                 if (!error) {
                     
+                    NSMutableString *mutableString = [NSMutableString stringWithString:postFacebookLogin];
+                    [mutableString appendString:[FBSDKAccessToken currentAccessToken].tokenString];
+                    
                     DERequestManager *sharedRM = [DERequestManager sharedRequestManager];
-                    [sharedRM postToServer:postFacebookLogin parameters:nil caseOfSuccess:^(NSString *success) {
-                        NSLog(@"%@",success);
+                    
+                    [sharedRM postToServer:mutableString parameters:nil caseOfSuccess:^(NSString *success) {
                         [strongDelegate loginSuccessful:result[@"name"]];
                         
                     } caseOfFailure:^(int errorType, NSString *error) {
-                        NSLog(@"%@",error);
+                        DENotificationsCentral *sharedNC = [DENotificationsCentral sharedNotificationCentral];
+                        [sharedNC showDialog:error dialogType:NO duration:2.0 viewToShow:self.view];
                     }];
 
                     //[self dismissViewControllerAnimated:YES completion:nil];
@@ -228,7 +267,5 @@
              }];
 
 }
-
-
 
 @end

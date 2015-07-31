@@ -198,7 +198,7 @@
                                                          zoom:16];
         
     } else {
-        [self drawMarkers];
+        //[self drawMarkers];
     }
     
 }
@@ -253,6 +253,11 @@
                 
                 occorenciaMarker.title = [tipo objectForKey:@"nome"];
                 occorenciaMarker.snippet = [NSString stringWithFormat:@"%@\n%@\n%@",[occurence objectForKey:@"num_onibus"], [occurence objectForKey:@"data_hora"], [occurence objectForKey:@"nome"]];
+                
+                if ([[occurence objectForKey:@"usuario_id"] isEqualToString:self.userId]) {
+                    occorenciaMarker.icon = [GMSMarker markerImageWithColor:[UIColor orangeColor]];
+                }
+                
                 occorenciaMarker.map = mapView_;
             }
             
