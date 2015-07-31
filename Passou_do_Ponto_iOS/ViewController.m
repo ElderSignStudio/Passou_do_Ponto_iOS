@@ -364,6 +364,7 @@
                   self.cpvc.userName = self.userName;
                   self.cpvc.delegate = self;
                   self.cpvc.userId = self.userId;
+                  self.cpvc.userAvatar = self.userAvatar;
                   
                   [self presentViewController:self.cpvc animated:YES completion:nil];
               }
@@ -385,6 +386,13 @@
         
         NSDictionary *dict = (NSDictionary *)responseObject;
         self.userId = [dict objectForKey:@"id"];
+        
+        // get avatar
+        NSMutableString *url = [NSMutableString stringWithString:filenameURL];
+        if ([[dict objectForKey:@"avatar"] class] != [NSNull class]) {
+            [url appendString:[dict objectForKey:@"avatar"]];
+            self.userAvatar = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:url]]];
+        }
         
         [self initializeCurrentMarkerPositions:username];
         [self dismissViewControllerAnimated:YES completion:nil];

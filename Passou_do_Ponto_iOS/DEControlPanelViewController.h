@@ -22,6 +22,7 @@
 @property (strong, nonatomic) DEControlPanelEditViewController *editViewController;
 
 @property (strong, nonatomic) NSString *userName;
+@property (nonatomic, strong) UIImage *userAvatar;
 
 @property (strong, nonatomic) NSArray *userOcorrencias;
 @property(strong, nonatomic) NSArray *tipoDeOccorencias;
