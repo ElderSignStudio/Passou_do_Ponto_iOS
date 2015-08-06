@@ -25,6 +25,7 @@ static NSString *postDeleteFoto = @"http://passoudoponto.org/foto/delete/";
 static NSString *postUserLogin = @"http://passoudoponto.org/login/user_pass";
 static NSString *postUserLogout = @"http://passoudoponto.org/usuario/logout";
 static NSString *postFacebookLogin = @"http://passoudoponto.org/login/app_fb/";
+static NSString *imageURL = @"http://passoudoponto.org/images/";
 
 static NSString *uploadPictureURL = @"http://passoudoponto.org/foto/upload";
 

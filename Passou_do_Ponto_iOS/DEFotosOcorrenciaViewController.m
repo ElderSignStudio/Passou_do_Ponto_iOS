@@ -108,8 +108,6 @@
             NSMutableString *url = [NSMutableString stringWithString:filenameURL];
             [url appendString:[insert objectForKey:@"nome_arquivo"]];
             
-            [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:url]]];
-            
             
             NSDictionary *newDict = @{@"id" : [insert objectForKey:@"id"],
                                       @"photo" : [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:url]]]};

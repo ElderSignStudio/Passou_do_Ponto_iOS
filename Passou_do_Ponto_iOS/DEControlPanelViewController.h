@@ -26,6 +26,7 @@
 
 @property (strong, nonatomic) NSArray *userOcorrencias;
 @property(strong, nonatomic) NSArray *tipoDeOccorencias;
+@property (strong, nonatomic) NSArray *tipoDeOcorrenciasIcones;
 
 @property (strong, nonatomic) DENotificationsCentral *sharedNC;
 

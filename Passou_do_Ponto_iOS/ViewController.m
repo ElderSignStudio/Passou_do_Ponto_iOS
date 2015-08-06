@@ -27,6 +27,7 @@
     UIActivityIndicatorView *activityIndicator_;
     
     NSArray *tipoDeOcorrencias_;
+    NSArray *tipoDeOcorrenciasIcones_;
     
     UIView *popoverView_;
     UIView *viewDummy_;
@@ -211,6 +212,8 @@
     [mapView_ clear];
     
     
+    // Current position marker
+    
     if (self.currentPositionWasDragged) {
         
         // Marker is where the locator was dragged to
@@ -222,9 +225,6 @@
     }
     
     self.currentLocationMarker.map = mapView_;
-    
-    // Abre a info windows do marker
-    //[mapView_ setSelectedMarker:self.currentLocationMarker];
     
     
     // Draw old ocorrencias markers
@@ -254,9 +254,13 @@
                 occorenciaMarker.title = [tipo objectForKey:@"nome"];
                 occorenciaMarker.snippet = [NSString stringWithFormat:@"%@\n%@\n%@",[occurence objectForKey:@"num_onibus"], [occurence objectForKey:@"data_hora"], [occurence objectForKey:@"nome"]];
                 
+                NSDictionary *icon = tipoDeOcorrenciasIcones_[index-1];
+                
                 if ([[occurence objectForKey:@"usuario_id"] isEqualToString:self.userId]) {
-                    occorenciaMarker.icon = [GMSMarker markerImageWithColor:[UIColor orangeColor]];
-                }
+
+                    occorenciaMarker.icon = [icon objectForKey:@"me"];
+
+                } else occorenciaMarker.icon = [icon objectForKey:@"all"];
                 
                 occorenciaMarker.map = mapView_;
             }
@@ -359,8 +363,10 @@
               caseOfSuccess:^(id responseObject, NSString *msg) {
                   
                   self.cpvc.userOcorrencias = (NSArray *)responseObject;
-                  //self.cpvc.userOcorrencias = (NSArray *)[(NSDictionary *)responseObject objectForKey:@"ocorrencias"];
+
                   self.cpvc.tipoDeOccorencias = tipoDeOcorrencias_;
+                  self.cpvc.tipoDeOcorrenciasIcones = tipoDeOcorrenciasIcones_;
+                  
                   self.cpvc.userName = self.userName;
                   self.cpvc.delegate = self;
                   self.cpvc.userId = self.userId;
@@ -452,7 +458,6 @@
                   // SUCCESS
                   
                   self.pastOccurrences = (NSArray *)responseObject;
-                  NSLog(@"%@",self.pastOccurrences);
                   [self drawMarkers];
               }
               caseOfFailure:^(int errorType, NSString *error) {
@@ -472,15 +477,32 @@
                   
                   // SUCCESS
                   
-                  //Update o tipoDeOcorrencia picker
                   self.tipoDeOccorencias = (NSArray *)responseObject;
                   
                   NSMutableArray *mutableArray = [[NSMutableArray alloc] init];
+                  NSMutableArray *mutableArrayIcones = [[NSMutableArray alloc] init];
                   for (NSDictionary *tipo in self.tipoDeOccorencias) {
+                      
                       [mutableArray addObject:[tipo objectForKey:@"nome"]];
+                      
+                      // monta URL
+                      NSMutableString *url = [NSMutableString stringWithString:imageURL];
+                      [url appendString:[tipo objectForKey:@"icone"]];
+                      [url appendString:@".png"];
+                      
+                      NSMutableString *urlMe = [NSMutableString stringWithString:imageURL];
+                      [urlMe appendString:[tipo objectForKey:@"icone"]];
+                      [urlMe appendString:@"-me.png"];
+                      
+                      NSDictionary *icone = @{@"all" : [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:url]]],
+                                              @"me" : [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:urlMe]]]};
+
+                      [mutableArrayIcones addObject:icone];
+                      
                   }
                   
                   tipoDeOcorrencias_ = [NSArray arrayWithArray:mutableArray];
+                  tipoDeOcorrenciasIcones_ = [NSArray arrayWithArray:mutableArrayIcones];
 
                   
               } caseOfFailure:^(int errorType, NSString *error) {
