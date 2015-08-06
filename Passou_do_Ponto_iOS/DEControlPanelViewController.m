@@ -105,15 +105,25 @@
     if (cell == nil) {
         
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"OcorrenciaId"];
-        
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        
     }
     
     NSDictionary *item = (NSDictionary *)self.userOcorrencias[indexPath.row];
     
     cell.textLabel.text = [NSString stringWithFormat:@"%@, %@", [item objectForKey:@"nome"], [item objectForKey:@"num_onibus"]];
     cell.detailTextLabel.text = [item objectForKey:@"dthr_format"];
+
+    
+    // Descobre qual o icone para dmostrar
+    [self.tipoDeOccorencias enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        NSString *tipo = (NSString *)obj;
+       
+    if ([tipo isEqualToString:[item objectForKey:@"nome"]]) {
+        cell.imageView.image = [self.tipoDeOcorrenciasIcones[idx] objectForKey:@"me"];
+    }
+        
+    }];
+
     
     return cell;
 }
