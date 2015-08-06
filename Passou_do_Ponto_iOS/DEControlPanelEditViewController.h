@@ -24,6 +24,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *latitudeTextField;
 @property (weak, nonatomic) IBOutlet UILabel *longitudeTextField;
 @property (weak, nonatomic) IBOutlet UIButton *fotoButton;
+@property (weak, nonatomic) IBOutlet UITextField *numeroOrdemTextField;
 
 @property (nonatomic, strong) NSArray *tiposDeOcorrencia;
 

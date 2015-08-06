@@ -452,7 +452,7 @@
                   // SUCCESS
                   
                   self.pastOccurrences = (NSArray *)responseObject;
-                  
+                  NSLog(@"%@",self.pastOccurrences);
                   [self drawMarkers];
               }
               caseOfFailure:^(int errorType, NSString *error) {

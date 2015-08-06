@@ -36,6 +36,7 @@
         self.numeroOnibusTextField.text = (NSString *)[self.ocorrenciaEditada objectForKey:@"num_onibus"];
         self.longitudeTextField.text = (NSString *)[self.ocorrenciaEditada objectForKey:@"lng"];
         self.latitudeTextField.text = (NSString *)[self.ocorrenciaEditada objectForKey:@"lat"];
+        self.numeroOrdemTextField.text = (NSString *)[self.ocorrenciaEditada objectForKey:@"num_ordem"];
         
         self.fotoButton.hidden = NO;
     }
@@ -79,15 +80,17 @@
                            @"tipo" : [[NSNumber numberWithLong:selectedRow] stringValue],
                            @"usuario_id" : self.userId,
                            @"nr_onibus" : self.numeroOnibusTextField.text,
-                           @"nr_ordem" : @""
+                           @"nr_ordem" : self.numeroOrdemTextField.text,
                            };
             
         } else {
             
             // monta o dicitionary no formato do EDIT OCORRENCIA
-            ocorrenciaFoiEditada = @{@"id" : [self.ocorrenciaEditada objectForKey:@"id"], @"tipo" : [[NSNumber numberWithLong:selectedRow] stringValue], @"nr_onibus" : self.numeroOnibusTextField.text, @"usuario_id" : @"1"};
+            ocorrenciaFoiEditada = @{@"id" : [self.ocorrenciaEditada objectForKey:@"id"], @"tipo" : [[NSNumber numberWithLong:selectedRow] stringValue], @"nr_onibus" : self.numeroOnibusTextField.text, @"usuario_id" : @"1", @"nr_ordem" : self.numeroOrdemTextField.text};
         }
         
+        
+        NSLog(@"%@",ocorrenciaFoiEditada);
         [strongDelegate editCompleted:ocorrenciaFoiEditada];
     }
     
