@@ -7,7 +7,7 @@
 //
 //  Created by Dan Eisenberg on 29/03/15.
 //  Copyright (c) 2015 Elder Sign Studio. All rights reserved.
-//testeeee
+//
 
 #import "ViewController.h"
 #import <GoogleMaps/GoogleMaps.h>
