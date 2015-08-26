@@ -24,6 +24,7 @@
     // Do any additional setup after loading the view from its nib.
     
     self.numeroOnibusTextField.delegate = self;
+    self.numeroOrdemTextField.delegate = self;
     
     if (self.ocorrenciaENova) {
         
